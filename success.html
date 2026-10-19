@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Mind-It Premium — Confirmation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --green: #355b45;
+      --beige: #f5f0e4;
+      --text: #26372d;
+      --muted: #657368;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--beige);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+    }
+
+    main {
+      width: 100%;
+      max-width: 560px;
+      padding: 36px;
+      border: 1px solid #d9dfd5;
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 12px 40px #26372d12;
+      text-align: center;
+    }
+
+    .logo {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      background: var(--green);
+      color: white;
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    h1 { margin-bottom: 8px; }
+    p { line-height: 1.6; }
+    #status { color: var(--muted); }
+
+    #licenseBox {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--beige);
+    }
+
+    #licenseKey {
+      overflow-wrap: anywhere;
+      font-weight: 750;
+      letter-spacing: 1px;
+    }
+
+    button, .home {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--green);
+      color: white;
+      font: inherit;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid #9bbba4;
+      outline-offset: 3px;
+    }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="logo" aria-hidden="true">M</div>
+    <h1>Bienvenue dans Mind-It Premium !</h1>
+    <p id="status" role="status" aria-live="polite">
+      Vérification de ton paiement…
+    </p>
+
+    <section id="licenseBox" hidden>
+      <p>Voici ta clé de licence :</p>
+      <p id="licenseKey"></p>
+      <button id="copyButton" type="button">Copier la licence</button>
+      <p>Nous avons également envoyé ta clé par e-mail si l'envoi a abouti.</p>
+    </section>
+
+    <a class="home" href="./">Retour à Mind-It</a>
+  </main>
+
+  <script>
+    const API = "https://mind-it-server.onrender.com";
+    const statusEl = document.getElementById("status");
+    const box = document.getElementById("licenseBox");
+    const keyEl = document.getElementById("licenseKey");
+    const copyButton = document.getElementById("copyButton");
+
+    const sessionId = new URLSearchParams(location.search)
+      .get("session_id");
+
+    async function loadLicense() {
+      if (!sessionId || !sessionId.startsWith("cs_")) {
+        statusEl.textContent =
+          "Aucune session de paiement valide n'a été trouvée.";
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${API}/api/license?session_id=${encodeURIComponent(sessionId)}`
+        );
+
+        const data = await response.json();
+
+        if (response.status === 202) {
+          statusEl.textContent =
+            "Paiement confirmé. Préparation de ta licence… Actualise cette page dans quelques instants.";
+          return;
+        }
+
+        if (!response.ok) {
+          statusEl.textContent =
+            data.error || "Le paiement n'a pas encore été confirmé.";
+          return;
+        }
+
+        keyEl.textContent = data.license_key;
+        box.hidden = false;
+        statusEl.textContent =
+          "Paiement confirmé ! Ta licence est prête.";
+      } catch {
+        statusEl.textContent =
+          "Impossible de contacter le serveur. Réessaie dans quelques instants.";
+      }
+    }
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(keyEl.textContent);
+        copyButton.textContent = "Licence copiée !";
+      } catch {
+        copyButton.textContent =
+          "Sélectionne la clé pour la copier manuellement.";
+      }
+    });
+
+    loadLicense();
+  </script>
+</body>
+</html>
