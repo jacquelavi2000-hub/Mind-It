@@ -83,6 +83,16 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .download {
+      background: #26372d;
+      width: 100%;
+    }
+
     button:focus-visible, a:focus-visible {
       outline: 3px solid #9bbba4;
       outline-offset: 3px;
@@ -95,6 +105,7 @@
   <main>
     <div class="logo" aria-hidden="true">M</div>
     <h1>Bienvenue dans Mind-It Premium !</h1>
+
     <p id="status" role="status" aria-live="polite">
       Vérification de ton paiement…
     </p>
@@ -102,8 +113,21 @@
     <section id="licenseBox" hidden>
       <p>Voici ta clé de licence :</p>
       <p id="licenseKey"></p>
-      <button id="copyButton" type="button">Copier la licence</button>
-      <p>Nous avons également envoyé ta clé par e-mail si l'envoi a abouti.</p>
+
+      <button id="copyButton" type="button">
+        Copier la licence
+      </button>
+
+      <p>
+        Nous avons également envoyé ta clé par e-mail
+        si l'envoi a abouti.
+      </p>
+
+      <button id="downloadButton" class="download" type="button">
+        Télécharger Mind-It Premium
+      </button>
+
+      <p id="downloadStatus" role="status" aria-live="polite"></p>
     </section>
 
     <a class="home" href="./">Retour à Mind-It</a>
@@ -111,10 +135,13 @@
 
   <script>
     const API = "https://mind-it-server.onrender.com";
+
     const statusEl = document.getElementById("status");
     const box = document.getElementById("licenseBox");
     const keyEl = document.getElementById("licenseKey");
     const copyButton = document.getElementById("copyButton");
+    const downloadButton = document.getElementById("downloadButton");
+    const downloadStatus = document.getElementById("downloadStatus");
 
     const sessionId = new URLSearchParams(location.search)
       .get("session_id");
@@ -135,7 +162,7 @@
 
         if (response.status === 202) {
           statusEl.textContent =
-            "Paiement confirmé. Préparation de ta licence… Actualise cette page dans quelques instants.";
+            "Paiement confirmé. Ta licence est en préparation. Actualise cette page dans quelques instants.";
           return;
         }
 
@@ -162,6 +189,40 @@
       } catch {
         copyButton.textContent =
           "Sélectionne la clé pour la copier manuellement.";
+      }
+    });
+
+    downloadButton.addEventListener("click", async () => {
+      if (!sessionId) return;
+
+      downloadButton.disabled = true;
+      downloadButton.textContent = "Préparation du téléchargement…";
+      downloadStatus.textContent = "";
+
+      try {
+        const response = await fetch(
+          `${API}/api/download?session_id=${encodeURIComponent(sessionId)}`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.download_url) {
+          throw new Error(
+            data.error || "Le téléchargement est indisponible."
+          );
+        }
+
+        // Le lien signé expire après 5 minutes.
+        window.location.assign(data.download_url);
+        downloadButton.textContent = "Téléchargement lancé";
+        downloadStatus.textContent =
+          "Si le téléchargement ne démarre pas, clique à nouveau sur le bouton.";
+      } catch (error) {
+        downloadStatus.textContent =
+          error.message || "Erreur lors du téléchargement.";
+        downloadButton.disabled = false;
+        downloadButton.textContent =
+          "Réessayer le téléchargement";
       }
     });
 
