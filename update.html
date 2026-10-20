@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mises à jour — Mind-It Premium</title>
+  <style>
+    :root {
+      --bg: #f4f1e7;
+      --card: #fffdf7;
+      --green: #365b45;
+      --green-hover: #294735;
+      --text: #26372c;
+      --muted: #69766c;
+      --border: #dce2d7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      padding: 34px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 12px 35px #26372c0c;
+    }
+
+    .logo {
+      display: inline-block;
+      padding: 9px 13px;
+      border-radius: 12px;
+      background: var(--green);
+      color: white;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    h1 { margin: 22px 0 10px; font-size: 28px; }
+    p { line-height: 1.6; }
+    .muted { color: var(--muted); font-size: 14px; }
+    .version {
+      padding: 15px;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #f8f7f0;
+    }
+
+    label {
+      display: block;
+      margin: 20px 0 8px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
+      font-size: 15px;
+      outline-color: var(--green);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--green);
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover { background: var(--green-hover); }
+    button:disabled { opacity: .6; cursor: wait; }
+
+    #status {
+      margin-top: 16px;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    a { color: var(--green); }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo">MIND-IT</div>
+
+    <h1>Mise à jour Premium</h1>
+    <p class="muted">
+      Les mises à jour sont gratuites pour les acheteurs de Mind-It Premium.
+    </p>
+
+    <section class="version">
+      <strong id="version">Recherche de la dernière version…</strong>
+      <p id="notes" class="muted"></p>
+    </section>
+
+    <form id="updateForm">
+      <label for="licenseKey">Ta clé de licence</label>
+      <input
+        id="licenseKey"
+        name="licenseKey"
+        type="text"
+        placeholder="MINDIT-XXXX-XXXX-..."
+        autocomplete="off"
+        required
+        maxlength="100"
+      >
+      <button id="downloadButton" type="submit">
+        Télécharger la mise à jour
+      </button>
+    </form>
+
+    <div id="status" role="status" aria-live="polite"></div>
+
+    <p class="muted">
+      Ta clé est vérifiée par le serveur. Ne la partage avec personne.
+    </p>
+    <a href="./">Retour à Mind-It</a>
+  </main>
+
+  <script>
+    const API = "https://mind-it-server.onrender.com";
+
+    const versionElement = document.getElementById("version");
+    const notesElement = document.getElementById("notes");
+    const statusElement = document.getElementById("status");
+    const form = document.getElementById("updateForm");
+    const keyInput = document.getElementById("licenseKey");
+    const button = document.getElementById("downloadButton");
+
+    let selectedVersion = null;
+
+    async function loadUpdate() {
+      try {
+        const response = await fetch(`${API}/api/updates/latest`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Aucune mise à jour disponible.");
+        }
+
+        const requestedVersion =
+          new URLSearchParams(location.search).get("version");
+
+        // Le lien reçu par e-mail peut cibler une version précise.
+        if (requestedVersion && requestedVersion !== data.version) {
+          versionElement.textContent =
+            `Version ${requestedVersion}`;
+
+          notesElement.textContent =
+            "Cette version n'est pas la dernière. Contacte le support si tu dois récupérer une ancienne version.";
+
+          selectedVersion = null;
+          button.disabled = true;
+          return;
+        }
+
+        selectedVersion = data.version;
+        versionElement.textContent = `Version ${data.version}`;
+        notesElement.textContent =
+          data.release_notes || "Améliorations et corrections.";
+
+      } catch (error) {
+        versionElement.textContent = "Version indisponible";
+        notesElement.textContent = error.message;
+        button.disabled = true;
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!selectedVersion) {
+        statusElement.textContent =
+          "Aucune version disponible pour le moment.";
+        return;
+      }
+
+      const licenseKey = keyInput.value.trim();
+
+      button.disabled = true;
+      statusElement.textContent = "Vérification de la licence…";
+
+      try {
+        const response = await fetch(`${API}/api/update-download`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            license_key: licenseKey,
+            version: selectedVersion
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Téléchargement impossible.");
+        }
+
+        if (!data.download_url) {
+          throw new Error("Le serveur n'a pas fourni de lien.");
+        }
+
+        statusElement.textContent =
+          "Licence validée ! Préparation du téléchargement…";
+
+        location.assign(data.download_url);
+
+      } catch (error) {
+        statusElement.textContent = error.message;
+        button.disabled = false;
+      }
+    });
+
+    loadUpdate();
+  </script>
+</body>
+</html>
