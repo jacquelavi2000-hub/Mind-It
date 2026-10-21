@@ -1,241 +1,1142 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mises à jour — Mind-It Premium</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="Découvre les dernières mises à jour de Mind-It Premium et télécharge-les avec ta licence.">
+  <meta name="robots" content="noindex">
+  <title>Premium Updates — Mind-It</title>
   <style>
     :root {
-      --bg: #f4f1e7;
-      --card: #fffdf7;
-      --green: #365b45;
-      --green-hover: #294735;
-      --text: #26372c;
-      --muted: #69766c;
-      --border: #dce2d7;
+      color-scheme: light;
+      --forest: #183d32;
+      --forest-deep: #102e26;
+      --forest-soft: #315b4b;
+      --cream: #f7f5ef;
+      --paper: #fffefa;
+      --ink: #20372e;
+      --muted: #68766d;
+      --line: #e5e5db;
+      --sage: #e9eee6;
+      --success: #2f7048;
+      --warning: #8a641f;
+      --error: #a3442f;
+      --shadow: 0 22px 60px rgba(27, 54, 43, .08);
     }
 
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
       min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 90% 0%, rgba(220, 227, 211, .55), transparent 34%),
+        var(--cream);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    [hidden] { display: none !important; }
+
+    a:focus-visible, button:focus-visible, input:focus-visible,
+    select:focus-visible, summary:focus-visible {
+      outline: 3px solid #91aa91;
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .topbar {
+      border-bottom: 1px solid rgba(229, 229, 219, .85);
+      background: rgba(247, 245, 239, .82);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      display: flex;
+      min-height: 76px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 780;
+      letter-spacing: -.055em;
+      text-decoration: none;
+    }
+
+    .brand-mark {
       display: grid;
+      width: 37px;
+      height: 37px;
       place-items: center;
-      padding: 24px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 480px;
-      padding: 34px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: 0 12px 35px #26372c0c;
-    }
-
-    .logo {
-      display: inline-block;
-      padding: 9px 13px;
       border-radius: 12px;
-      background: var(--green);
+      background: var(--forest);
       color: white;
-      font-weight: bold;
-      letter-spacing: 1px;
+      font-size: 18px;
+      letter-spacing: -.07em;
     }
 
-    h1 { margin: 22px 0 10px; font-size: 28px; }
-    p { line-height: 1.6; }
-    .muted { color: var(--muted); font-size: 14px; }
-    .version {
-      padding: 15px;
-      margin: 20px 0;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: #f8f7f0;
+    .nav-link {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      text-decoration: none;
     }
 
-    label {
-      display: block;
-      margin: 20px 0 8px;
-      font-weight: bold;
+    .nav-link:hover { color: var(--forest); }
+
+    .main { padding: 65px 0 84px; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 28px;
+      margin-bottom: 35px;
+    }
+
+    .eyebrow {
+      margin-bottom: 13px;
+      color: #63806a;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 12px;
+      font-size: clamp(38px, 6vw, 60px);
+      font-weight: 690;
+      letter-spacing: -.07em;
+      line-height: 1;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      margin-bottom: 0;
+      color: var(--muted);
       font-size: 14px;
+      line-height: 1.85;
     }
 
-    input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: white;
-      color: var(--text);
-      font-size: 15px;
-      outline-color: var(--green);
+    .premium-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid #dce4d8;
+      border-radius: 999px;
+      background: rgba(255, 254, 250, .75);
+      color: var(--forest);
+      font-size: 10px;
+      font-weight: 750;
+      white-space: nowrap;
     }
 
-    button {
+    .premium-pill svg { width: 15px; height: 15px; }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(160px, 210px) minmax(160px, 210px);
+      gap: 11px;
+      margin-bottom: 17px;
+    }
+
+    .field {
+      display: flex;
+      min-width: 0;
+      min-height: 47px;
+      align-items: center;
+      gap: 9px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+      color: #718076;
+    }
+
+    .field svg { width: 17px; height: 17px; flex: 0 0 auto; }
+
+    .field input, .field select {
       width: 100%;
-      margin-top: 14px;
-      padding: 14px;
+      min-width: 0;
       border: 0;
-      border-radius: 10px;
-      background: var(--green);
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 12px;
     }
 
-    button:hover { background: var(--green-hover); }
-    button:disabled { opacity: .6; cursor: wait; }
+    .field input::placeholder { color: #8a938b; }
+    .field select { cursor: pointer; }
+    .field:focus-within { border-color: #98ad98; box-shadow: 0 0 0 3px rgba(145, 170, 145, .16); }
+    .field:focus-within input, .field:focus-within select { outline: 0; }
 
-    #status {
-      margin-top: 16px;
-      font-size: 14px;
+    .feed-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin: 0 2px 13px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .feed-meta strong { color: var(--ink); }
+
+    .update-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .update-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 21px;
+      background: var(--paper);
+      box-shadow: 0 12px 35px rgba(24, 61, 50, .045);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .update-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(24, 61, 50, .08);
+    }
+
+    .update-card-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 24px;
+      padding: clamp(22px, 4vw, 34px);
+    }
+
+    .update-heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 13px;
+    }
+
+    .version-badge {
+      display: inline-flex;
+      min-height: 28px;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid #d7e2d5;
+      border-radius: 8px;
+      background: #eef3eb;
+      color: var(--forest);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .state-badge {
+      display: inline-flex;
+      min-height: 26px;
+      align-items: center;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #eaf3e9;
+      color: #3f704a;
+      font-size: 10px;
+      font-weight: 750;
+    }
+
+    .state-badge.viewed {
+      background: #f0f0e9;
+      color: #73796f;
+    }
+
+    .update-title {
+      margin-bottom: 8px;
+      font-size: clamp(19px, 3vw, 25px);
+      font-weight: 700;
+      letter-spacing: -.045em;
+    }
+
+    .update-date {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 13px;
+      color: #79847b;
+      font-size: 11px;
+    }
+
+    .update-date svg { width: 15px; height: 15px; }
+
+    .update-summary {
+      max-width: 760px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+      white-space: pre-line;
+    }
+
+    .update-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .btn {
+      display: inline-flex;
+      min-height: 45px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 15px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      font-size: 11px;
+      font-weight: 720;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .18s ease, transform .18s ease, border-color .18s ease;
+    }
+
+    .btn:hover:not(:disabled) { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--forest);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) { background: var(--forest-soft); }
+
+    .btn-secondary {
+      border-color: #d9ddd3;
+      background: var(--paper);
+      color: var(--forest);
+    }
+
+    .btn-secondary:hover:not(:disabled) { background: #f1f3ec; }
+
+    .btn:disabled { cursor: wait; opacity: .62; }
+    .btn svg { width: 15px; height: 15px; }
+
+    .download-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 14px;
+      padding: 0 clamp(22px, 4vw, 34px) 25px;
+    }
+
+    .license-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #516258;
+      font-size: 11px;
+      font-weight: 720;
+    }
+
+    .license-input {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 12px;
+    }
+
+    .license-input::placeholder { color: #90998f; }
+
+    .download-status {
+      grid-column: 1 / -1;
+      min-height: 18px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
-    a { color: var(--green); }
+    .download-status[data-state="error"] { color: var(--error); }
+    .download-status[data-state="success"] { color: var(--success); }
+
+    .empty-state {
+      padding: 44px 24px;
+      border: 1px dashed #d4dcd1;
+      border-radius: 20px;
+      background: rgba(255, 254, 250, .72);
+      text-align: center;
+    }
+
+    .empty-icon {
+      display: grid;
+      width: 49px;
+      height: 49px;
+      margin: 0 auto 15px;
+      place-items: center;
+      border-radius: 16px;
+      background: var(--sage);
+      color: var(--forest);
+    }
+
+    .empty-icon svg { width: 23px; height: 23px; }
+    .empty-state h2 { margin-bottom: 7px; font-size: 18px; letter-spacing: -.03em; }
+    .empty-state p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+    .loading-card {
+      display: grid;
+      min-height: 185px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--paper);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .loading-inner { display: grid; justify-items: center; gap: 12px; font-size: 12px; }
+
+    .spinner {
+      width: 23px;
+      height: 23px;
+      border: 2px solid #dce5d8;
+      border-right-color: var(--forest);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .notice {
+      margin-top: 17px;
+      padding: 13px 15px;
+      border: 1px solid #e7e6dd;
+      border-radius: 12px;
+      background: rgba(255, 254, 250, .68);
+      color: #6d786f;
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    .notice strong { color: var(--ink); }
+
+    .page-footer {
+      padding: 21px 0 25px;
+      border-top: 1px solid var(--line);
+      color: #818b82;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .page-footer a {
+      color: var(--forest);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    dialog {
+      width: min(640px, calc(100% - 28px));
+      max-height: min(86vh, 760px);
+      padding: 0;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      color: var(--ink);
+      box-shadow: 0 30px 100px rgba(16, 46, 38, .24);
+    }
+
+    dialog::backdrop {
+      background: rgba(16, 35, 28, .48);
+      backdrop-filter: blur(4px);
+    }
+
+    .guide { padding: clamp(20px, 5vw, 34px); }
+
+    .guide-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .guide-top h2 {
+      margin-bottom: 6px;
+      font-size: 22px;
+      letter-spacing: -.05em;
+    }
+
+    .guide-top p { margin-bottom: 0; color: var(--muted); font-size: 11px; }
+
+    .close-button {
+      display: grid;
+      width: 37px;
+      height: 37px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--paper);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .close-button svg { width: 18px; height: 18px; }
+
+    .guide-progress { margin-top: 23px; }
+
+    .guide-progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .guide-track {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #e9eae2;
+    }
+
+    .guide-fill {
+      width: 20%;
+      height: 100%;
+      border-radius: inherit;
+      background: #4f7b5e;
+      transition: width .25s ease;
+    }
+
+    .guide-step {
+      min-height: 190px;
+      padding: 27px 0 20px;
+    }
+
+    .guide-step-number {
+      display: inline-grid;
+      width: 29px;
+      height: 29px;
+      margin-bottom: 13px;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--sage);
+      color: var(--forest);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .guide-step h3 {
+      margin-bottom: 9px;
+      font-size: 19px;
+      letter-spacing: -.035em;
+    }
+
+    .guide-step p {
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+
+    .guide-step p:last-child { margin-bottom: 0; }
+
+    .guide-note {
+      padding: 13px 14px;
+      border: 1px solid #e6e8df;
+      border-radius: 12px;
+      background: #f6f6f0;
+      color: #5e6b62 !important;
+      font-size: 11px !important;
+    }
+
+    .guide-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .guide-actions .btn { min-width: 115px; }
+
+    @media (max-width: 700px) {
+      .container { width: min(100% - 34px, 560px); }
+      .nav { min-height: 66px; }
+      .main { padding: 47px 0 62px; }
+      .hero { grid-template-columns: 1fr; align-items: start; gap: 18px; margin-bottom: 27px; }
+      .premium-pill { justify-self: start; }
+      .toolbar { grid-template-columns: 1fr 1fr; }
+      .search-field { grid-column: 1 / -1; }
+      .update-card-inner { grid-template-columns: 1fr; gap: 17px; }
+      .update-actions { flex-direction: row; }
+      .update-actions .btn { flex: 1; }
+      .download-panel { grid-template-columns: 1fr; align-items: stretch; }
+      .download-panel .btn { width: 100%; }
+      .download-status { grid-column: auto; }
+    }
+
+    @media (max-width: 420px) {
+      .container { width: min(100% - 28px, 560px); }
+      .hero-copy { font-size: 12px; }
+      .toolbar { grid-template-columns: 1fr; }
+      .search-field { grid-column: auto; }
+      .field { min-height: 45px; }
+      .feed-meta { flex-direction: column; gap: 3px; }
+      .update-actions { flex-direction: column; }
+      .guide-actions .btn { min-width: 0; flex: 1; padding-inline: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <main class="card">
-    <div class="logo">MIND-IT</div>
+  <header class="topbar">
+    <nav class="container nav" aria-label="Navigation principale">
+      <a class="brand" href="./" aria-label="Mind-It, retour à l’accueil">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        Mind-It
+      </a>
+      <a class="nav-link" href="./">Retour à Mind-It <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
 
-    <h1>Mise à jour Premium</h1>
-    <p class="muted">
-      Les mises à jour sont gratuites pour les acheteurs de Mind-It Premium.
-    </p>
-
-    <section class="version">
-      <strong id="version">Recherche de la dernière version…</strong>
-      <p id="notes" class="muted"></p>
+  <main class="container main">
+    <section class="hero" aria-labelledby="pageTitle">
+      <div>
+        <div class="eyebrow">L’actualité de ton espace de travail</div>
+        <h1 id="pageTitle">Premium Updates</h1>
+        <p class="hero-copy">Retrouve les dernières nouveautés de Mind-It. Consulte les notes de version et télécharge une mise à jour avec ta clé de licence Premium.</p>
+      </div>
+      <div class="premium-pill">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="m10 2 2 5.3 5.5.2-4.3 3.3 1.5 5.2L10 13l-4.7 3 1.5-5.2L2.5 7.5l5.5-.2L10 2Z"
+                stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+        </svg>
+        Espace Premium
+      </div>
     </section>
 
-    <form id="updateForm">
-      <label for="licenseKey">Ta clé de licence</label>
-      <input
-        id="licenseKey"
-        name="licenseKey"
-        type="text"
-        placeholder="MINDIT-XXXX-XXXX-..."
-        autocomplete="off"
-        required
-        maxlength="100"
-      >
-      <button id="downloadButton" type="submit">
-        Télécharger la mise à jour
-      </button>
-    </form>
+    <section aria-label="Rechercher et filtrer les mises à jour">
+      <div class="toolbar">
+        <label class="field search-field">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="8.8" cy="8.8" r="5.8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="m13.2 13.2 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input id="searchInput" type="search" placeholder="Rechercher dans la version et les notes…" autocomplete="off">
+        </label>
+        <label class="field">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M5 3.5h10a1.5 1.5 0 0 1 1.5 1.5v10a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 15V5A1.5 1.5 0 0 1 5 3.5Z" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M6.5 7h7M6.5 10h7M6.5 13h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <select id="versionFilter" aria-label="Filtrer par version">
+            <option value="">Toutes les versions</option>
+          </select>
+        </label>
+        <label class="field">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <rect x="3" y="4.5" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M6.5 2.8v3.4M13.5 2.8v3.4M3.5 8h13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <select id="dateFilter" aria-label="Filtrer par date">
+            <option value="all">Toutes les dates</option>
+            <option value="30">30 derniers jours</option>
+            <option value="365">12 derniers mois</option>
+            <option value="older">Plus d’un an</option>
+          </select>
+        </label>
+      </div>
+      <div class="feed-meta">
+        <span id="resultsCount">Chargement des nouveautés…</span>
+        <span id="historyHint">Données fournies par Mind-It Server</span>
+      </div>
+    </section>
 
-    <div id="status" role="status" aria-live="polite"></div>
+    <section id="updateList" class="update-list" aria-label="Mises à jour disponibles" aria-live="polite">
+      <div class="loading-card">
+        <div class="loading-inner"><span class="spinner" aria-hidden="true"></span>Chargement des mises à jour…</div>
+      </div>
+    </section>
 
-    <p class="muted">
-      Ta clé est vérifiée par le serveur. Ne la partage avec personne.
+    <section class="empty-state" id="emptyState" hidden aria-live="polite">
+      <div class="empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 5h16v14H4zM8 9h8M8 12h5"/>
+          <path d="m15.5 16.5 2 2 4-4"/>
+        </svg>
+      </div>
+      <h2 id="emptyTitle">Aucune mise à jour disponible</h2>
+      <p id="emptyMessage">La dernière version apparaîtra ici dès sa publication.</p>
+    </section>
+
+    <p class="notice">
+      <strong>À propos de l’accès :</strong> les notes et informations renvoyées par le service sont affichées ici. La clé Premium est vérifiée par le serveur au moment du téléchargement ; garde-la confidentielle.
     </p>
-    <a href="./">Retour à Mind-It</a>
   </main>
+
+  <footer class="page-footer">
+    <div class="container">Mind-It · <a href="./">Retour au site</a></div>
+  </footer>
+
+  <dialog id="guideDialog" aria-labelledby="guideTitle" aria-describedby="guideDescription">
+    <div class="guide">
+      <div class="guide-top">
+        <div>
+          <div class="eyebrow">Guide de la mise à jour</div>
+          <h2 id="guideTitle">Découvrir la nouveauté</h2>
+          <p id="guideDescription"></p>
+        </div>
+        <button class="close-button" id="closeGuide" type="button" aria-label="Fermer le guide">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="guide-progress">
+        <div class="guide-progress-meta">
+          <span id="guideStepCount">Étape 1 sur 5</span>
+          <span id="guideStepPercent">20 %</span>
+        </div>
+        <div class="guide-track" id="guideProgress" role="progressbar"
+             aria-label="Progression du guide" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+          <div class="guide-fill" id="guideProgressFill"></div>
+        </div>
+      </div>
+      <section class="guide-step" id="guideStepContent" aria-live="polite"></section>
+      <div class="guide-actions">
+        <button class="btn btn-secondary" id="previousStep" type="button">← Précédent</button>
+        <button class="btn btn-primary" id="nextStep" type="button">Suivant →</button>
+      </div>
+    </div>
+  </dialog>
 
   <script>
     const API = "https://mind-it-server.onrender.com";
-
-    const versionElement = document.getElementById("version");
-    const notesElement = document.getElementById("notes");
-    const statusElement = document.getElementById("status");
-    const form = document.getElementById("updateForm");
-    const keyInput = document.getElementById("licenseKey");
-    const button = document.getElementById("downloadButton");
-
+    const STORAGE_KEY = "mind-it-updates-viewed-versions";
+    const updateList = document.getElementById("updateList");
+    const emptyState = document.getElementById("emptyState");
+    const emptyTitle = document.getElementById("emptyTitle");
+    const emptyMessage = document.getElementById("emptyMessage");
+    const searchInput = document.getElementById("searchInput");
+    const versionFilter = document.getElementById("versionFilter");
+    const dateFilter = document.getElementById("dateFilter");
+    const resultsCount = document.getElementById("resultsCount");
+    const historyHint = document.getElementById("historyHint");
+    const guideDialog = document.getElementById("guideDialog");
+    const guideStepContent = document.getElementById("guideStepContent");
+    const guideSteps = [
+      { title: "Découvrir", body: update => update.release_notes },
+      { title: "Comprendre", body: update => `Voici le résumé publié pour la version ${update.version}. Les notes de version ci-dessus sont la source des informations disponibles sur cette nouveauté.` },
+      { title: "Configurer", body: update => update.release_notes ? "Vérifie les notes de version pour savoir si une configuration est mentionnée. Aucune procédure de configuration distincte n’est fournie par le service." : "Aucune instruction de configuration n’est fournie dans les données de cette publication." },
+      { title: "Utiliser", body: update => `Pour profiter de cette version, télécharge-la avec ta licence, puis ouvre Mind-It sur ton ordinateur. Les étapes propres à la nouveauté ne sont pas détaillées au-delà des notes publiées :\n\n${update.release_notes}` },
+      { title: "Terminé", body: update => `Tu as consulté les notes de la version ${update.version}. Utilise le bouton ci-dessous pour revenir à la liste des mises à jour.` }
+    ];
+    let updates = [];
+    let selectedUpdate = null;
+    let currentGuideStep = 0;
     let selectedVersion = null;
+    let requestedVersionMismatch = false;
 
-    async function loadUpdate() {
+    function readViewedVersions() {
       try {
-        const response = await fetch(`${API}/api/updates/latest`);
+        const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(value) ? value.filter(item => typeof item === "string") : [];
+      } catch (error) {
+        console.warn("L’état des mises à jour consultées n’a pas pu être lu.", error);
+        return [];
+      }
+    }
+
+    function markViewed(update) {
+      const viewed = new Set(readViewedVersions());
+      viewed.add(String(update.version));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...viewed]));
+      } catch (error) {
+        console.warn("L’état de consultation ne peut pas être conservé dans ce navigateur.", error);
+      }
+    }
+
+    function formatDate(value) {
+      const date = new Date(value);
+      if (!Number.isFinite(date.getTime())) return "Date non précisée";
+      return new Intl.DateTimeFormat("fr-CH", {
+        day: "numeric", month: "long", year: "numeric"
+      }).format(date);
+    }
+
+    function createIcon(path, viewBox = "0 0 20 20") {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", viewBox);
+      svg.setAttribute("fill", "none");
+      svg.setAttribute("aria-hidden", "true");
+      const shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      shape.setAttribute("d", path);
+      shape.setAttribute("stroke", "currentColor");
+      shape.setAttribute("stroke-width", "1.5");
+      shape.setAttribute("stroke-linecap", "round");
+      shape.setAttribute("stroke-linejoin", "round");
+      svg.append(shape);
+      return svg;
+    }
+
+    function getDateGroup(update) {
+      const timestamp = new Date(update.created_at).getTime();
+      if (!Number.isFinite(timestamp)) return "unknown";
+      const age = (Date.now() - timestamp) / 86400000;
+      if (age <= 30) return "30";
+      if (age <= 365) return "365";
+      return "older";
+    }
+
+    function renderUpdates() {
+      updateList.replaceChildren();
+      emptyState.hidden = true;
+      const query = searchInput.value.trim().toLocaleLowerCase("fr");
+      const version = versionFilter.value;
+      const dateGroup = dateFilter.value;
+      const viewed = new Set(readViewedVersions());
+
+      const filtered = updates.filter(update => {
+        const searchable = `${update.version} ${update.release_notes}`.toLocaleLowerCase("fr");
+        return (!query || searchable.includes(query)) &&
+          (!version || String(update.version) === version) &&
+          (dateGroup === "all" || getDateGroup(update) === dateGroup);
+      });
+
+      resultsCount.innerHTML = `<strong>${filtered.length}</strong> mise${filtered.length === 1 ? "" : "s"} à jour affichée${filtered.length === 1 ? "" : "s"}`;
+
+      if (!filtered.length) {
+        emptyState.hidden = false;
+        if (!updates.length) {
+          emptyTitle.textContent = "Aucune mise à jour disponible";
+          emptyMessage.textContent = "La dernière version apparaîtra ici dès sa publication.";
+        } else {
+          emptyTitle.textContent = "Aucun résultat";
+          emptyMessage.textContent = "Essaie une autre recherche ou modifie les filtres.";
+        }
+        return;
+      }
+
+      for (const update of filtered) {
+        const card = document.createElement("article");
+        card.className = "update-card";
+
+        const inner = document.createElement("div");
+        inner.className = "update-card-inner";
+
+        const content = document.createElement("div");
+        const heading = document.createElement("div");
+        heading.className = "update-heading";
+
+        const versionBadge = document.createElement("span");
+        versionBadge.className = "version-badge";
+        versionBadge.textContent = `Version ${update.version}`;
+
+        const stateBadge = document.createElement("span");
+        const hasViewed = viewed.has(String(update.version));
+        stateBadge.className = `state-badge${hasViewed ? " viewed" : ""}`;
+        stateBadge.textContent = hasViewed ? "Consultée" : "Nouvelle";
+        heading.append(versionBadge, stateBadge);
+
+        const title = document.createElement("h2");
+        title.className = "update-title";
+        title.textContent = `Mind-It ${update.version}`;
+
+        const date = document.createElement("div");
+        date.className = "update-date";
+        date.append(createIcon("M5 4v3m10-3v3M3.5 8h13M5 5.5h10A1.5 1.5 0 0 1 16.5 7v9A1.5 1.5 0 0 1 15 17.5H5A1.5 1.5 0 0 1 3.5 16V7A1.5 1.5 0 0 1 5 5.5Z"));
+        const dateText = document.createElement("time");
+        const parsedDate = new Date(update.created_at);
+        if (Number.isFinite(parsedDate.getTime())) dateText.dateTime = parsedDate.toISOString();
+        dateText.textContent = formatDate(update.created_at);
+        date.append(dateText);
+
+        const summary = document.createElement("p");
+        summary.className = "update-summary";
+        summary.textContent = update.release_notes || "Aucune note de version n’a été fournie.";
+
+        content.append(heading, title, date, summary);
+
+        const actions = document.createElement("div");
+        actions.className = "update-actions";
+        const detailsButton = document.createElement("button");
+        detailsButton.className = "btn btn-secondary";
+        detailsButton.type = "button";
+        detailsButton.append(document.createTextNode("Consulter les détails "));
+        detailsButton.append(createIcon("M4 10h11m-4-4 4 4-4 4", "0 0 20 20"));
+        detailsButton.addEventListener("click", () => openGuide(update));
+        actions.append(detailsButton);
+
+        inner.append(content, actions);
+        const downloadForm = document.createElement("form");
+        downloadForm.className = "download-panel";
+        downloadForm.id = "downloadForm";
+        const licenseField = document.createElement("div");
+        const licenseLabel = document.createElement("label");
+        licenseLabel.className = "license-label";
+        licenseLabel.htmlFor = "licenseKey";
+        licenseLabel.textContent = "Ta clé de licence Premium";
+        const licenseInput = document.createElement("input");
+        licenseInput.className = "license-input";
+        licenseInput.id = "licenseKey";
+        licenseInput.name = "licenseKey";
+        licenseInput.type = "text";
+        licenseInput.placeholder = "MINDIT-XXXX-XXXX-…";
+        licenseInput.autocomplete = "off";
+        licenseInput.required = true;
+        licenseInput.maxLength = 100;
+        licenseField.append(licenseLabel, licenseInput);
+
+        const downloadButton = document.createElement("button");
+        downloadButton.className = "btn btn-primary";
+        downloadButton.id = "downloadButton";
+        downloadButton.type = "submit";
+        downloadButton.append(document.createTextNode("Télécharger la mise à jour "));
+        downloadButton.append(createIcon("M10 3v10m-4-4 4 4 4-4M4 16h12"));
+
+        const downloadStatus = document.createElement("p");
+        downloadStatus.className = "download-status";
+        downloadStatus.id = "downloadStatus";
+        downloadStatus.setAttribute("role", "status");
+        downloadStatus.setAttribute("aria-live", "polite");
+        downloadStatus.setAttribute("aria-atomic", "true");
+
+        downloadForm.append(licenseField, downloadButton, downloadStatus);
+        card.append(inner, downloadForm);
+        updateList.append(card);
+        attachDownloadForm();
+      }
+    }
+
+    function showEmptyMessage(title, message) {
+      updateList.replaceChildren();
+      updates = [];
+      emptyTitle.textContent = title;
+      emptyMessage.textContent = message;
+      emptyState.hidden = false;
+      resultsCount.textContent = "Aucune mise à jour affichée";
+    }
+
+    async function loadUpdates() {
+      try {
+        const response = await fetch(`${API}/api/updates/latest`, {
+          headers: { Accept: "application/json" },
+          cache: "no-store"
+        });
         const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(data.error || "Aucune mise à jour disponible.");
+        if (response.status === 404) {
+          showEmptyMessage("Aucune mise à jour disponible", "La dernière version apparaîtra ici dès sa publication.");
+          return;
         }
 
-        const requestedVersion =
-          new URLSearchParams(location.search).get("version");
+        if (!response.ok) {
+          throw new Error(data.error || "Impossible de charger les mises à jour.");
+        }
 
-        // Le lien reçu par e-mail peut cibler une version précise.
-        if (requestedVersion && requestedVersion !== data.version) {
-          versionElement.textContent =
-            `Version ${requestedVersion}`;
+        if (typeof data.version !== "string" || !data.version.trim()) {
+          throw new Error("Le serveur a retourné une mise à jour sans version valide.");
+        }
 
-          notesElement.textContent =
-            "Cette version n'est pas la dernière. Contacte le support si tu dois récupérer une ancienne version.";
+        const requestedVersion = new URLSearchParams(window.location.search).get("version");
+        requestedVersionMismatch = Boolean(requestedVersion && requestedVersion !== data.version);
 
-          selectedVersion = null;
-          button.disabled = true;
+        if (requestedVersionMismatch) {
+          showEmptyMessage(
+            `Version ${requestedVersion} indisponible`,
+            `Cette page permet de télécharger la dernière version publiée (${data.version}). Le lien demandé ne correspond pas à la version actuelle.`
+          );
           return;
         }
 
         selectedVersion = data.version;
-        versionElement.textContent = `Version ${data.version}`;
-        notesElement.textContent =
-          data.release_notes || "Améliorations et corrections.";
+        const update = {
+          version: data.version,
+          release_notes: typeof data.release_notes === "string" ? data.release_notes.trim() : "",
+          created_at: typeof data.created_at === "string" ? data.created_at : ""
+        };
+        updates = [update];
 
+        const option = document.createElement("option");
+        option.value = update.version;
+        option.textContent = `Version ${update.version}`;
+        versionFilter.append(option);
+
+        historyHint.textContent = "Historique fourni par le serveur : dernière version publiée";
+        renderUpdates();
       } catch (error) {
-        versionElement.textContent = "Version indisponible";
-        notesElement.textContent = error.message;
-        button.disabled = true;
+        showEmptyMessage("Mises à jour indisponibles", `${error.message} Vérifie ta connexion et réessaie plus tard.`);
       }
     }
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
+    function updateGuide() {
+      if (!selectedUpdate) return;
+      const step = guideSteps[currentGuideStep];
+      document.getElementById("guideTitle").textContent = `Mind-It ${selectedUpdate.version}`;
+      document.getElementById("guideDescription").textContent =
+        `Publié le ${formatDate(selectedUpdate.created_at)}`;
+      document.getElementById("guideStepCount").textContent =
+        `Étape ${currentGuideStep + 1} sur ${guideSteps.length}`;
+      document.getElementById("guideStepPercent").textContent =
+        `${Math.round(((currentGuideStep + 1) / guideSteps.length) * 100)} %`;
+      document.getElementById("guideProgress").setAttribute("aria-valuenow", String(currentGuideStep + 1));
+      document.getElementById("guideProgressFill").style.width =
+        `${((currentGuideStep + 1) / guideSteps.length) * 100}%`;
 
-      if (!selectedVersion) {
-        statusElement.textContent =
-          "Aucune version disponible pour le moment.";
-        return;
-      }
+      const number = document.createElement("span");
+      number.className = "guide-step-number";
+      number.textContent = String(currentGuideStep + 1);
+      const title = document.createElement("h3");
+      title.textContent = step.title;
+      const body = document.createElement("p");
+      body.textContent = step.body(selectedUpdate) || "Aucune note de version n’a été fournie.";
+      guideStepContent.replaceChildren(number, title, body);
 
-      const licenseKey = keyInput.value.trim();
+      const previous = document.getElementById("previousStep");
+      const next = document.getElementById("nextStep");
+      previous.disabled = currentGuideStep === 0;
+      next.textContent = currentGuideStep === guideSteps.length - 1
+        ? "Retour aux mises à jour"
+        : "Suivant →";
+    }
 
-      button.disabled = true;
-      statusElement.textContent = "Vérification de la licence…";
+    function openGuide(update) {
+      selectedUpdate = update;
+      currentGuideStep = 0;
+      markViewed(update);
+      renderUpdates();
+      updateGuide();
+      guideDialog.showModal();
+    }
 
-      try {
-        const response = await fetch(`${API}/api/update-download`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            license_key: licenseKey,
-            version: selectedVersion
-          })
-        });
+    document.getElementById("closeGuide").addEventListener("click", () => guideDialog.close());
 
-        const data = await response.json();
+    guideDialog.addEventListener("click", event => {
+      if (event.target === guideDialog) guideDialog.close();
+    });
 
-        if (!response.ok) {
-          throw new Error(data.error || "Téléchargement impossible.");
-        }
-
-        if (!data.download_url) {
-          throw new Error("Le serveur n'a pas fourni de lien.");
-        }
-
-        statusElement.textContent =
-          "Licence validée ! Préparation du téléchargement…";
-
-        location.assign(data.download_url);
-
-      } catch (error) {
-        statusElement.textContent = error.message;
-        button.disabled = false;
+    document.getElementById("previousStep").addEventListener("click", () => {
+      if (currentGuideStep > 0) {
+        currentGuideStep -= 1;
+        updateGuide();
       }
     });
 
-    loadUpdate();
+    document.getElementById("nextStep").addEventListener("click", () => {
+      if (currentGuideStep === guideSteps.length - 1) {
+        guideDialog.close();
+        selectedUpdate = null;
+        return;
+      }
+      currentGuideStep += 1;
+      updateGuide();
+    });
+
+    searchInput.addEventListener("input", renderUpdates);
+    versionFilter.addEventListener("change", renderUpdates);
+    dateFilter.addEventListener("change", renderUpdates);
+
+    function attachDownloadForm() {
+      const form = document.getElementById("downloadForm");
+      if (!form) return;
+
+      form.addEventListener("submit", async event => {
+        event.preventDefault();
+        const input = document.getElementById("licenseKey");
+        const button = document.getElementById("downloadButton");
+        const status = document.getElementById("downloadStatus");
+        const licenseKey = input.value.trim();
+
+        if (!selectedVersion || requestedVersionMismatch) {
+          status.dataset.state = "error";
+          status.textContent = "Aucune version disponible pour le téléchargement.";
+          return;
+        }
+
+        if (!licenseKey) {
+          status.dataset.state = "error";
+          status.textContent = "Saisis ta clé de licence Premium pour continuer.";
+          input.focus();
+          return;
+        }
+
+        button.disabled = true;
+        button.setAttribute("aria-busy", "true");
+        button.textContent = "Vérification de la licence…";
+        status.dataset.state = "loading";
+        status.textContent = "Le serveur vérifie ta licence et prépare un lien temporaire.";
+
+        try {
+          const response = await fetch(`${API}/api/update-download`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ license_key: licenseKey, version: selectedVersion })
+          });
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Le téléchargement est indisponible.");
+          }
+
+          if (typeof data.download_url !== "string") {
+            throw new Error("Le serveur n’a pas fourni de lien de téléchargement.");
+          }
+
+          const downloadUrl = new URL(data.download_url);
+          if (downloadUrl.protocol !== "https:") {
+            throw new Error("Le serveur a fourni un lien de téléchargement non sécurisé.");
+          }
+
+          status.dataset.state = "success";
+          status.textContent = "Licence validée. Ton lien sécurisé est prêt ; le téléchargement va démarrer.";
+          window.location.assign(downloadUrl.href);
+        } catch (error) {
+          status.dataset.state = "error";
+          status.textContent = error.message;
+          button.disabled = false;
+          button.removeAttribute("aria-busy");
+          button.innerHTML = 'Télécharger la mise à jour <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v10m-4-4 4 4 4-4M4 16h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        }
+      });
+    }
+
+    loadUpdates();
   </script>
 </body>
 </html>
