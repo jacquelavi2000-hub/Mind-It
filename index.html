@@ -849,6 +849,36 @@
         #e9ece3;
     }
 
+    .updates-section { padding-block: 72px; }
+
+    .updates-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      padding: clamp(26px, 5vw, 48px);
+      border: 1px solid #dfe4d9;
+      border-radius: 24px;
+      background:
+        radial-gradient(ellipse at 90% 0%, rgba(219, 227, 209, .55), transparent 42%),
+        var(--paper);
+      box-shadow: 0 16px 42px rgba(24, 61, 50, .06);
+    }
+
+    .updates-copy { max-width: 650px; }
+
+    .updates-copy h2 {
+      margin-bottom: 10px;
+      font-size: clamp(28px, 4vw, 38px);
+    }
+
+    .updates-copy p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
     .cta-inner {
       display: flex;
       align-items: center;
@@ -1015,6 +1045,8 @@
       .price-card { padding: 25px; }
       .plan-description { min-height: 0; }
       .faq-list summary { min-height: 62px; font-size: 13px; }
+      .updates-card { align-items: stretch; flex-direction: column; gap: 20px; }
+      .updates-card .btn { width: 100%; }
       .cta-inner { align-items: stretch; flex-direction: column; }
       .cta-inner .btn { width: 100%; }
       .footer-top, .footer-bottom { align-items: flex-start; flex-direction: column; }
@@ -1064,6 +1096,7 @@
         <a href="#fonctionnalites">Fonctionnalités</a>
         <a href="#comparatif">Comparatif</a>
         <a href="#premium">Premium</a>
+        <a href="#premium-updates">Mises à jour</a>
         <a href="#faq">FAQ</a>
         <a class="nav-download" href="#telecharger">Télécharger gratuitement <span aria-hidden="true">↗</span></a>
       </div>
@@ -1323,6 +1356,21 @@
           </article>
         </div>
         <p class="price-footnote">Le prix, la durée et les conditions de l'offre sont ceux présentés sur la page de paiement avant confirmation. Aucun achat n'est déclenché sans validation sur cette page.</p>
+      </div>
+    </section>
+
+    <section class="section updates-section" id="premium-updates">
+      <div class="container">
+        <div class="updates-card">
+          <div class="updates-copy">
+            <div class="section-kicker">Premium Updates</div>
+            <h2>Découvre les dernières mises à jour.</h2>
+            <p>Consulte la version disponible et demande le téléchargement d’une mise à jour avec ta clé de licence Premium.</p>
+          </div>
+          <a class="btn btn-primary" href="https://jacquelavi2000-hub.github.io/Mind-It/update.html">
+            Accéder aux mises à jour <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </div>
     </section>
 
