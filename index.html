@@ -581,6 +581,7 @@
 
     .comparison-result.yes { color: var(--forest); }
     .comparison-result.no { color: #899087; }
+    .new-feature { display: inline-flex; align-items: center; gap: 4px; margin-left: 9px; padding: 4px 8px; border: 1px solid #d8e5d6; border-radius: 999px; background: #edf3e9; color: #42664a; font-size: 9px; font-weight: 800; letter-spacing: .035em; line-height: 1.2; vertical-align: middle; white-space: nowrap; }
 
     .comparison-result svg {
       width: 17px;
@@ -1198,7 +1199,7 @@
         <div class="section-heading">
           <div class="section-kicker">Gratuit ou Premium</div>
           <h2>Choisis la version qui te correspond.</h2>
-          <p>La version gratuite te permet de découvrir Mind-It avec l'assistant de fabrication. Premium débloque les fonctionnalités illimitées et les options de personnalisation.</p>
+          <p>La version gratuite inclut désormais plusieurs nouveautés : zoom, minimap, import et export de maps, lignes droites et mode sombre. Premium débloque les fonctionnalités illimitées et les options de personnalisation.</p>
         </div>
 
         <div class="comparison-wrap">
@@ -1213,6 +1214,37 @@
             <tbody>
               <tr>
                 <th scope="row">Assistant de fabrication</th>
+                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+              </tr>
+              <tr class="group-row"><th scope="rowgroup" colspan="3">Nouveautés disponibles gratuitement</th></tr>
+              <tr>
+                <th scope="row">Zoom <span class="new-feature">✦ Nouveauté</span></th>
+                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Minimap <span class="new-feature">✦ Nouveauté</span></th>
+                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Export de maps <span class="new-feature">✦ Nouveauté</span></th>
+                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Import de maps <span class="new-feature">✦ Nouveauté</span></th>
+                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Lignes droites <span class="new-feature">✦ Nouveauté</span></th>
+                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Mode sombre <span class="new-feature">✦ Nouveauté</span></th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
@@ -1244,11 +1276,6 @@
               </tr>
               <tr>
                 <th scope="row">Personnalisation des touches</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Mode sombre</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
