@@ -806,7 +806,7 @@
       consentVersion = data.announcement_consent_version;
       if (!consentVersion) return;
       announcementConsent.hidden = false;
-      if (data.announcement_consent_at && data.announcement_consent_source === "post-payment-checkout") {
+      if (data.announcement_consent_at && data.announcement_consent_version === consentVersion) {
         showConsentState(
           data.announcement_consent
             ? "Ton choix est enregistré : tu recevras les annonces des mises à jour Mind-It."
