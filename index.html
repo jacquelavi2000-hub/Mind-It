@@ -1069,6 +1069,10 @@
         transition-duration: .01ms !important;
       }
     }
+  
+    .updates-actions { display: flex; min-width: 210px; flex-direction: column; gap: 10px; }
+    .updates-actions .btn { width: 100%; }
+
   </style>
 </head>
 <body>
@@ -1390,13 +1394,18 @@
       <div class="container">
         <div class="updates-card">
           <div class="updates-copy">
-            <div class="section-kicker">Premium Updates</div>
+            <div class="section-kicker">Free Updates &amp; Premium Updates</div>
             <h2>Découvre les dernières mises à jour.</h2>
-            <p>Consulte la version disponible et demande le téléchargement d’une mise à jour avec ta clé de licence Premium.</p>
+            <p>Les versions gratuites sont publiées sur GitHub et téléchargeables sans clé de licence. Les mises à jour Premium restent accessibles avec une licence valide.</p>
           </div>
-          <a class="btn btn-primary" href="https://jacquelavi2000-hub.github.io/Mind-It/update.html">
-            Accéder aux mises à jour <span aria-hidden="true">↗</span>
-          </a>
+          <div class="updates-actions">
+            <a class="btn btn-primary" href="https://jacquelavi2000-hub.github.io/Mind-It/free-updates.html">
+              Updates gratuites <span aria-hidden="true">↗</span>
+            </a>
+            <a class="btn btn-secondary" href="https://jacquelavi2000-hub.github.io/Mind-It/update.html">
+              Premium Updates <span aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
