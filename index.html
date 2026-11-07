@@ -1101,6 +1101,7 @@
         <a href="#fonctionnalites">Fonctionnalités</a>
         <a href="#comparatif">Comparatif</a>
         <a href="#premium">Premium</a>
+        <a href="#activation">Activer une clé</a>
         <a href="#premium-updates">Mises à jour</a>
         <a href="#faq">FAQ</a>
         <a class="nav-download" href="#telecharger">Télécharger gratuitement <span aria-hidden="true">↗</span></a>
@@ -1119,7 +1120,7 @@
             Mind-It est un espace de travail pour Windows, conçu pour donner forme à tes idées.
           </p>
           <div class="actions" id="telecharger">
-            <a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
+            <a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.1/Mind-It-FP.Setup.2.1.0.exe">
               Télécharger gratuitement <span aria-hidden="true">↓</span>
             </a>
             <a class="btn btn-secondary" href="#premium">
@@ -1385,8 +1386,45 @@
               <li><span class="plan-check" aria-hidden="true">✓</span>Licence, téléchargement Premium et mises à jour avec une licence valide</li>
             </ul>
           </article>
+
+          <article class="price-card" style="border:2px solid #294735;background:#f4f1e8">
+            <div class="plan-label">Tout-en-un</div>
+            <h3>Mind-It Platinum</h3>
+            <p class="plan-description">Toutes les fonctionnalités Mind-It, y compris les outils avancés et l'IA locale, avec une licence Platinum active.</p>
+            <div class="price-note">5.99 CHF / mois · abonnement résiliable</div>
+            <button class="btn btn-primary" id="platinumCheckoutCardButton" type="button">Choisir Platinum</button>
+            <ul class="plan-list">
+              <li><span class="plan-check" aria-hidden="true">✓</span>Toutes les fonctions Premium</li>
+              <li><span class="plan-check" aria-hidden="true">✓</span>Fonctionnalités Platinum</li>
+              <li><span class="plan-check" aria-hidden="true">✓</span>IA locale et mises à jour Platinum</li>
+              <li><span class="plan-check" aria-hidden="true">✓</span>Activation par clé Platinum</li>
+            </ul>
+          </article>
         </div>
         <p class="price-footnote">Le prix, la durée et les conditions de l'offre sont ceux présentés sur la page de paiement avant confirmation. Aucun achat n'est déclenché sans validation sur cette page.</p>
+      </div>
+    </section>
+
+    <section class="section" id="activation">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-kicker">Compte et licence</div>
+          <h2>Activer une clé Mind-It.</h2>
+          <p>Vérifie ta clé Premium ou Platinum auprès du serveur Mind-It. La validation sur le site ne remplace pas l'activation dans l'application.</p>
+        </div>
+        <div class="updates-card" style="display:block;max-width:680px;margin:auto">
+          <form id="licenseActivationForm" style="display:grid;gap:14px">
+            <label for="licenseTier">Type de licence</label>
+            <select id="licenseTier" required style="padding:14px;border:1px solid #cbd5cb;border-radius:10px;background:white;color:#20372e">
+              <option value="premium">Mind-It Premium</option>
+              <option value="platinum">Mind-It Platinum</option>
+            </select>
+            <label for="licenseKeyInput">Clé de licence</label>
+            <input id="licenseKeyInput" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="MINDIT-XXXX-XXXX-…" required style="padding:14px;border:1px solid #cbd5cb;border-radius:10px;background:white;color:#20372e">
+            <button class="btn btn-primary" id="licenseValidateButton" type="submit">Vérifier ma clé</button>
+            <p id="licenseActivationStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -1405,6 +1443,9 @@
             <a class="btn btn-secondary" href="https://jacquelavi2000-hub.github.io/Mind-It/update.html">
               Premium Updates <span aria-hidden="true">↗</span>
             </a>
+            <a class="btn btn-secondary" href="platinum-updates.html">Platinum Updates</a>
+            <button class="btn btn-primary" id="platinumCheckoutButton" type="button">S'abonner à Platinum — 5.99 CHF/mois</button>
+            <p id="platinumCheckoutStatus" role="status" aria-live="polite"></p>
           </div>
         </div>
       </div>
@@ -1575,6 +1616,50 @@
 
     buyButtons.forEach((button) => {
       button.addEventListener("click", startPremiumCheckout);
+    });
+    const activationForm = document.getElementById("licenseActivationForm");
+    activationForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = document.getElementById("licenseValidateButton");
+      const status = document.getElementById("licenseActivationStatus");
+      const tier = document.getElementById("licenseTier").value;
+      const key = document.getElementById("licenseKeyInput").value.trim().toUpperCase();
+      button.disabled = true;
+      status.textContent = "Vérification sécurisée de la licence…";
+      try {
+        const endpoint = tier === "platinum" ? "/api/platinum/validate-license" : "/api/license/validate";
+        const response = await fetch("https://mind-it-server.onrender.com" + endpoint, {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ license_key: key })
+        });
+        const data = await response.json();
+        if (!response.ok || data.valid !== true || data.tier !== tier) throw new Error(data.error || "Cette clé n'est pas valide pour cette version.");
+        status.textContent = "Licence " + (tier === "platinum" ? "Platinum" : "Premium") + " valide. Tu peux maintenant l'activer dans l'application Mind-It.";
+      } catch (error) {
+        status.textContent = error.message || "Impossible de vérifier la clé. Réessaie plus tard.";
+      } finally { button.disabled = false; }
+    });
+
+    const platinumButton = document.getElementById("platinumCheckoutButton");
+    const platinumStatus = document.getElementById("platinumCheckoutStatus");
+    document.getElementById("platinumCheckoutCardButton")?.addEventListener("click", () => platinumButton?.click());
+    platinumButton?.addEventListener("click", async () => {
+      platinumButton.disabled = true;
+      platinumButton.textContent = "Préparation du paiement…";
+      if (platinumStatus) platinumStatus.textContent = "Connexion sécurisée à Stripe…";
+      try {
+        const response = await fetch("https://mind-it-server.onrender.com/api/platinum/create-checkout-session", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({})
+        });
+        const data = await response.json();
+        if (!response.ok || typeof data.url !== "string") throw new Error(data.error || "Paiement Platinum indisponible.");
+        const checkoutUrl = new URL(data.url);
+        if (checkoutUrl.protocol !== "https:" || !checkoutUrl.hostname.endsWith("stripe.com")) throw new Error("Lien Stripe invalide.");
+        window.location.assign(checkoutUrl.href);
+      } catch (error) {
+        if (platinumStatus) platinumStatus.textContent = error.message || "Impossible de démarrer le paiement.";
+        platinumButton.disabled = false;
+        platinumButton.textContent = "Réessayer — 5.99 CHF/mois";
+      }
     });
   </script>
 </body>
