@@ -504,8 +504,8 @@
     }
 
     .comparison-wrap {
-      max-width: 900px;
-      overflow: hidden;
+      max-width: 1100px;
+      overflow-x: auto;
       margin-inline: auto;
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -515,6 +515,7 @@
 
     .comparison-table {
       width: 100%;
+      min-width: 760px;
       border-collapse: collapse;
       text-align: left;
     }
@@ -536,21 +537,18 @@
       text-transform: uppercase;
     }
 
-    .comparison-table th:first-child { width: 56%; }
+    .comparison-table th:first-child { width: 40%; }
 
-    .comparison-table th:nth-child(2),
-    .comparison-table td:nth-child(2),
-    .comparison-table th:nth-child(3),
-    .comparison-table td:nth-child(3) {
-      width: 22%;
+    .comparison-table th:nth-child(n+2),
+    .comparison-table td:nth-child(n+2) {
+      width: 20%;
       text-align: center;
     }
 
     .comparison-table .premium-column { background: #f0f4ed; }
-
-    .comparison-table thead .premium-column {
-      color: var(--forest);
-    }
+    .comparison-table .platinum-column { background: #e8eee6; }
+    .comparison-table thead .premium-column,
+    .comparison-table thead .platinum-column { color: var(--forest); }
 
     .comparison-table tbody tr:last-child th,
     .comparison-table tbody tr:last-child td { border-bottom: 0; }
@@ -659,8 +657,8 @@
 
     .pricing-grid {
       display: grid;
-      max-width: 870px;
-      grid-template-columns: 1fr 1fr;
+      max-width: 1180px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       align-items: stretch;
       gap: 18px;
       margin-inline: auto;
@@ -690,6 +688,8 @@
     }
 
     .premium .plan-label { color: #d4dfd5; }
+    .platinum .plan-label { color: var(--forest); }
+    .platinum .plan-description { color: var(--muted); }
 
     .price-card h3 {
       margin-bottom: 9px;
@@ -727,6 +727,7 @@
       background: rgba(255, 255, 255, .08);
       color: white;
     }
+    .platinum .price-note { border-color: #d8e1d4; background: #edf2e9; }
 
     .price-card .btn { width: 100%; }
 
@@ -769,6 +770,15 @@
     .premium .plan-check {
       background: rgba(255, 255, 255, .14);
       color: white;
+    }
+    @media (max-width: 900px) {
+      .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .price-card.platinum { grid-column: 1 / -1; }
+    }
+    @media (max-width: 620px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+      .price-card.platinum { grid-column: auto; }
+      .price-card { padding: 24px; }
     }
 
     #paymentStatus {
@@ -1214,6 +1224,7 @@
                 <th scope="col">Fonctionnalité</th>
                 <th scope="col">Gratuit</th>
                 <th scope="col" class="premium-column">Premium</th>
+                <th scope="col" class="platinum-column">Platinum</th>
               </tr>
             </thead>
             <tbody>
@@ -1221,74 +1232,93 @@
                 <th scope="row">Assistant de fabrication</th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
-              <tr class="group-row"><th scope="rowgroup" colspan="3">Nouveautés disponibles gratuitement</th></tr>
+              <tr class="group-row"><th scope="rowgroup" colspan="4">Nouveautés disponibles gratuitement</th></tr>
               <tr>
                 <th scope="row">Zoom <span class="new-feature">✦ Nouveauté</span></th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Minimap <span class="new-feature">✦ Nouveauté</span></th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Export de maps <span class="new-feature">✦ Nouveauté</span></th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Import de maps <span class="new-feature">✦ Nouveauté</span></th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Lignes droites <span class="new-feature">✦ Nouveauté</span></th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Mode sombre <span class="new-feature">✦ Nouveauté</span></th>
                 <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
-              <tr class="group-row"><th scope="rowgroup" colspan="3">Fonctionnalités réservées à Premium</th></tr>
+              <tr class="group-row"><th scope="rowgroup" colspan="4">Fonctionnalités Premium (incluses dans Platinum)</th></tr>
               <tr>
                 <th scope="row">Blocs illimités</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Projets illimités</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Maps illimitées</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Taille des maps illimitée</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Personnalisation complète des blocs</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Personnalisation des touches</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
               <tr>
                 <th scope="row">Options illimitées</th>
                 <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
                 <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
+                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
               </tr>
+            
+              <tr class="group-row"><th scope="rowgroup" colspan="4">Fonctionnalités exclusives à Platinum</th></tr>
+              <tr><th scope="row">IA locale intégrée (sans cloud)</th><td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td></tr>
+              <tr><th scope="row">Accès aux mises à jour Platinum</th><td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td></tr>
+              <tr><th scope="row">Licence et accès Platinum</th><td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -1387,12 +1417,13 @@
             </ul>
           </article>
 
-          <article class="price-card" style="border:2px solid #294735;background:#f4f1e8">
+          <article class="price-card platinum">
             <div class="plan-label">Tout-en-un</div>
             <h3>Mind-It Platinum</h3>
             <p class="plan-description">Toutes les fonctionnalités Mind-It, y compris les outils avancés et l'IA locale, avec une licence Platinum active.</p>
             <div class="price-note">5.99 CHF / mois · abonnement résiliable</div>
-            <button class="btn btn-primary" id="platinumCheckoutCardButton" type="button">Choisir Platinum</button>
+            <button class="btn btn-primary" id="platinumCheckoutCardButton" type="button" aria-describedby="platinumCheckoutCardStatus">Choisir Platinum</button>
+            <p id="platinumCheckoutCardStatus" role="status" aria-live="polite"></p>
             <ul class="plan-list">
               <li><span class="plan-check" aria-hidden="true">✓</span>Toutes les fonctions Premium</li>
               <li><span class="plan-check" aria-hidden="true">✓</span>Fonctionnalités Platinum</li>
@@ -1444,8 +1475,6 @@
               Premium Updates <span aria-hidden="true">↗</span>
             </a>
             <a class="btn btn-secondary" href="platinum-updates.html">Platinum Updates</a>
-            <button class="btn btn-primary" id="platinumCheckoutButton" type="button">S'abonner à Platinum — 5.99 CHF/mois</button>
-            <p id="platinumCheckoutStatus" role="status" aria-live="polite"></p>
           </div>
         </div>
       </div>
@@ -1639,9 +1668,8 @@
       } finally { button.disabled = false; }
     });
 
-    const platinumButton = document.getElementById("platinumCheckoutButton");
-    const platinumStatus = document.getElementById("platinumCheckoutStatus");
-    document.getElementById("platinumCheckoutCardButton")?.addEventListener("click", () => platinumButton?.click());
+    const platinumButton = document.getElementById("platinumCheckoutCardButton");
+    const platinumStatus = document.getElementById("platinumCheckoutCardStatus");
     platinumButton?.addEventListener("click", async () => {
       platinumButton.disabled = true;
       platinumButton.textContent = "Préparation du paiement…";
