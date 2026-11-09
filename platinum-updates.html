@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f7f5ef">
-  <meta name="description" content="Découvre les dernières mises à jour de Mind-It Platinum et télécharge-les avec ta licence.">
-  <meta name="robots" content="noindex">
+  <meta name="description" content="Découvre toutes les mises à jour gratuites de Mind-It et télécharge-les directement depuis GitHub, sans clé de licence.">
+  <meta name="robots" content="index,follow">
   <title>Platinum Updates — Mind-It</title>
   <style>
     :root {
@@ -621,6 +621,34 @@
         transition-duration: .01ms !important;
       }
     }
+  
+    .download-panel.asset-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 10px;
+      padding: 0 clamp(22px, 4vw, 34px) 25px;
+    }
+
+    .asset-download {
+      flex: 1 1 220px;
+      min-width: 0;
+      max-width: 100%;
+      justify-content: flex-start;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      text-align: left;
+    }
+
+    .asset-download-label { min-width: 0; overflow-wrap: anywhere; }
+    .asset-download small { display: block; margin-top: 2px; font-size: 9px; font-weight: 550; opacity: .78; }
+    .release-link { flex: 0 1 auto; }
+
+  
+    .platinum-pill { background: #e8eee6; color: #294735; border-color: #d3dfd0; }
+    .download-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: end; }
+    .download-panel .download-status { grid-column: 1 / -1; margin: 0; }
+    @media (max-width: 620px) { .download-panel { grid-template-columns: 1fr; } .download-panel .btn { width: 100%; } }
   </style>
 </head>
 <body>
@@ -637,16 +665,16 @@
   <main class="container main">
     <section class="hero" aria-labelledby="pageTitle">
       <div>
-        <div class="eyebrow">L’actualité de ton espace de travail</div>
+        <div class="eyebrow">Nouveautés de ton espace Platinum</div>
         <h1 id="pageTitle">Platinum Updates</h1>
-        <p class="hero-copy">Retrouve les dernières nouveautés de Mind-It. Consulte les notes de version et télécharge une mise à jour avec ta clé de licence Platinum.</p>
+        <p class="hero-copy">Retrouve les dernières mises à jour de Mind-It Platinum. Consulte les notes de version, puis télécharge la version disponible avec une licence Platinum active.</p>
       </div>
-      <div class="platinum-pill">
+      <div class="premium-pill">
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="m10 2 2 5.3 5.5.2-4.3 3.3 1.5 5.2L10 13l-4.7 3 1.5-5.2L2.5 7.5l5.5-.2L10 2Z"
                 stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
         </svg>
-        Espace Platinum
+        Espace Platinum · Licence active requise
       </div>
     </section>
 
@@ -705,7 +733,7 @@
     </section>
 
     <p class="notice">
-      <strong>À propos de l’accès :</strong> les notes et informations renvoyées par le service sont affichées ici. La clé Platinum est vérifiée par le serveur au moment du téléchargement ; garde-la confidentielle.
+      <strong>Accès Platinum :</strong> les notes de version sont fournies par Mind-It Server. Le téléchargement est préparé uniquement après vérification de ta licence Platinum active. Le lien de téléchargement est temporaire et sécurisé.
     </p>
   </main>
 
@@ -747,7 +775,7 @@
 
   <script>
     const API = "https://mind-it-server.onrender.com";
-    const STORAGE_KEY = "mind-it-updates-viewed-versions";
+    const STORAGE_KEY = "mind-it-platinum-updates-viewed-versions";
     const updateList = document.getElementById("updateList");
     const emptyState = document.getElementById("emptyState");
     const emptyTitle = document.getElementById("emptyTitle");
@@ -759,12 +787,14 @@
     const historyHint = document.getElementById("historyHint");
     const guideDialog = document.getElementById("guideDialog");
     const guideStepContent = document.getElementById("guideStepContent");
+    const guideTitle = document.getElementById("guideTitle");
+    const guideDescription = document.getElementById("guideDescription");
     const guideSteps = [
-      { title: "Découvrir", body: update => update.release_notes },
-      { title: "Comprendre", body: update => `Voici le résumé publié pour la version ${update.version}. Les notes de version ci-dessus sont la source des informations disponibles sur cette nouveauté.` },
-      { title: "Configurer", body: update => update.release_notes ? "Vérifie les notes de version pour savoir si une configuration est mentionnée. Aucune procédure de configuration distincte n’est fournie par le service." : "Aucune instruction de configuration n’est fournie dans les données de cette publication." },
-      { title: "Utiliser", body: update => `Pour profiter de cette version, télécharge-la avec ta licence, puis ouvre Mind-It sur ton ordinateur. Les étapes propres à la nouveauté ne sont pas détaillées au-delà des notes publiées :\n\n${update.release_notes}` },
-      { title: "Terminé", body: update => `Tu as consulté les notes de la version ${update.version}. Utilise le bouton ci-dessous pour revenir à la liste des mises à jour.` }
+      { title: "Découvrir", body: update => update.release_notes || "Aucune note de version n’a été publiée pour cette version." },
+      { title: "Comprendre", body: update => `Cette page présente la version Platinum ${update.version} publiée par Mind-It.` },
+      { title: "Télécharger", body: () => "Saisis ta clé Platinum dans la carte de mise à jour. Le serveur vérifiera que la licence est valide et que l’accès est actif avant de préparer le téléchargement." },
+      { title: "Installer", body: () => "Une fois le fichier téléchargé, ouvre-le sur ton ordinateur et suis les instructions affichées par l’installateur." },
+      { title: "Terminé", body: update => `Tu as consulté la version ${update.version}. Tu peux revenir à la carte pour demander le téléchargement sécurisé.` }
     ];
     let updates = [];
     let selectedUpdate = null;
@@ -776,28 +806,19 @@
       try {
         const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
         return Array.isArray(value) ? value.filter(item => typeof item === "string") : [];
-      } catch (error) {
-        console.warn("L’état des mises à jour consultées n’a pas pu être lu.", error);
-        return [];
-      }
+      } catch { return []; }
     }
 
     function markViewed(update) {
       const viewed = new Set(readViewedVersions());
       viewed.add(String(update.version));
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([...viewed]));
-      } catch (error) {
-        console.warn("L’état de consultation ne peut pas être conservé dans ce navigateur.", error);
-      }
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...viewed])); } catch {}
     }
 
     function formatDate(value) {
       const date = new Date(value);
       if (!Number.isFinite(date.getTime())) return "Date non précisée";
-      return new Intl.DateTimeFormat("fr-CH", {
-        day: "numeric", month: "long", year: "numeric"
-      }).format(date);
+      return new Intl.DateTimeFormat("fr-CH", { day: "numeric", month: "long", year: "numeric" }).format(date);
     }
 
     function createIcon(path, viewBox = "0 0 20 20") {
@@ -831,43 +852,32 @@
       const version = versionFilter.value;
       const dateGroup = dateFilter.value;
       const viewed = new Set(readViewedVersions());
-
       const filtered = updates.filter(update => {
-        const searchable = `${update.version} ${update.release_notes}`.toLocaleLowerCase("fr");
+        const searchable = `Mind-It Platinum ${update.version} ${update.release_notes || ""}`.toLocaleLowerCase("fr");
         return (!query || searchable.includes(query)) &&
           (!version || String(update.version) === version) &&
           (dateGroup === "all" || getDateGroup(update) === dateGroup);
       });
 
       resultsCount.innerHTML = `<strong>${filtered.length}</strong> mise${filtered.length === 1 ? "" : "s"} à jour affichée${filtered.length === 1 ? "" : "s"}`;
-
       if (!filtered.length) {
         emptyState.hidden = false;
-        if (!updates.length) {
-          emptyTitle.textContent = "Aucune mise à jour disponible";
-          emptyMessage.textContent = "La dernière version apparaîtra ici dès sa publication.";
-        } else {
-          emptyTitle.textContent = "Aucun résultat";
-          emptyMessage.textContent = "Essaie une autre recherche ou modifie les filtres.";
-        }
+        emptyTitle.textContent = updates.length ? "Aucun résultat" : "Aucune mise à jour Platinum disponible";
+        emptyMessage.textContent = updates.length ? "Essaie une autre recherche ou modifie les filtres." : "La prochaine version Platinum apparaîtra ici dès sa publication.";
         return;
       }
 
       for (const update of filtered) {
         const card = document.createElement("article");
         card.className = "update-card";
-
         const inner = document.createElement("div");
         inner.className = "update-card-inner";
-
         const content = document.createElement("div");
         const heading = document.createElement("div");
         heading.className = "update-heading";
-
         const versionBadge = document.createElement("span");
         versionBadge.className = "version-badge";
         versionBadge.textContent = `Version ${update.version}`;
-
         const stateBadge = document.createElement("span");
         const hasViewed = viewed.has(String(update.version));
         stateBadge.className = `state-badge${hasViewed ? " viewed" : ""}`;
@@ -876,8 +886,7 @@
 
         const title = document.createElement("h2");
         title.className = "update-title";
-        title.textContent = `Mind-It ${update.version}`;
-
+        title.textContent = `Mind-It Platinum ${update.version}`;
         const date = document.createElement("div");
         date.className = "update-date";
         date.append(createIcon("M5 4v3m10-3v3M3.5 8h13M5 5.5h10A1.5 1.5 0 0 1 16.5 7v9A1.5 1.5 0 0 1 15 17.5H5A1.5 1.5 0 0 1 3.5 16V7A1.5 1.5 0 0 1 5 5.5Z"));
@@ -886,11 +895,9 @@
         if (Number.isFinite(parsedDate.getTime())) dateText.dateTime = parsedDate.toISOString();
         dateText.textContent = formatDate(update.created_at);
         date.append(dateText);
-
         const summary = document.createElement("p");
         summary.className = "update-summary";
         summary.textContent = update.release_notes || "Aucune note de version n’a été fournie.";
-
         content.append(heading, title, date, summary);
 
         const actions = document.createElement("div");
@@ -902,8 +909,8 @@
         detailsButton.append(createIcon("M4 10h11m-4-4 4 4-4 4", "0 0 20 20"));
         detailsButton.addEventListener("click", () => openGuide(update));
         actions.append(detailsButton);
-
         inner.append(content, actions);
+
         const downloadForm = document.createElement("form");
         downloadForm.className = "download-panel";
         downloadForm.id = "downloadForm";
@@ -929,14 +936,12 @@
         downloadButton.type = "submit";
         downloadButton.append(document.createTextNode("Télécharger la mise à jour "));
         downloadButton.append(createIcon("M10 3v10m-4-4 4 4 4-4M4 16h12"));
-
         const downloadStatus = document.createElement("p");
         downloadStatus.className = "download-status";
         downloadStatus.id = "downloadStatus";
         downloadStatus.setAttribute("role", "status");
         downloadStatus.setAttribute("aria-live", "polite");
         downloadStatus.setAttribute("aria-atomic", "true");
-
         downloadForm.append(licenseField, downloadButton, downloadStatus);
         card.append(inner, downloadForm);
         updateList.append(card);
@@ -960,45 +965,31 @@
           cache: "no-store"
         });
         const data = await response.json();
-
         if (response.status === 404) {
-          showEmptyMessage("Aucune mise à jour disponible", "La dernière version apparaîtra ici dès sa publication.");
+          showEmptyMessage("Aucune mise à jour Platinum disponible", "La prochaine version Platinum apparaîtra ici dès sa publication.");
           return;
         }
-
-        if (!response.ok) {
-          throw new Error(data.error || "Impossible de charger les mises à jour.");
-        }
-
-        if (typeof data.version !== "string" || !data.version.trim()) {
-          throw new Error("Le serveur a retourné une mise à jour sans version valide.");
-        }
+        if (!response.ok) throw new Error(data.error || "Impossible de charger les mises à jour.");
+        if (typeof data.version !== "string" || !data.version.trim()) throw new Error("Le serveur a retourné une version invalide.");
 
         const requestedVersion = new URLSearchParams(window.location.search).get("version");
         requestedVersionMismatch = Boolean(requestedVersion && requestedVersion !== data.version);
-
         if (requestedVersionMismatch) {
-          showEmptyMessage(
-            `Version ${requestedVersion} indisponible`,
-            `Cette page permet de télécharger la dernière version publiée (${data.version}). Le lien demandé ne correspond pas à la version actuelle.`
-          );
+          showEmptyMessage(`Version ${requestedVersion} indisponible`, `La dernière version Platinum publiée est ${data.version}.`);
           return;
         }
 
         selectedVersion = data.version;
-        const update = {
+        updates = [{
           version: data.version,
           release_notes: typeof data.release_notes === "string" ? data.release_notes.trim() : "",
           created_at: typeof data.created_at === "string" ? data.created_at : ""
-        };
-        updates = [update];
-
+        }];
         const option = document.createElement("option");
-        option.value = update.version;
-        option.textContent = `Version ${update.version}`;
+        option.value = data.version;
+        option.textContent = `Version ${data.version}`;
         versionFilter.append(option);
-
-        historyHint.textContent = "Historique fourni par le serveur : dernière version publiée";
+        historyHint.textContent = "Dernière version Platinum publiée · Téléchargement sécurisé par licence";
         renderUpdates();
       } catch (error) {
         showEmptyMessage("Mises à jour indisponibles", `${error.message} Vérifie ta connexion et réessaie plus tard.`);
@@ -1008,32 +999,22 @@
     function updateGuide() {
       if (!selectedUpdate) return;
       const step = guideSteps[currentGuideStep];
-      document.getElementById("guideTitle").textContent = `Mind-It ${selectedUpdate.version}`;
-      document.getElementById("guideDescription").textContent =
-        `Publié le ${formatDate(selectedUpdate.created_at)}`;
-      document.getElementById("guideStepCount").textContent =
-        `Étape ${currentGuideStep + 1} sur ${guideSteps.length}`;
-      document.getElementById("guideStepPercent").textContent =
-        `${Math.round(((currentGuideStep + 1) / guideSteps.length) * 100)} %`;
+      guideTitle.textContent = `Mind-It Platinum ${selectedUpdate.version}`;
+      guideDescription.textContent = `Publié le ${formatDate(selectedUpdate.created_at)}`;
+      document.getElementById("guideStepCount").textContent = `Étape ${currentGuideStep + 1} sur ${guideSteps.length}`;
+      document.getElementById("guideStepPercent").textContent = `${Math.round(((currentGuideStep + 1) / guideSteps.length) * 100)} %`;
       document.getElementById("guideProgress").setAttribute("aria-valuenow", String(currentGuideStep + 1));
-      document.getElementById("guideProgressFill").style.width =
-        `${((currentGuideStep + 1) / guideSteps.length) * 100}%`;
-
+      document.getElementById("guideProgressFill").style.width = `${((currentGuideStep + 1) / guideSteps.length) * 100}%`;
       const number = document.createElement("span");
       number.className = "guide-step-number";
       number.textContent = String(currentGuideStep + 1);
       const title = document.createElement("h3");
       title.textContent = step.title;
       const body = document.createElement("p");
-      body.textContent = step.body(selectedUpdate) || "Aucune note de version n’a été fournie.";
+      body.textContent = step.body(selectedUpdate);
       guideStepContent.replaceChildren(number, title, body);
-
-      const previous = document.getElementById("previousStep");
-      const next = document.getElementById("nextStep");
-      previous.disabled = currentGuideStep === 0;
-      next.textContent = currentGuideStep === guideSteps.length - 1
-        ? "Retour aux mises à jour"
-        : "Suivant →";
+      document.getElementById("previousStep").disabled = currentGuideStep === 0;
+      document.getElementById("nextStep").textContent = currentGuideStep === guideSteps.length - 1 ? "Retour aux mises à jour" : "Suivant →";
     }
 
     function openGuide(update) {
@@ -1046,24 +1027,12 @@
     }
 
     document.getElementById("closeGuide").addEventListener("click", () => guideDialog.close());
-
-    guideDialog.addEventListener("click", event => {
-      if (event.target === guideDialog) guideDialog.close();
-    });
-
+    guideDialog.addEventListener("click", event => { if (event.target === guideDialog) guideDialog.close(); });
     document.getElementById("previousStep").addEventListener("click", () => {
-      if (currentGuideStep > 0) {
-        currentGuideStep -= 1;
-        updateGuide();
-      }
+      if (currentGuideStep > 0) { currentGuideStep -= 1; updateGuide(); }
     });
-
     document.getElementById("nextStep").addEventListener("click", () => {
-      if (currentGuideStep === guideSteps.length - 1) {
-        guideDialog.close();
-        selectedUpdate = null;
-        return;
-      }
+      if (currentGuideStep === guideSteps.length - 1) { guideDialog.close(); selectedUpdate = null; return; }
       currentGuideStep += 1;
       updateGuide();
     });
@@ -1075,66 +1044,41 @@
     function attachDownloadForm() {
       const form = document.getElementById("downloadForm");
       if (!form) return;
-
       form.addEventListener("submit", async event => {
         event.preventDefault();
         const input = document.getElementById("licenseKey");
         const button = document.getElementById("downloadButton");
         const status = document.getElementById("downloadStatus");
         const licenseKey = input.value.trim();
-
         if (!selectedVersion || requestedVersionMismatch) {
           status.dataset.state = "error";
           status.textContent = "Aucune version disponible pour le téléchargement.";
           return;
         }
-
         if (!licenseKey) {
           status.dataset.state = "error";
           status.textContent = "Saisis ta clé de licence Platinum pour continuer.";
           input.focus();
           return;
         }
-
         button.disabled = true;
         button.setAttribute("aria-busy", "true");
         button.textContent = "Vérification de la licence…";
         status.dataset.state = "loading";
-        status.textContent = "Le serveur vérifie ta licence et prépare un lien temporaire.";
-
+        status.textContent = "Le serveur vérifie ta licence Platinum et prépare un lien temporaire.";
         try {
-          const validationResponse = await fetch(`${API}/api/platinum/validate-license`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify({ license_key: licenseKey })
-          });
-          const validationData = await validationResponse.json();
-          if (!validationResponse.ok || validationData.valid !== true || validationData.tier !== "platinum") {
-            throw new Error(validationData.error || "Cette clé Platinum n'est pas valide ou l'abonnement n'est plus actif.");
-          }
-
           const response = await fetch(`${API}/api/platinum/update-download`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Accept: "application/json" },
             body: JSON.stringify({ license_key: licenseKey, version: selectedVersion })
           });
           const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.error || "Le téléchargement est indisponible.");
-          }
-
-          if (typeof data.download_url !== "string") {
-            throw new Error("Le serveur n’a pas fourni de lien de téléchargement.");
-          }
-
+          if (!response.ok) throw new Error(data.error || "Le téléchargement est indisponible.");
+          if (typeof data.download_url !== "string") throw new Error("Le serveur n’a pas fourni de lien de téléchargement.");
           const downloadUrl = new URL(data.download_url);
-          if (downloadUrl.protocol !== "https:") {
-            throw new Error("Le serveur a fourni un lien de téléchargement non sécurisé.");
-          }
-
+          if (downloadUrl.protocol !== "https:") throw new Error("Le serveur a fourni un lien de téléchargement non sécurisé.");
           status.dataset.state = "success";
-          status.textContent = "Licence validée. Ton lien sécurisé est prêt ; le téléchargement va démarrer.";
+          status.textContent = "Licence Platinum validée. Le téléchargement va démarrer.";
           window.location.assign(downloadUrl.href);
         } catch (error) {
           status.dataset.state = "error";
