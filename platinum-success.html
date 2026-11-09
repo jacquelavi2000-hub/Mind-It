@@ -1,4 +1,244 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bienvenue sur Platinum — Mind-It</title><style>:root{--cream:#f4f1e8;--green:#294735;--ink:#20372e;--muted:#66736a}*{box-sizing:border-box}body{margin:0;padding:24px;background:var(--cream);color:var(--ink);font:16px/1.6 system-ui,sans-serif}.card{max-width:650px;margin:7vh auto;padding:clamp(24px,5vw,44px);background:#fffefa;border:1px solid #e2e3d9;border-radius:22px}h1{color:var(--green)}.muted{color:var(--muted)}.key{display:block;padding:14px;background:#f0f2eb;border-radius:10px;overflow-wrap:anywhere;font:600 15px ui-monospace,monospace}button,a{display:inline-block;border:0;border-radius:10px;padding:12px 17px;background:var(--green);color:white;font:600 15px system-ui;text-decoration:none;cursor:pointer}label{display:flex;gap:10px;margin:18px 0}.hidden{display:none}</style></head><body><main class="card"><b>Mind-It Platinum</b><h1>Merci pour ton abonnement !</h1><p id="status" class="muted">Vérification du paiement et préparation de ta licence…</p><section id="area" class="hidden"><h2>Ta licence Platinum</h2><code id="key" class="key"></code><p class="muted">Garde cette clé en lieu sûr. Elle sera demandée pour accéder aux mises à jour.</p><div id="consent"><h2>Recevoir les annonces par e-mail ?</h2><p>C'est facultatif et ton choix ne change rien à ton abonnement.</p><label><input type="checkbox" id="choice"><span>J'accepte de recevoir les annonces de mises à jour Mind-It. Je peux retirer mon consentement à tout moment.</span></label><button id="save">Enregistrer mon choix</button></div><p id="result" class="muted" aria-live="polite"></p><a id="updatesLink" class="hidden" href="platinum-updates.html">Accéder à Platinum Updates</a></section></main><script>
-const API="https://mind-it-server-sandbox.onrender.com",sid=new URLSearchParams(location.search).get("session_id"),status=document.getElementById("status");let key="";
-async function init(){if(!sid||!sid.startsWith("cs_")){status.textContent="Session de paiement absente ou invalide.";return;}for(let i=0;i<12;i++){try{const r=await fetch(`${API}/api/platinum/license?session_id=${encodeURIComponent(sid)}`),d=await r.json();if(r.status===202){status.textContent="Paiement confirmé, création de la licence…";await new Promise(x=>setTimeout(x,1500));continue;}if(!r.ok||!d.license_key)throw Error(d.error||"Vérification impossible.");key=d.license_key;document.getElementById("key").textContent=key;document.getElementById("area").classList.remove("hidden");status.textContent="Paiement vérifié. Ta licence est prête.";return;}catch(e){status.textContent=e.message;return;}}status.textContent="La licence prend plus de temps que prévu. Recharge cette page dans un instant.";}
-document.getElementById("save").addEventListener("click",async()=>{const b=document.getElementById("save"),m=document.getElementById("result");b.disabled=true;m.textContent="Enregistrement…";try{const r=await fetch(`${API}/api/platinum/communication-preferences/announcement-consent`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({license_key:key,consent:document.getElementById("choice").checked,consent_version:"mind-it-update-announcements-v2",source:"post-payment-checkout"})}),d=await r.json();if(!r.ok)throw Error(d.error||"Enregistrement impossible.");document.getElementById("consent").classList.add("hidden");m.textContent=d.consent?"Merci ! Ton consentement est enregistré.":"Ton refus est enregistré. Tu ne recevras pas ces annonces.";document.getElementById("updatesLink").classList.remove("hidden");}catch(e){m.textContent=e.message;b.disabled=false;}});init();</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1e8">
+  <title>Paiement confirmé — Mind-It Platinum</title>
+  <style>
+    :root {
+      --cream: #f4f1e8;
+      --green: #294735;
+      --ink: #20372e;
+      --muted: #66736a;
+      --line: #e2e3d9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      background: var(--cream);
+      color: var(--ink);
+      font: 16px/1.6 system-ui, sans-serif;
+    }
+    .card {
+      width: min(100%, 620px);
+      padding: clamp(24px, 5vw, 44px);
+      background: #fffefa;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 18px 55px #20372e12;
+    }
+    .brand { color: var(--green); font-weight: 800; letter-spacing: .02em; }
+    .success-icon {
+      display: grid; place-items: center; width: 64px; height: 64px;
+      margin: 26px 0 18px; border-radius: 50%; background: #e5eee5;
+      color: var(--green); font-size: 34px; font-weight: 800;
+    }
+    h1 { margin: 0; color: var(--green); font-size: clamp(28px, 5vw, 38px); }
+    h2 { margin: 0 0 10px; color: var(--green); font-size: 20px; }
+    p { margin: 10px 0; }
+    .muted { color: var(--muted); }
+    .panel { margin-top: 26px; padding: 22px; border-radius: 16px; background: #f0f2eb; }
+    .key {
+      display: block; margin: 14px 0; padding: 15px; border: 1px solid #dce2d8;
+      border-radius: 10px; background: white; overflow-wrap: anywhere;
+      font: 650 15px/1.5 ui-monospace, monospace; user-select: all;
+    }
+    button, .button {
+      display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+      width: 100%; min-height: 48px; padding: 12px 18px; border: 0;
+      border-radius: 11px; background: var(--green); color: white;
+      font: 650 15px system-ui, sans-serif; text-decoration: none; cursor: pointer;
+    }
+    button.secondary, .button.secondary {
+      margin-top: 10px; background: white; color: var(--green);
+      border: 1px solid #cbd5c9;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    .hidden { display: none !important; }
+    .status { min-height: 26px; margin-top: 14px; }
+    .consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; font-size: 14px; }
+    .consent input { margin-top: 5px; }
+    footer { margin-top: 24px; text-align: center; font-size: 13px; }
+    a.text-link { color: var(--green); }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand">MIND-IT / PLATINUM</div>
+    <div class="success-icon" aria-hidden="true">✓</div>
+    <h1>Merci pour ton achat !</h1>
+    <p class="muted">
+      Ton paiement a été transmis. Nous vérifions maintenant la confirmation
+      de Stripe et préparons ta licence Platinum.
+    </p>
+    <p id="status" class="status muted" role="status" aria-live="polite">
+      Vérification du paiement en cours…
+    </p>
+
+    <section id="licenseArea" class="panel hidden">
+      <h2>Ta licence Mind-It Platinum</h2>
+      <p class="muted">Voici ta clé personnelle. Garde-la précieusement.</p>
+      <code id="licenseKey" class="key"></code>
+      <button id="copyButton" type="button">Copier ma licence</button>
+      <a class="button secondary" href="platinum-updates.html">
+        Télécharger Mind-It Platinum
+      </a>
+      <p class="muted">
+        Le centre de téléchargement te permettra de vérifier ta licence
+        et de récupérer la dernière version disponible.
+      </p>
+
+      <div id="consentArea">
+        <label class="consent">
+          <input type="checkbox" id="consent">
+          <span>
+            J'accepte de recevoir les annonces de mises à jour Mind-It.
+            Je peux retirer mon consentement à tout moment.
+          </span>
+        </label>
+        <button id="saveConsent" class="secondary" type="button">
+          Enregistrer mon choix
+        </button>
+        <p id="consentResult" class="muted" role="status"></p>
+      </div>
+    </section>
+
+    <section id="pendingArea" class="panel hidden">
+      <h2>Encore un petit instant…</h2>
+      <p class="muted">
+        Stripe a bien été contacté, mais la licence n'est pas encore prête.
+        Cette page réessaie automatiquement.
+      </p>
+      <button id="retryButton" type="button" class="secondary">
+        Réessayer maintenant
+      </button>
+    </section>
+
+    <footer><a class="text-link" href="index.html">Retourner sur Mind-It</a></footer>
+  </main>
+
+  <script>
+    const API = "https://mind-it-server.onrender.com";
+    const params = new URLSearchParams(location.search);
+    const sessionId = params.get("session_id");
+
+    const statusEl = document.getElementById("status");
+    const licenseArea = document.getElementById("licenseArea");
+    const pendingArea = document.getElementById("pendingArea");
+    const licenseKeyEl = document.getElementById("licenseKey");
+    const retryButton = document.getElementById("retryButton");
+
+    let licenseKey = "";
+    let checking = false;
+    let attempts = 0;
+    const maxAttempts = 12;
+
+    function showPending(message) {
+      statusEl.textContent = message;
+      pendingArea.classList.remove("hidden");
+    }
+
+    async function verifyPayment() {
+      if (checking || licenseKey) return;
+      if (!sessionId || !sessionId.startsWith("cs_")) {
+        statusEl.textContent = "Session de paiement absente ou invalide.";
+        return;
+      }
+
+      checking = true;
+      retryButton.disabled = true;
+      statusEl.textContent = "Vérification du paiement et préparation de la licence…";
+
+      try {
+        const response = await fetch(
+          `${API}/api/platinum/license?session_id=${encodeURIComponent(sessionId)}`,
+          { headers: { "Accept": "application/json" } }
+        );
+        const data = await response.json();
+
+        if (response.status === 202) {
+          attempts++;
+          showPending("Paiement confirmé, création de la licence en cours…");
+          if (attempts < maxAttempts) setTimeout(verifyPayment, 2500);
+          else statusEl.textContent =
+            "La licence prend plus de temps que prévu. Tu peux réessayer.";
+          return;
+        }
+
+        if (!response.ok || !data.license_key) {
+          throw new Error(data.error || "Impossible de récupérer la licence.");
+        }
+
+        licenseKey = data.license_key;
+        licenseKeyEl.textContent = licenseKey;
+        pendingArea.classList.add("hidden");
+        licenseArea.classList.remove("hidden");
+        statusEl.textContent = "Paiement vérifié : ta licence Platinum est prête !";
+      } catch (error) {
+        statusEl.textContent = error.message || "Une erreur est survenue.";
+        pendingArea.classList.remove("hidden");
+      } finally {
+        checking = false;
+        retryButton.disabled = false;
+      }
+    }
+
+    document.getElementById("copyButton").addEventListener("click", async () => {
+      if (!licenseKey) return;
+      const button = document.getElementById("copyButton");
+      try {
+        await navigator.clipboard.writeText(licenseKey);
+        button.textContent = "Licence copiée !";
+      } catch {
+        button.textContent = "Sélectionne la clé pour la copier";
+      }
+    });
+
+    retryButton.addEventListener("click", () => {
+      attempts = 0;
+      verifyPayment();
+    });
+
+    document.getElementById("saveConsent").addEventListener("click", async () => {
+      if (!licenseKey) return;
+      const button = document.getElementById("saveConsent");
+      const result = document.getElementById("consentResult");
+      button.disabled = true;
+      result.textContent = "Enregistrement…";
+
+      try {
+        const response = await fetch(
+          `${API}/api/platinum/communications-preferences/announcement-consent`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              license_key: licenseKey,
+              consent: document.getElementById("consent").checked,
+              consent_version: "mind-it-update-announcements-v2",
+              source: "post-payment-checkout"
+            })
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Enregistrement impossible.");
+
+        document.getElementById("consentArea").classList.add("hidden");
+        result.textContent = data.consent
+          ? "Merci ! Ton consentement est enregistré."
+          : "Ton refus est enregistré. Tu ne recevras pas ces annonces.";
+      } catch (error) {
+        result.textContent = error.message;
+        button.disabled = false;
+      }
+    });
+
+    verifyPayment();
+  </script>
+</body>
+</html>
