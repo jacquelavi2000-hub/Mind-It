@@ -136,7 +136,7 @@ function formatBytes(bytes) {
   return gb >= 1 ? gb.toFixed(2) + " Go" : (bytes / (1024 ** 2)).toFixed(0) + " Mo";
 }
 function quantName(name) {
-  const m = name.match(/(?:^|[-_.])(IQ\d_[A-Z0-9_]+|Q\d_K_[A-Z]+|Q\d_[A-Z0-9]+|F16|BF16|F32)(?:[._-]|$)/i);
+  const m = name.match(/(?:^|[-_.])(IQ\d_[A-Z0-9_]+|Q\d_K_[A-Z0-9_]+|Q\d_[A-Z0-9]+|F16|BF16|F32)(?:[._-]|$)/i);
   return m ? m[1].toUpperCase() : "GGUF";
 }
 function parameterCount(name) {
@@ -166,11 +166,32 @@ async function mapLimit(items, limit, fn) {
 async function loadOfficialModels() {
   const catalog = document.getElementById("catalog");
   const status = document.getElementById("loadStatus");
-  catalog.innerHTML = '<div class="empty">Recherche des dépôts GGUF officiels de Qwen…</div>';
+  catalog.innerHTML = '<div class="empty">Chargement du catalogue officiel Qwen…</div>';
+  status.textContent = "Chargement du catalogue local…";
+
+  // Le catalogue local permet à la page de fonctionner même si l'API Hugging Face
+  // est momentanément lente, indisponible ou limitée en nombre de requêtes.
+  try {
+    const localResponse = await fetch("./ai-models.json", {cache:"no-cache"});
+    if (!localResponse.ok) throw new Error("Catalogue local introuvable (" + localResponse.status + ").");
+    const localData = await localResponse.json();
+    if (!localData || !Array.isArray(localData.models) || !localData.models.length) {
+      throw new Error("Le catalogue local est vide ou invalide.");
+    }
+    officialModels = localData.models;
+    status.textContent = "Catalogue Qwen disponible. Vérification des dernières versions en cours…";
+    renderCatalog();
+    recommend();
+  } catch (localError) {
+    status.textContent = "Catalogue local indisponible ; tentative de récupération en ligne…";
+  }
+
+  // Actualisation depuis l'organisation officielle Qwen sur Hugging Face.
   try {
     const response = await fetch("https://huggingface.co/api/models?author=Qwen&search=GGUF&sort=downloads&direction=-1&limit=100");
-    if (!response.ok) throw new Error("Le catalogue Hugging Face ne répond pas.");
+    if (!response.ok) throw new Error("L'API Hugging Face répond avec le statut " + response.status + ".");
     const repos = await response.json();
+    if (!Array.isArray(repos)) throw new Error("Réponse inattendue de Hugging Face.");
     const officialRepos = repos.filter(item => typeof item.id === "string" && item.id.toLowerCase().startsWith("qwen/"));
     const details = await mapLimit(officialRepos, 5, fetchRepo);
     const artifacts = [];
@@ -194,16 +215,25 @@ async function loadOfficialModels() {
         artifacts.push(group);
       }
     }
-    officialModels = artifacts.sort((a,b)=>(a.params-b.params)||(a.bytes-b.bytes));
-    if (!officialModels.length) throw new Error("Aucun fichier GGUF officiel n'a été retourné par le catalogue.");
-    status.textContent = "Catalogue chargé depuis l'organisation officielle Qwen. Les dépôts sans fichier GGUF ne sont pas affichés.";
-    renderCatalog();
-    recommend();
+    if (artifacts.length) {
+      officialModels = artifacts.sort((a,b)=>(a.params-b.params)||(a.bytes-b.bytes));
+      status.textContent = "Catalogue actualisé depuis l'organisation officielle Qwen sur Hugging Face.";
+      renderCatalog();
+      recommend();
+    } else if (!officialModels.length) {
+      throw new Error("Aucun fichier GGUF officiel n'a été retourné par le catalogue.");
+    } else {
+      status.textContent = "Catalogue local utilisé : aucun résultat récent n'a été reçu de Hugging Face.";
+    }
   } catch (error) {
-    catalog.innerHTML = '<div class="empty">Impossible de charger le catalogue : ' + escapeHtml(error.message) + '<br>Vérifie ta connexion puis actualise la page.</div>';
-    document.getElementById("count").textContent = "Indisponible";
-    document.getElementById("recName").textContent = "Catalogue indisponible";
-    document.getElementById("recText").textContent = "Le catalogue officiel n'a pas pu être récupéré.";
+    if (officialModels.length) {
+      status.textContent = "Catalogue de secours utilisé. Actualisation en ligne impossible pour le moment.";
+    } else {
+      catalog.innerHTML = '<div class="empty">Impossible de charger le catalogue : ' + escapeHtml(error.message) + '<br>Réessaie plus tard.</div>';
+      document.getElementById("count").textContent = "Indisponible";
+      document.getElementById("recName").textContent = "Catalogue indisponible";
+      document.getElementById("recText").textContent = "Le catalogue local et le catalogue en ligne sont indisponibles.";
+    }
   }
 }
 function escapeHtml(value) {
