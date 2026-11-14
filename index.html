@@ -120,18 +120,67 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 31px;
+      gap: 12px;
     }
 
-    .nav-links a {
+    .nav-links[hidden] { display: none !important; }
+
+    .nav-group { position: relative; }
+
+    .nav-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 10px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: #59675e;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: color .18s ease, background .18s ease;
+    }
+
+    .nav-category:hover, .nav-category[aria-expanded="true"] {
+      color: var(--forest);
+      background: rgba(41, 71, 53, .07);
+    }
+
+    .nav-chevron { width: 13px; height: 13px; transition: transform .18s ease; }
+    .nav-category[aria-expanded="true"] .nav-chevron { transform: rotate(180deg); }
+
+    .nav-dropdown {
+      position: absolute;
+      z-index: 30;
+      top: calc(100% + 9px);
+      left: 0;
+      display: grid;
+      min-width: 205px;
+      gap: 3px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      box-shadow: 0 16px 38px rgba(24, 61, 50, .14);
+    }
+
+    .nav-dropdown[hidden] { display: none !important; }
+
+    .nav-dropdown a {
+      display: block;
+      padding: 11px 12px;
+      border-radius: 9px;
       color: #59675e;
       font-size: 13px;
       font-weight: 620;
       text-decoration: none;
-      transition: color .18s ease;
+      white-space: nowrap;
+      transition: color .18s ease, background .18s ease;
     }
 
-    .nav-links a:hover { color: var(--forest); }
+    .nav-dropdown a:hover { color: var(--forest); background: rgba(41, 71, 53, .07); }
 
     .nav-links .nav-download {
       padding: 12px 17px;
@@ -968,19 +1017,25 @@
       .menu-toggle { display: grid; }
       .nav-links {
         position: absolute;
+        z-index: 40;
         top: calc(100% + 8px);
         right: 0;
         left: 0;
         display: grid;
-        gap: 0;
+        align-items: stretch;
+        gap: 2px;
+        max-height: min(75vh, 620px);
+        overflow-y: auto;
         padding: 8px;
         border: 1px solid var(--line);
         border-radius: 16px;
         background: var(--paper);
         box-shadow: 0 15px 35px rgba(24, 61, 50, .12);
       }
-      .nav-links a { padding: 14px 13px; }
-      .nav-links .nav-download { margin-top: 3px; text-align: center; }
+      .nav-category { width: 100%; justify-content: space-between; padding: 14px 13px; text-align: left; }
+      .nav-dropdown { position: static; min-width: 0; gap: 1px; margin: 0 0 5px 8px; padding: 4px 6px; border: 0; border-left: 2px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; }
+      .nav-dropdown a { padding: 11px 13px; white-space: normal; }
+      .nav-links .nav-download { margin-top: 5px; text-align: center; }
       .hero { padding: 54px 0 66px; }
       .hero-grid { grid-template-columns: 1fr; gap: 38px; }
       h1 { max-width: 560px; font-size: clamp(47px, 12vw, 63px); }
@@ -1108,16 +1163,36 @@
       </button>
 
       <div class="nav-links" id="navLinks">
-        <a href="#fonctionnalites">Fonctionnalités</a>
-        <a href="#comparatif">Comparatif</a>
-        <a href="#premium">Premium</a>
-        <a href="modeles-ia.html">Modèles IA</a>
-          <a href="account.html">Espace client</a>
-        <a href="guide-chatgpt.html">Connexion ChatGPT</a>
-        <a href="#activation">Activer une clé</a>
-        <a href="#premium-updates">Mises à jour</a>
-        <a href="#faq">FAQ</a>
-        <a class="nav-download" href="#telecharger">Télécharger gratuitement <span aria-hidden="true">↗</span></a>
+        <div class="nav-group">
+          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navDiscover">Découvrir <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nav-dropdown" id="navDiscover" hidden>
+            <a href="#fonctionnalites">Fonctionnalités</a>
+            <a href="#comparatif">Comparatif</a>
+            <a href="#faq">FAQ</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navOffers">Offres <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nav-dropdown" id="navOffers" hidden>
+            <a href="#premium">Premium</a>
+            <a href="#activation">Activer une clé</a>
+            <a href="#premium-updates">Mises à jour</a>
+            <a href="#telecharger">Télécharger gratuitement ↗</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navTools">Outils <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nav-dropdown" id="navTools" hidden>
+            <a href="modeles-ia.html">Modèles IA</a>
+            <a href="guide-chatgpt.html">Connexion ChatGPT</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navAccount">Compte <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nav-dropdown" id="navAccount" hidden>
+            <a href="account.html">Espace client</a>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -1563,35 +1638,66 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    const navCategoryButtons = [...document.querySelectorAll(".nav-category")];
+
+    function closeDropdowns(exceptButton = null) {
+      navCategoryButtons.forEach((button) => {
+        if (button === exceptButton) return;
+        button.setAttribute("aria-expanded", "false");
+        const panel = document.getElementById(button.getAttribute("aria-controls"));
+        if (panel) panel.hidden = true;
+      });
+    }
+
     function closeMenu() {
+      closeDropdowns();
       menuToggle.setAttribute("aria-expanded", "false");
       menuToggle.setAttribute("aria-label", "Ouvrir le menu");
       navLinks.hidden = true;
     }
 
+    navCategoryButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const panel = document.getElementById(button.getAttribute("aria-controls"));
+        const shouldOpen = button.getAttribute("aria-expanded") !== "true";
+        closeDropdowns(button);
+        button.setAttribute("aria-expanded", String(shouldOpen));
+        if (panel) panel.hidden = !shouldOpen;
+      });
+    });
+
     menuToggle.addEventListener("click", () => {
       const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
-      menuToggle.setAttribute("aria-expanded", String(!isExpanded));
-      menuToggle.setAttribute("aria-label", isExpanded ? "Ouvrir le menu" : "Fermer le menu");
-      navLinks.hidden = isExpanded;
+      if (isExpanded) closeMenu();
+      else {
+        navLinks.hidden = false;
+        menuToggle.setAttribute("aria-expanded", "true");
+        menuToggle.setAttribute("aria-label", "Fermer le menu");
+      }
     });
 
     navLinks.addEventListener("click", (event) => {
       if (event.target.closest("a")) closeMenu();
     });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeMenu();
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".nav-group")) closeDropdowns();
+      if (window.matchMedia("(max-width: 680px)").matches && !event.target.closest(".nav")) closeMenu();
     });
 
-    if (window.matchMedia("(max-width: 680px)").matches) {
-      navLinks.hidden = true;
-    }
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeDropdowns();
+        if (window.matchMedia("(max-width: 680px)").matches) closeMenu();
+      }
+    });
+
+    if (window.matchMedia("(max-width: 680px)").matches) navLinks.hidden = true;
 
     window.matchMedia("(max-width: 680px)").addEventListener("change", (event) => {
-      if (event.matches) {
-        closeMenu();
-      } else {
+      closeDropdowns();
+      if (event.matches) closeMenu();
+      else {
         navLinks.hidden = false;
         menuToggle.setAttribute("aria-expanded", "false");
         menuToggle.setAttribute("aria-label", "Ouvrir le menu");
