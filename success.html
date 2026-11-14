@@ -745,6 +745,7 @@
     let consentVersion = null;
     let consentSaving = false;
     const sessionId = new URLSearchParams(window.location.search).get("session_id");
+    if (!sessionStorage.getItem("mindit_access_token")) { window.location.replace("account.html?payment=completed"); }
     let verifiedSessionId = null;
     let verificationInProgress = false;
 
@@ -784,6 +785,7 @@
             source: "post-payment-checkout"
           })
         });
+        if (response.status === 401) { window.location.replace("account.html?payment=completed"); return; }
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Impossible d’enregistrer ce choix.");
         showConsentState(
@@ -841,9 +843,11 @@
         for (let attempt = 0; attempt < MAX_VERIFICATION_ATTEMPTS; attempt += 1) {
           const response = await fetch(
             `${API}/api/license?session_id=${encodeURIComponent(sessionId)}`,
-            { method: "GET", headers: { Accept: "application/json" }, cache: "no-store" }
+            { method: "GET", headers: { Accept: "application/json", Authorization: `Bearer ${sessionStorage.getItem("mindit_access_token") || ""}` }, cache: "no-store" }
           );
-          const data = await response.json();
+          if (response.status === 401) { window.location.replace("account.html?payment=completed"); return; }
+          if (response.status === 401) { window.location.replace("account.html?payment=completed"); return; }
+        const data = await response.json();
 
           if (response.status === 202) {
             if (attempt < MAX_VERIFICATION_ATTEMPTS - 1) {
@@ -921,8 +925,9 @@
       try {
         const response = await fetch(
           `${API}/api/download?session_id=${encodeURIComponent(verifiedSessionId)}`,
-          { method: "GET", headers: { Accept: "application/json" }, cache: "no-store" }
+          { method: "GET", headers: { Accept: "application/json", Authorization: `Bearer ${sessionStorage.getItem("mindit_access_token") || ""}` }, cache: "no-store" }
         );
+        if (response.status === 401) { window.location.replace("account.html?payment=completed"); return; }
         const data = await response.json();
 
         if (!response.ok || typeof data.download_url !== "string") {
