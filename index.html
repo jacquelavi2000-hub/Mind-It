@@ -1595,9 +1595,166 @@
 </div>
 </footer>
 <script>
-    // Mind-It multilingual interface
+    // Original Mind-It navigation, payment and page interactions (restored).
+
+    const buyButtons = [...document.querySelectorAll("#buyButton, #compareBuyButton")];
+    const paymentStatuses = [...document.querySelectorAll("#paymentStatus, #comparisonPaymentStatus")];
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const navCategoryButtons = [...document.querySelectorAll(".nav-category")];
+
+    function closeDropdowns(exceptButton = null) {
+      navCategoryButtons.forEach((button) => {
+        if (button === exceptButton) return;
+        button.setAttribute("aria-expanded", "false");
+        const panel = document.getElementById(button.getAttribute("aria-controls"));
+        if (panel) panel.hidden = true;
+      });
+    }
+
+    function closeMenu() {
+      closeDropdowns();
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Ouvrir le menu");
+      navLinks.hidden = true;
+    }
+
+    navCategoryButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const panel = document.getElementById(button.getAttribute("aria-controls"));
+        const shouldOpen = button.getAttribute("aria-expanded") !== "true";
+        closeDropdowns(button);
+        button.setAttribute("aria-expanded", String(shouldOpen));
+        if (panel) panel.hidden = !shouldOpen;
+      });
+    });
+
+    menuToggle.addEventListener("click", () => {
+      const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
+      if (isExpanded) closeMenu();
+      else {
+        navLinks.hidden = false;
+        menuToggle.setAttribute("aria-expanded", "true");
+        menuToggle.setAttribute("aria-label", "Fermer le menu");
+      }
+    });
+
+    navLinks.addEventListener("click", (event) => {
+      if (event.target.closest("a")) closeMenu();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".nav-group")) closeDropdowns();
+      if (window.matchMedia("(max-width: 680px)").matches && !event.target.closest(".nav")) closeMenu();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeDropdowns();
+        if (window.matchMedia("(max-width: 680px)").matches) closeMenu();
+      }
+    });
+
+    if (window.matchMedia("(max-width: 680px)").matches) navLinks.hidden = true;
+
+    window.matchMedia("(max-width: 680px)").addEventListener("change", (event) => {
+      closeDropdowns();
+      if (event.matches) closeMenu();
+      else {
+        navLinks.hidden = false;
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Ouvrir le menu");
+      }
+    });
+
+    async function startPremiumCheckout() {
+      const accessToken = sessionStorage.getItem("mindit_access_token");
+      if (!accessToken) { window.location.assign("account.html?next=premium"); return; }
+      buyButtons.forEach((button) => {
+        button.disabled = true;
+        button.setAttribute("aria-busy", "true");
+        button.dataset.originalContent = button.innerHTML;
+        button.textContent = "Préparation du paiement…";
+      });
+      paymentStatuses.forEach((status) => {
+        status.dataset.state = "loading";
+        status.textContent = "Connexion au service de paiement…";
+      });
+      try {
+        const response = await fetch("https://mind-it-server.onrender.com/api/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+          body: JSON.stringify({})
+        });
+        if (response.status === 401) { window.location.assign("account.html?next=premium"); return; }
+        const data = await response.json();
+        if (!response.ok || typeof data.url !== "string") throw new Error(data.error || "Le service de paiement n'a pas retourné de lien valide.");
+        const checkoutUrl = new URL(data.url);
+        if (checkoutUrl.protocol !== "https:") throw new Error("Le lien de paiement sécurisé n'est pas valide.");
+        paymentStatuses.forEach((status) => { status.dataset.state = "success"; status.textContent = "Redirection vers la page de paiement sécurisée…"; });
+        window.location.assign(checkoutUrl.href);
+      } catch (error) {
+        paymentStatuses.forEach((status) => { status.dataset.state = "error"; status.textContent = error.message || "Le paiement est temporairement indisponible. Vérifie ta connexion et réessaie."; });
+        buyButtons.forEach((button) => { button.disabled = false; button.removeAttribute("aria-busy"); button.innerHTML = button.dataset.originalContent; });
+      }
+    }
+
+    buyButtons.forEach((button) => {
+      button.addEventListener("click", startPremiumCheckout);
+    });
+    const activationForm = document.getElementById("licenseActivationForm");
+    activationForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = document.getElementById("licenseValidateButton");
+      const status = document.getElementById("licenseActivationStatus");
+      const tier = document.getElementById("licenseTier").value;
+      const key = document.getElementById("licenseKeyInput").value.trim().toUpperCase();
+      button.disabled = true;
+      status.textContent = "Vérification sécurisée de la licence…";
+      try {
+        const endpoint = tier === "platinum" ? "/api/platinum/validate-license" : "/api/license/validate";
+        const response = await fetch("https://mind-it-server.onrender.com" + endpoint, {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ license_key: key })
+        });
+        const data = await response.json();
+        if (!response.ok || data.valid !== true || data.tier !== tier) throw new Error(data.error || "Cette clé n'est pas valide pour cette version.");
+        status.textContent = "Licence " + (tier === "platinum" ? "Platinum" : "Premium") + " valide. Tu peux maintenant l'activer dans l'application Mind-It.";
+      } catch (error) {
+        status.textContent = error.message || "Impossible de vérifier la clé. Réessaie plus tard.";
+      } finally { button.disabled = false; }
+    });
+
+    const platinumButton = document.getElementById("platinumCheckoutCardButton");
+    const platinumStatus = document.getElementById("platinumCheckoutCardStatus");
+    platinumButton?.addEventListener("click", async () => {
+      const accessToken = sessionStorage.getItem("mindit_access_token");
+      if (!accessToken) { window.location.assign("account.html?next=platinum"); return; }
+      platinumButton.disabled = true;
+      platinumButton.textContent = "Préparation du paiement…";
+      if (platinumStatus) platinumStatus.textContent = "Connexion sécurisée à Stripe…";
+      try {
+        const response = await fetch("https://mind-it-server.onrender.com/api/platinum/create-checkout-session", {
+          method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({})
+        });
+        if (response.status === 401) { window.location.assign("account.html?next=platinum"); return; }
+        const data = await response.json();
+        if (!response.ok || typeof data.url !== "string") throw new Error(data.error || "Paiement Platinum indisponible.");
+        const checkoutUrl = new URL(data.url);
+        if (checkoutUrl.protocol !== "https:" || !checkoutUrl.hostname.endsWith("stripe.com")) throw new Error("Lien Stripe invalide.");
+        window.location.assign(checkoutUrl.href);
+      } catch (error) {
+        if (platinumStatus) platinumStatus.textContent = error.message || "Impossible de démarrer le paiement.";
+        platinumButton.disabled = false;
+        platinumButton.textContent = "Réessayer — 5.99 CHF/mois";
+      }
+    });
+  
+    // Multilingual interface
     const mindItTranslations = {"Télécharger l'application ↗":{"en":"Download the app ↗","de":"App herunterladen ↗","es":"Descargar la aplicación ↗"},"↗":{"en":"↗","de":"↗","es":"↗"},"M":{"en":"M","de":"M","es":"M"},"Découvrir":{"en":"Discover","de":"Entdecken","es":"Descubrir"},"Fonctionnalités":{"en":"Features","de":"Funktionen","es":"Funciones"},"Comparatif":{"en":"Comparison","de":"Vergleich","es":"Comparativa"},"FAQ":{"en":"FAQ","de":"FAQ","es":"FAQ"},"Offres":{"en":"Offers","de":"Angebote","es":"Ofertas"},"Premium":{"en":"Premium","de":"Premium","es":"Premium"},"Activer une clé":{"en":"Activate a key","de":"Einen Schlüssel aktivieren","es":"Activar una clave"},"Mises à jour":{"en":"Updates","de":"Updates","es":"Actualizaciones"},"Télécharger gratuitement ↗":{"en":"Download for free ↗","de":"Kostenlos herunterladen ↗","es":"Descargar gratis ↗"},"Outils":{"en":"Tools","de":"Tools","es":"Herramientas"},"Modèles IA":{"en":"AI models","de":"KI-Modelle","es":"Modelos de IA"},"Connexion ChatGPT":{"en":"ChatGPT connection","de":"ChatGPT-Verbindung","es":"Conexión con ChatGPT"},"Compte":{"en":"Account","de":"Konto","es":"Cuenta"},"Espace client":{"en":"Customer area","de":"Kundenbereich","es":"Área de cliente"},"Fais de la place à tes idées.":{"en":"Make room for your ideas.","de":"Schaff Raum für deine Ideen.","es":"Haz espacio para tus ideas."},"idées.":{"en":"ideas.","de":"Ideen.","es":"ideas."},"Rassemble tes projets, relie tes pensées et avance avec une vision plus claire. Mind-It est un espace de travail pour Windows, conçu pour donner forme à tes idées.":{"en":"Bring your projects together, connect your thoughts, and move forward with a clearer vision. Mind-It is a Windows workspace designed to give shape to your ideas.","de":"Bündle deine Projekte, verknüpfe deine Gedanken und komm mit einem klareren Blick voran. Mind-It ist ein Arbeitsbereich für Windows, der deinen Ideen Gestalt verleiht.","es":"Reúne tus proyectos, conecta tus ideas y avanza con una visión más clara. Mind-It es un espacio de trabajo para Windows diseñado para dar forma a tus ideas."},"Télécharger gratuitement ↓":{"en":"Download for free ↓","de":"Kostenlos herunterladen ↓","es":"Descargar gratis ↓"},"↓":{"en":"↓","de":"↓","es":"↓"},"Découvrir Premium →":{"en":"Discover Premium →","de":"Premium entdecken →","es":"Descubrir Premium →"},"→":{"en":"→","de":"→","es":"→"},"·":{"en":"·","de":"·","es":"·"},"Mind-It · Capture principale":{"en":"Mind-It · Main screenshot","de":"Mind-It · Hauptansicht","es":"Mind-It · Captura principal"},"Des idées éparses aux projets clairs.":{"en":"From scattered ideas to clear projects.","de":"Von verstreuten Ideen zu klaren Projekten.","es":"De ideas dispersas a proyectos claros."},"Mind-It réunit les outils mis en avant dans l'application : organiser tes projets et visualiser tes idées en mind maps.":{"en":"Mind-It brings together the app’s featured tools: organize your projects and visualize your ideas in mind maps.","de":"Mind-It vereint die wichtigsten Tools der App: Organisiere deine Projekte und visualisiere deine Ideen in Mindmaps.","es":"Mind-It reúne las herramientas destacadas de la aplicación: organiza tus proyectos y visualiza tus ideas en mapas mentales."},"Projets rassemblés":{"en":"Projects, all in one place","de":"Projekte an einem Ort","es":"Proyectos reunidos"},"Regroupe tes idées et tes projets dans un espace pensé pour garder une vue d'ensemble.":{"en":"Bring your ideas and projects together in a space designed to give you the big picture.","de":"Bündle deine Ideen und Projekte an einem Ort, der dir den Überblick bewahrt.","es":"Reúne tus ideas y proyectos en un espacio pensado para ofrecerte una visión global."},"Mind maps visuelles":{"en":"Visual mind maps","de":"Visuelle Mindmaps","es":"Mapas mentales visuales"},"Relie tes pensées et rends visibles les liens entre les éléments de ta réflexion.":{"en":"Connect your thoughts and make the relationships between them visible.","de":"Verknüpfe deine Gedanken und mach die Zusammenhänge sichtbar.","es":"Conecta tus ideas y haz visibles las relaciones entre ellas."},"Pour Windows":{"en":"For Windows","de":"Für Windows","es":"Para Windows"},"Télécharge l'application de bureau et retrouve ton espace Mind-It sur Windows.":{"en":"Download the desktop app and access your Mind-It workspace on Windows.","de":"Lade die Desktop-App herunter und nutze deinen Mind-It-Arbeitsbereich unter Windows.","es":"Descarga la aplicación de escritorio y accede a tu espacio de Mind-It en Windows."},"Choisis la version qui te correspond.":{"en":"Choose the version that’s right for you.","de":"Wähle die passende Version für dich.","es":"Elige la versión que mejor se adapte a ti."},"La version gratuite inclut désormais plusieurs nouveautés : zoom, minimap, import et export de maps, lignes droites et mode sombre. Premium débloque les fonctionnalités illimitées et les options de personnalisation.":{"en":"The free version now includes several new features: zoom, minimap, map import and export, straight lines, and dark mode. Premium unlocks unlimited features and customization options.","de":"Die kostenlose Version bietet jetzt mehrere neue Funktionen: Zoom, Minimap, Map-Import und -Export, gerade Linien und Dunkelmodus. Premium schaltet unbegrenzte Funktionen und Anpassungsoptionen frei.","es":"La versión gratuita ahora incluye varias novedades: zoom, minimapa, importación y exportación de mapas, líneas rectas y modo oscuro. Premium desbloquea funciones ilimitadas y opciones de personalización."},"Fonctionnalité":{"en":"Feature","de":"Funktion","es":"Función"},"Gratuit":{"en":"Free","de":"Gratis","es":"Gratis"},"Platinum":{"en":"Platinum","de":"Platinum","es":"Platinum"},"Assistant de fabrication":{"en":"Creation assistant","de":"Erstellungsassistent","es":"Asistente de creación"},"Oui":{"en":"Yes","de":"Ja","es":"Sí"},"Nouveautés disponibles gratuitement":{"en":"New features available for free","de":"Neue Funktionen kostenlos verfügbar","es":"Novedades disponibles gratis"},"Zoom ✦ Nouveauté":{"en":"Zoom ✦ New","de":"Zoom ✦ Neu","es":"Zoom ✦ Novedad"},"✦ Nouveauté":{"en":"✦ New","de":"✦ Neu","es":"✦ Novedad"},"Minimap ✦ Nouveauté":{"en":"Minimap ✦ New","de":"Minimap ✦ Neu","es":"Minimapa ✦ Novedad"},"Export de maps ✦ Nouveauté":{"en":"Map export ✦ New","de":"Map-Export ✦ Neu","es":"Exportación de mapas ✦ Novedad"},"Import de maps ✦ Nouveauté":{"en":"Map import ✦ New","de":"Map-Import ✦ Neu","es":"Importación de mapas ✦ Novedad"},"Lignes droites ✦ Nouveauté":{"en":"Straight lines ✦ New","de":"Gerade Linien ✦ Neu","es":"Líneas rectas ✦ Novedad"},"Mode sombre ✦ Nouveauté":{"en":"Dark mode ✦ New","de":"Dunkelmodus ✦ Neu","es":"Modo oscuro ✦ Novedad"},"Fonctionnalités Premium (incluses dans Platinum)":{"en":"Premium features (included in Platinum)","de":"Premium-Funktionen (in Platinum enthalten)","es":"Funciones Premium (incluidas en Platinum)"},"Blocs illimités":{"en":"Unlimited blocks","de":"Unbegrenzte Blöcke","es":"Bloques ilimitados"},"Non":{"en":"No","de":"Nein","es":"No"},"Projets illimités":{"en":"Unlimited projects","de":"Unbegrenzte Projekte","es":"Proyectos ilimitados"},"Maps illimitées":{"en":"Unlimited maps","de":"Unbegrenzte Maps","es":"Mapas ilimitados"},"Taille des maps illimitée":{"en":"Unlimited map size","de":"Unbegrenzte Map-Größe","es":"Tamaño de mapa ilimitado"},"Personnalisation complète des blocs":{"en":"Full block customization","de":"Vollständige Anpassung der Blöcke","es":"Personalización completa de los bloques"},"Personnalisation des touches":{"en":"Key customization","de":"Tastenanpassung","es":"Personalización de teclas"},"Options illimitées":{"en":"Unlimited options","de":"Unbegrenzte Optionen","es":"Opciones ilimitadas"},"Fonctionnalités exclusives à Platinum":{"en":"Platinum-exclusive features","de":"Exklusive Platinum-Funktionen","es":"Funciones exclusivas de Platinum"},"IA locale intégrée (sans cloud)":{"en":"Built-in local AI (no cloud)","de":"Integrierte lokale KI (ohne Cloud)","es":"IA local integrada (sin nube)"},"Accès aux mises à jour Platinum":{"en":"Access to Platinum updates","de":"Zugriff auf Platinum-Updates","es":"Acceso a las actualizaciones de Platinum"},"Licence et accès Platinum":{"en":"Platinum license and access","de":"Platinum-Lizenz und -Zugang","es":"Licencia y acceso a Platinum"},"Obtenir Premium ↗":{"en":"Get Premium ↗","de":"Premium holen ↗","es":"Obtener Premium ↗"},"Un aperçu de Mind-It.":{"en":"A look at Mind-It.","de":"Ein Einblick in Mind-It.","es":"Un vistazo a Mind-It."},"Découvre des captures de l’application, de la carte mentale aux vues de travail.":{"en":"Explore app screenshots, from the mind map to workspace views.","de":"Entdecke App-Screenshots – von der Mindmap bis zu den Arbeitsansichten.","es":"Descubre capturas de la aplicación, desde el mapa mental hasta las vistas de trabajo."},"Commence simplement.":{"en":"Get started simply.","de":"Starte ganz einfach.","es":"Empieza de forma sencilla."},"Télécharge la version gratuite ou passe par le paiement Premium pour recevoir ta licence et accéder au téléchargement et aux mises à jour prévus pour les acheteurs.":{"en":"Download the free version or complete a Premium purchase to receive your license and access the download and updates available to buyers.","de":"Lade die kostenlose Version herunter oder schließe einen Premium-Kauf ab, um deine Lizenz zu erhalten und auf den Download sowie die Updates für Käufer zuzugreifen.","es":"Descarga la versión gratuita o completa la compra Premium para recibir tu licencia y acceder a la descarga y las actualizaciones para compradores."},"Mind-It Gratuit":{"en":"Mind-It Free","de":"Mind-It Gratis","es":"Mind-It Gratis"},"Télécharge l'application Windows et découvre les fonctions gratuites de Mind-It.":{"en":"Download the Windows app and explore Mind-It’s free features.","de":"Lade die Windows-App herunter und entdecke die kostenlosen Funktionen von Mind-It.","es":"Descarga la aplicación para Windows y descubre las funciones gratuitas de Mind-It."},"✓ Assistant de fabrication":{"en":"✓ Creation assistant","de":"✓ Erstellungsassistent","es":"✓ Asistente de creación"},"✓":{"en":"✓","de":"✓","es":"✓"},"✓ Accès aux fonctions gratuites de Mind-It":{"en":"✓ Access to Mind-It’s free features","de":"✓ Zugriff auf die kostenlosen Funktionen von Mind-It","es":"✓ Acceso a las funciones gratuitas de Mind-It"},"Mind-It Premium":{"en":"Mind-It Premium","de":"Mind-It Premium","es":"Mind-It Premium"},"Un achat Premium donne accès à une licence, au téléchargement Premium et aux mises à jour avec une licence valide.":{"en":"A Premium purchase provides a license, the Premium download, and updates with a valid license.","de":"Ein Premium-Kauf umfasst eine Lizenz, den Premium-Download und Updates mit einer gültigen Lizenz.","es":"Una compra Premium da acceso a una licencia, a la descarga Premium y a las actualizaciones con una licencia válida."},"Continuer vers le paiement ↗":{"en":"Continue to checkout ↗","de":"Weiter zur Zahlung ↗","es":"Continuar al pago ↗"},"✓ Toutes les fonctions gratuites":{"en":"✓ All free features","de":"✓ Alle kostenlosen Funktionen","es":"✓ Todas las funciones gratuitas"},"✓ Blocs, projets et maps illimités":{"en":"✓ Unlimited blocks, projects, and maps","de":"✓ Unbegrenzte Blöcke, Projekte und Maps","es":"✓ Bloques, proyectos y mapas ilimitados"},"✓ Taille de maps illimitée et options de personnalisation":{"en":"✓ Unlimited map size and customization options","de":"✓ Unbegrenzte Map-Größe und Anpassungsoptionen","es":"✓ Tamaño de mapa ilimitado y opciones de personalización"},"✓ Licence, téléchargement Premium et mises à jour avec une licence valide":{"en":"✓ License, Premium download, and updates with a valid license","de":"✓ Lizenz, Premium-Download und Updates mit einer gültigen Lizenz","es":"✓ Licencia, descarga Premium y actualizaciones con una licencia válida"},"Mind-It Platinum":{"en":"Mind-It Platinum","de":"Mind-It Platinum","es":"Mind-It Platinum"},"Toutes les fonctionnalités Mind-It, y compris les outils avancés et l'IA locale, avec une licence Platinum active.":{"en":"All Mind-It features, including advanced tools and local AI, with an active Platinum license.","de":"Alle Mind-It-Funktionen, einschließlich erweiterter Tools und lokaler KI, mit einer aktiven Platinum-Lizenz.","es":"Todas las funciones de Mind-It, incluidas las herramientas avanzadas y la IA local, con una licencia Platinum activa."},"Choisir Platinum":{"en":"Choose Platinum","de":"Platinum wählen","es":"Elegir Platinum"},"✓ Toutes les fonctions Premium":{"en":"✓ All Premium features","de":"✓ Alle Premium-Funktionen","es":"✓ Todas las funciones Premium"},"✓ Fonctionnalités Platinum":{"en":"✓ Platinum features","de":"✓ Platinum-Funktionen","es":"✓ Funciones de Platinum"},"✓ IA locale et mises à jour Platinum":{"en":"✓ Local AI and Platinum updates","de":"✓ Lokale KI und Platinum-Updates","es":"✓ IA local y actualizaciones de Platinum"},"✓ Activation par clé Platinum":{"en":"✓ Activation with a Platinum key","de":"✓ Aktivierung mit einem Platinum-Schlüssel","es":"✓ Activación con una clave Platinum"},"Le prix, la durée et les conditions de l'offre sont ceux présentés sur la page de paiement avant confirmation. Aucun achat n'est déclenché sans validation sur cette page.":{"en":"The price, duration, and terms are those shown on the checkout page before you confirm. No purchase is made without confirmation on that page.","de":"Preis, Laufzeit und Angebotsbedingungen entsprechen den Angaben auf der Zahlungsseite vor der Bestätigung. Ohne Bestätigung auf dieser Seite wird kein Kauf ausgelöst.","es":"El precio, la duración y las condiciones de la oferta son los que aparecen en la página de pago antes de confirmar. No se realiza ninguna compra sin confirmarla en esa página."},"Activer une clé Mind-It.":{"en":"Activate a Mind-It key.","de":"Einen Mind-It-Schlüssel aktivieren.","es":"Activa una clave de Mind-It."},"Vérifie ta clé Premium ou Platinum auprès du serveur Mind-It. La validation sur le site ne remplace pas l'activation dans l'application.":{"en":"Check your Premium or Platinum key with the Mind-It server. Verifying it on the website does not replace activation in the app.","de":"Prüfe deinen Premium- oder Platinum-Schlüssel beim Mind-It-Server. Die Prüfung auf der Website ersetzt nicht die Aktivierung in der App.","es":"Verifica tu clave Premium o Platinum con el servidor de Mind-It. La verificación en el sitio web no sustituye la activación en la aplicación."},"Type de licence":{"en":"License type","de":"Lizenztyp","es":"Tipo de licencia"},"Clé de licence":{"en":"License key","de":"Lizenzschlüssel","es":"Clave de licencia"},"Vérifier ma clé":{"en":"Verify my key","de":"Meinen Schlüssel prüfen","es":"Verificar mi clave"},"Découvre les dernières mises à jour.":{"en":"Discover the latest updates.","de":"Entdecke die neuesten Updates.","es":"Descubre las últimas actualizaciones."},"Les versions gratuites sont publiées sur GitHub et téléchargeables sans clé de licence. Les mises à jour Premium restent accessibles avec une licence valide.":{"en":"Free versions are published on GitHub and can be downloaded without a license key. Premium updates remain available with a valid license.","de":"Kostenlose Versionen werden auf GitHub veröffentlicht und können ohne Lizenzschlüssel heruntergeladen werden. Premium-Updates sind mit einer gültigen Lizenz weiterhin verfügbar.","es":"Las versiones gratuitas se publican en GitHub y se pueden descargar sin clave de licencia. Las actualizaciones Premium siguen disponibles con una licencia válida."},"Updates gratuites ↗":{"en":"Free updates ↗","de":"Kostenlose Updates ↗","es":"Actualizaciones gratuitas ↗"},"Premium Updates ↗":{"en":"Premium updates ↗","de":"Premium-Updates ↗","es":"Actualizaciones Premium ↗"},"Platinum Updates":{"en":"Platinum updates","de":"Platinum-Updates","es":"Actualizaciones Platinum"},"Questions fréquentes.":{"en":"Frequently asked questions.","de":"Häufig gestellte Fragen.","es":"Preguntas frecuentes."},"Les informations essentielles pour télécharger Mind-It et comprendre l'accès Premium.":{"en":"Key information about downloading Mind-It and accessing Premium.","de":"Alle wichtigen Informationen zum Download von Mind-It und zum Premium-Zugang.","es":"Información esencial para descargar Mind-It y entender el acceso a Premium."},"Comment télécharger Mind-It gratuitement ?":{"en":"How can I download Mind-It for free?","de":"Wie kann ich Mind-It kostenlos herunterladen?","es":"¿Cómo puedo descargar Mind-It gratis?"},"Utilise le bouton de téléchargement : il ouvre l'installateur Windows publié dans les GitHub Releases .":{"en":"Use the download button to open the Windows installer published in GitHub Releases.","de":"Über den Download-Button öffnest du den Windows-Installer aus den GitHub Releases.","es":"Usa el botón de descarga para abrir el instalador de Windows publicado en GitHub Releases."},"GitHub Releases":{"en":"GitHub Releases","de":"GitHub Releases","es":"GitHub Releases"},"Mind-It est-il disponible sur Windows ?":{"en":"Is Mind-It available on Windows?","de":"Ist Mind-It für Windows verfügbar?","es":"¿Mind-It está disponible para Windows?"},"Le téléchargement proposé ici est l'installateur Windows. Les autres plateformes ne sont pas annoncées sur cette page.":{"en":"The download offered here is the Windows installer. Other platforms are not listed on this page.","de":"Hier wird der Windows-Installer angeboten. Andere Plattformen werden auf dieser Seite nicht angekündigt.","es":"La descarga disponible aquí es el instalador de Windows. En esta página no se anuncian otras plataformas."},"Que comprend Mind-It Premium ?":{"en":"What does Mind-It Premium include?","de":"Was bietet Mind-It Premium?","es":"¿Qué incluye Mind-It Premium?"},"Après confirmation du paiement, le parcours Premium donne accès à une licence, au téléchargement Premium et aux mises à jour réservées aux licences valides. La page de paiement précise le montant et les conditions avant validation.":{"en":"After payment is confirmed, the Premium process provides a license, the Premium download, and updates for valid licenses. The checkout page shows the price and terms before you confirm.","de":"Nach Bestätigung der Zahlung erhältst du eine Lizenz, den Premium-Download und Updates für gültige Lizenzen. Auf der Zahlungsseite werden Preis und Bedingungen vor der Bestätigung angezeigt.","es":"Tras confirmar el pago, el proceso Premium da acceso a una licencia, a la descarga Premium y a las actualizaciones para licencias válidas. La página de pago indica el precio y las condiciones antes de confirmar."},"Comment fonctionne le paiement ?":{"en":"How does payment work?","de":"Wie funktioniert die Zahlung?","es":"¿Cómo funciona el pago?"},"Le bouton contacte le service Mind-It pour créer une session de paiement, puis t'envoie vers la page de paiement retournée par le service. Tu peux vérifier le prix et les conditions avant de confirmer ; aucun achat n'est effectué sur ce site.":{"en":"The button contacts the Mind-It service to create a checkout session, then sends you to the payment page provided by the service. You can check the price and terms before confirming; no purchase is made on this site.","de":"Der Button kontaktiert den Mind-It-Dienst, um eine Zahlungssitzung zu erstellen, und leitet dich dann zur vom Dienst bereitgestellten Zahlungsseite weiter. Du kannst Preis und Bedingungen vor der Bestätigung prüfen; auf dieser Website wird kein Kauf getätigt.","es":"El botón contacta con el servicio de Mind-It para crear una sesión de pago y después te dirige a la página de pago proporcionada por el servicio. Puedes comprobar el precio y las condiciones antes de confirmar; no se realiza ninguna compra en este sitio."},"Comment obtenir les mises à jour Premium ?":{"en":"How do I get Premium updates?","de":"Wie erhalte ich Premium-Updates?","es":"¿Cómo puedo obtener las actualizaciones Premium?"},"La page des mises à jour permet de vérifier la dernière version et de demander son téléchargement avec une clé de licence valide.":{"en":"The updates page lets you check the latest version and request a download with a valid license key.","de":"Auf der Update-Seite kannst du die neueste Version prüfen und mit einem gültigen Lizenzschlüssel den Download anfordern.","es":"En la página de actualizaciones puedes consultar la última versión y solicitar su descarga con una clave de licencia válida."},"page des mises à jour":{"en":"updates page","de":"Update-Seite","es":"página de actualizaciones"},"Une idée mérite un point de départ.":{"en":"Every idea deserves a starting point.","de":"Jede Idee verdient einen Anfang.","es":"Toda idea merece un punto de partida."},"Découvre Mind-It pour Windows et commence à organiser tes projets.":{"en":"Discover Mind-It for Windows and start organizing your projects.","de":"Entdecke Mind-It für Windows und beginne, deine Projekte zu organisieren.","es":"Descubre Mind-It para Windows y empieza a organizar tus proyectos."},"Télécharger Mind-It ↗":{"en":"Download Mind-It ↗","de":"Mind-It herunterladen ↗","es":"Descargar Mind-It ↗"},"GitHub":{"en":"GitHub","de":"GitHub","es":"GitHub"},"Conçu pour donner de la place à tes idées.":{"en":"Designed to make room for your ideas.","de":"Entwickelt, um deinen Ideen Raum zu geben.","es":"Diseñado para dar espacio a tus ideas."},"Fais de la place à tes":{"en":"Make room for your","de":"Schaff Raum für deine","es":"Haz espacio para tus"},"Télécharger l'application":{"en":"Download the app","de":"App herunterladen","es":"Descargar la aplicación"},"Télécharger gratuitement":{"en":"Download for free","de":"Kostenlos herunterladen","es":"Descargar gratis"},"Découvrir Premium":{"en":"Discover Premium","de":"Premium entdecken","es":"Descubrir Premium"},"Télécharger Mind-It":{"en":"Download Mind-It","de":"Mind-It herunterladen","es":"Descargar Mind-It"}};
-    const languageSelect = document.getElementById("languageSelect");
+const languageSelect = document.getElementById("languageSelect");
     function setMindItLanguage(language) {
       const lang = ["fr", "en", "de", "es"].includes(language) ? language : "fr";
       document.documentElement.lang = lang;
