@@ -1643,7 +1643,11 @@
     });
 
     navLinks.addEventListener("click", (event) => {
-      if (event.target.closest("a")) closeMenu();
+      if (!event.target.closest("a")) return;
+      // On desktop, close only the dropdown: keep the main navigation visible.
+      // On mobile, close the expanded navigation after choosing a destination.
+      closeDropdowns();
+      if (window.matchMedia("(max-width: 680px)").matches) closeMenu();
     });
 
     document.addEventListener("click", (event) => {
