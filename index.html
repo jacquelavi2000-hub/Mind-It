@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f5ef">
-  <meta name="description" content="Mind-It pour Windows : organise tes projets et relie tes idées avec des mind maps. Télécharge l'application ou découvre l'offre Premium.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Mind-It — Fais de la place à tes idées">
-  <meta property="og:description" content="Organise tes projets et relie tes idées avec Mind-It pour Windows.">
-  <meta property="og:url" content="https://mind-it.onrender.com/">
-  <title>Mind-It — Fais de la place à tes idées</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f7f5ef" name="theme-color"/>
+<meta content="Mind-It pour Windows : organise tes projets et relie tes idées avec des mind maps. Télécharge l'application ou découvre l'offre Premium." name="description"/>
+<meta content="website" property="og:type"/>
+<meta content="Mind-It — Fais de la place à tes idées" property="og:title"/>
+<meta content="Organise tes projets et relie tes idées avec Mind-It pour Windows." property="og:description"/>
+<meta content="https://mind-it.onrender.com/" property="og:url"/>
+<title>Mind-It — Fais de la place à tes idées</title>
+<style>
     :root {
       color-scheme: light;
       --forest: #183d32;
@@ -1138,653 +1138,493 @@
     .updates-actions { display: flex; min-width: 210px; flex-direction: column; gap: 10px; }
     .updates-actions .btn { width: 100%; }
 
-  </style>
+  
+
+    .language-picker { display:flex; align-items:center; margin-left:8px; }
+    .language-picker select { appearance:none; min-width:132px; padding:10px 30px 10px 12px; border:1px solid var(--line); border-radius:11px; background:var(--paper); color:var(--forest); font:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+    .language-picker { position:relative; }
+    .language-picker:after { content:"⌄"; position:absolute; right:11px; pointer-events:none; color:var(--forest); }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media(max-width:680px) { .language-picker { margin:6px 4px 2px; } .language-picker select { width:100%; } }
+</style>
 </head>
 <body>
-  <div class="announcement">
+<div class="announcement">
     Mind-It pour Windows
     <a href="#telecharger">Télécharger l'application <span aria-hidden="true">↗</span></a>
-  </div>
-
-  <header class="site-header">
-    <nav class="container nav" aria-label="Navigation principale">
-      <a class="brand" href="#accueil" aria-label="Mind-It, accueil">
-        <span class="brand-mark" aria-hidden="true">M</span>
+</div>
+<header class="site-header">
+<nav aria-label="Navigation principale" class="container nav">
+<a aria-label="Mind-It, accueil" class="brand" href="#accueil">
+<span aria-hidden="true" class="brand-mark">M</span>
         Mind-It
       </a>
-
-      <button class="menu-toggle" id="menuToggle" type="button"
-              aria-label="Ouvrir le menu" aria-expanded="false"
-              aria-controls="navLinks">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16"/>
-        </svg>
-      </button>
-
-      <div class="nav-links" id="navLinks">
-        <div class="nav-group">
-          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navDiscover">Découvrir <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <div class="nav-dropdown" id="navDiscover" hidden>
-            <a href="#fonctionnalites">Fonctionnalités</a>
-            <a href="#comparatif">Comparatif</a>
-            <a href="#faq">FAQ</a>
-          </div>
-        </div>
-        <div class="nav-group">
-          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navOffers">Offres <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <div class="nav-dropdown" id="navOffers" hidden>
-            <a href="#premium">Premium</a>
-            <a href="#activation">Activer une clé</a>
-            <a href="#premium-updates">Mises à jour</a>
-            <a href="#telecharger">Télécharger gratuitement ↗</a>
-          </div>
-        </div>
-        <div class="nav-group">
-          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navTools">Outils <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <div class="nav-dropdown" id="navTools" hidden>
-            <a href="modeles-ia.html">Modèles IA</a>
-            <a href="guide-chatgpt.html">Connexion ChatGPT</a>
-          </div>
-        </div>
-        <div class="nav-group">
-          <button class="nav-category" type="button" aria-expanded="false" aria-controls="navAccount">Compte <svg class="nav-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <div class="nav-dropdown" id="navAccount" hidden>
-            <a href="account.html">Espace client</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero" id="accueil">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Ton espace pour penser autrement</div>
-          <h1>Fais de la place à tes <span class="highlight">idées.</span></h1>
-          <p class="hero-copy">
+<button aria-controls="navLinks" aria-expanded="false" aria-label="Ouvrir le menu" class="menu-toggle" id="menuToggle" type="button">
+<svg aria-hidden="true" fill="none" height="20" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="20">
+<path d="M4 7h16M4 12h16M4 17h16"></path>
+</svg>
+</button>
+<div class="nav-links" id="navLinks">
+<div class="nav-group">
+<button aria-controls="navDiscover" aria-expanded="false" class="nav-category" type="button">Découvrir <svg aria-hidden="true" class="nav-chevron" fill="none" viewbox="0 0 20 20"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg></button>
+<div class="nav-dropdown" hidden="" id="navDiscover">
+<a data-i18n="Fonctionnalités" href="#fonctionnalites">Fonctionnalités</a>
+<a data-i18n="Comparatif" href="#comparatif">Comparatif</a>
+<a data-i18n="FAQ" href="#faq">FAQ</a>
+</div>
+</div>
+<div class="nav-group">
+<button aria-controls="navOffers" aria-expanded="false" class="nav-category" type="button">Offres <svg aria-hidden="true" class="nav-chevron" fill="none" viewbox="0 0 20 20"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg></button>
+<div class="nav-dropdown" hidden="" id="navOffers">
+<a data-i18n="Premium" href="#premium">Premium</a>
+<a data-i18n="Activer une clé" href="#activation">Activer une clé</a>
+<a data-i18n="Mises à jour" href="#premium-updates">Mises à jour</a>
+<a data-i18n="Télécharger gratuitement ↗" href="#telecharger">Télécharger gratuitement ↗</a>
+</div>
+</div>
+<div class="nav-group">
+<button aria-controls="navTools" aria-expanded="false" class="nav-category" type="button">Outils <svg aria-hidden="true" class="nav-chevron" fill="none" viewbox="0 0 20 20"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg></button>
+<div class="nav-dropdown" hidden="" id="navTools">
+<a data-i18n="Modèles IA" href="modeles-ia.html">Modèles IA</a>
+<a data-i18n="Connexion ChatGPT" href="guide-chatgpt.html">Connexion ChatGPT</a>
+</div>
+</div>
+<div class="nav-group">
+<button aria-controls="navAccount" aria-expanded="false" class="nav-category" type="button">Compte <svg aria-hidden="true" class="nav-chevron" fill="none" viewbox="0 0 20 20"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg></button>
+<div class="nav-dropdown" hidden="" id="navAccount">
+<a data-i18n="Espace client" href="account.html">Espace client</a>
+</div>
+</div>
+<div class="language-picker"><label class="sr-only" for="languageSelect">Language</label><select aria-label="Choose language" id="languageSelect"><option value="fr">🇫🇷 Français</option><option value="en">🇬🇧 English</option><option value="de">🇩🇪 Deutsch</option><option value="es">🇪🇸 Español</option></select></div></div>
+</nav>
+</header>
+<main>
+<section class="hero" id="accueil">
+<div class="container hero-grid">
+<div class="hero-content">
+<div class="eyebrow"><span aria-hidden="true" class="eyebrow-dot"></span> Ton espace pour penser autrement</div>
+<h1>Fais de la place à tes <span class="highlight" data-i18n="idées.">idées.</span></h1>
+<p class="hero-copy" data-i18n="Rassemble tes projets, relie tes pensées et avance avec une vision plus claire. Mind-It est un espace de travail pour Windows, conçu pour donner forme à tes idées.">
             Rassemble tes projets, relie tes pensées et avance avec une vision plus claire.
             Mind-It est un espace de travail pour Windows, conçu pour donner forme à tes idées.
           </p>
-          <div class="actions" id="telecharger">
-            <a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.1/Mind-It-FP.Setup.2.1.0.exe">
+<div class="actions" id="telecharger">
+<a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.1/Mind-It-FP.Setup.2.1.0.exe">
               Télécharger gratuitement <span aria-hidden="true">↓</span>
-            </a>
-            <a class="btn btn-secondary" href="#premium">
+</a>
+<a class="btn btn-secondary" href="#premium">
               Découvrir Premium <span aria-hidden="true">→</span>
-            </a>
-          </div>
-          <div class="trust-row">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="13" rx="2"/>
-              <path d="M8 21h8M12 17v4"/>
-            </svg>
+</a>
+</div>
+<div class="trust-row">
+<svg aria-hidden="true" fill="none" height="17" stroke="currentColor" stroke-width="1.7" viewbox="0 0 24 24" width="17">
+<rect height="13" rx="2" width="18" x="3" y="4"></rect>
+<path d="M8 21h8M12 17v4"></path>
+</svg>
             Application Windows <span aria-hidden="true">·</span> Téléchargement depuis GitHub Releases
           </div>
-        </div>
-
-        <div class="hero-art" aria-label="Aperçu d'une capture d'écran de Mind-It">
-          <div class="window-bar" aria-hidden="true">
-            <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
-            <span class="window-label">Mind-It · Capture principale</span>
-          </div>
-          <img class="hero-screenshot"
-               src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-21%20132236.png"
-               alt="Capture principale de Mind-It du 21 octobre 2026"
-               width="953" height="432" fetchpriority="high">
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-paper" id="fonctionnalites">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-kicker">L'essentiel, avec intention</div>
-          <h2>Des idées éparses aux projets clairs.</h2>
-          <p>Mind-It réunit les outils mis en avant dans l'application : organiser tes projets et visualiser tes idées en mind maps.</p>
-        </div>
-
-        <div class="feature-grid">
-          <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                <rect x="3" y="3" width="8" height="8" rx="2"/>
-                <rect x="13" y="3" width="8" height="5" rx="2"/>
-                <rect x="13" y="10" width="8" height="11" rx="2"/>
-                <rect x="3" y="13" width="8" height="8" rx="2"/>
-              </svg>
-            </div>
-            <h3>Projets rassemblés</h3>
-            <p>Regroupe tes idées et tes projets dans un espace pensé pour garder une vue d'ensemble.</p>
-          </article>
-
-          <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                <circle cx="12" cy="5" r="2.5"/>
-                <circle cx="5" cy="19" r="2.5"/>
-                <circle cx="19" cy="19" r="2.5"/>
-                <path d="M12 7.5v4M12 11.5 5 16.5M12 11.5l7 5"/>
-              </svg>
-            </div>
-            <h3>Mind maps visuelles</h3>
-            <p>Relie tes pensées et rends visibles les liens entre les éléments de ta réflexion.</p>
-          </article>
-
-          <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                <rect x="4" y="4" width="16" height="16" rx="4"/>
-                <path d="M8 9h8M8 12h8M8 15h5"/>
-              </svg>
-            </div>
-            <h3>Pour Windows</h3>
-            <p>Télécharge l'application de bureau et retrouve ton espace Mind-It sur Windows.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="comparatif">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-kicker">Gratuit ou Premium</div>
-          <h2>Choisis la version qui te correspond.</h2>
-          <p>La version gratuite inclut désormais plusieurs nouveautés : zoom, minimap, import et export de maps, lignes droites et mode sombre. Premium débloque les fonctionnalités illimitées et les options de personnalisation.</p>
-        </div>
-
-        <div class="comparison-wrap">
-          <table class="comparison-table">
-            <thead>
-              <tr>
-                <th scope="col">Fonctionnalité</th>
-                <th scope="col">Gratuit</th>
-                <th scope="col" class="premium-column">Premium</th>
-                <th scope="col" class="platinum-column">Platinum</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Assistant de fabrication</th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr class="group-row"><th scope="rowgroup" colspan="4">Nouveautés disponibles gratuitement</th></tr>
-              <tr>
-                <th scope="row">Zoom <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Minimap <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Export de maps <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Import de maps <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Lignes droites <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Mode sombre <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr class="group-row"><th scope="rowgroup" colspan="4">Fonctionnalités Premium (incluses dans Platinum)</th></tr>
-              <tr>
-                <th scope="row">Blocs illimités</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Projets illimités</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Maps illimitées</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Taille des maps illimitée</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Personnalisation complète des blocs</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Personnalisation des touches</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Options illimitées</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-            
-              <tr class="group-row"><th scope="rowgroup" colspan="4">Fonctionnalités exclusives à Platinum</th></tr>
-              <tr><th scope="row">IA locale intégrée (sans cloud)</th><td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td></tr>
-              <tr><th scope="row">Accès aux mises à jour Platinum</th><td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td></tr>
-              <tr><th scope="row">Licence et accès Platinum</th><td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="comparison-actions">
-          <a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
+</div>
+<div aria-label="Aperçu d'une capture d'écran de Mind-It" class="hero-art">
+<div aria-hidden="true" class="window-bar">
+<span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+<span class="window-label" data-i18n="Mind-It · Capture principale">Mind-It · Capture principale</span>
+</div>
+<img alt="Capture principale de Mind-It du 21 octobre 2026" class="hero-screenshot" fetchpriority="high" height="432" src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-21%20132236.png" width="953"/>
+</div>
+</div>
+</section>
+<section class="section section-paper" id="fonctionnalites">
+<div class="container">
+<div class="section-heading">
+<div class="section-kicker">L'essentiel, avec intention</div>
+<h2 data-i18n="Des idées éparses aux projets clairs.">Des idées éparses aux projets clairs.</h2>
+<p data-i18n="Mind-It réunit les outils mis en avant dans l'application : organiser tes projets et visualiser tes idées en mind maps.">Mind-It réunit les outils mis en avant dans l'application : organiser tes projets et visualiser tes idées en mind maps.</p>
+</div>
+<div class="feature-grid">
+<article class="feature-card">
+<div aria-hidden="true" class="feature-icon">
+<svg fill="none" height="23" stroke="currentColor" stroke-width="1.7" viewbox="0 0 24 24" width="23">
+<rect height="8" rx="2" width="8" x="3" y="3"></rect>
+<rect height="5" rx="2" width="8" x="13" y="3"></rect>
+<rect height="11" rx="2" width="8" x="13" y="10"></rect>
+<rect height="8" rx="2" width="8" x="3" y="13"></rect>
+</svg>
+</div>
+<h3 data-i18n="Projets rassemblés">Projets rassemblés</h3>
+<p data-i18n="Regroupe tes idées et tes projets dans un espace pensé pour garder une vue d'ensemble.">Regroupe tes idées et tes projets dans un espace pensé pour garder une vue d'ensemble.</p>
+</article>
+<article class="feature-card">
+<div aria-hidden="true" class="feature-icon">
+<svg fill="none" height="23" stroke="currentColor" stroke-width="1.7" viewbox="0 0 24 24" width="23">
+<circle cx="12" cy="5" r="2.5"></circle>
+<circle cx="5" cy="19" r="2.5"></circle>
+<circle cx="19" cy="19" r="2.5"></circle>
+<path d="M12 7.5v4M12 11.5 5 16.5M12 11.5l7 5"></path>
+</svg>
+</div>
+<h3 data-i18n="Mind maps visuelles">Mind maps visuelles</h3>
+<p data-i18n="Relie tes pensées et rends visibles les liens entre les éléments de ta réflexion.">Relie tes pensées et rends visibles les liens entre les éléments de ta réflexion.</p>
+</article>
+<article class="feature-card">
+<div aria-hidden="true" class="feature-icon">
+<svg fill="none" height="23" stroke="currentColor" stroke-width="1.7" viewbox="0 0 24 24" width="23">
+<rect height="16" rx="4" width="16" x="4" y="4"></rect>
+<path d="M8 9h8M8 12h8M8 15h5"></path>
+</svg>
+</div>
+<h3 data-i18n="Pour Windows">Pour Windows</h3>
+<p data-i18n="Télécharge l'application de bureau et retrouve ton espace Mind-It sur Windows.">Télécharge l'application de bureau et retrouve ton espace Mind-It sur Windows.</p>
+</article>
+</div>
+</div>
+</section>
+<section class="section" id="comparatif">
+<div class="container">
+<div class="section-heading">
+<div class="section-kicker">Gratuit ou Premium</div>
+<h2 data-i18n="Choisis la version qui te correspond.">Choisis la version qui te correspond.</h2>
+<p data-i18n="La version gratuite inclut désormais plusieurs nouveautés : zoom, minimap, import et export de maps, lignes droites et mode sombre. Premium débloque les fonctionnalités illimitées et les options de personnalisation.">La version gratuite inclut désormais plusieurs nouveautés : zoom, minimap, import et export de maps, lignes droites et mode sombre. Premium débloque les fonctionnalités illimitées et les options de personnalisation.</p>
+</div>
+<div class="comparison-wrap">
+<table class="comparison-table">
+<thead>
+<tr>
+<th data-i18n="Fonctionnalité" scope="col">Fonctionnalité</th>
+<th data-i18n="Gratuit" scope="col">Gratuit</th>
+<th class="premium-column" data-i18n="Premium" scope="col">Premium</th>
+<th class="platinum-column" data-i18n="Platinum" scope="col">Platinum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th data-i18n="Assistant de fabrication" scope="row">Assistant de fabrication</th>
+<td><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr class="group-row"><th colspan="4" data-i18n="Nouveautés disponibles gratuitement" scope="rowgroup">Nouveautés disponibles gratuitement</th></tr>
+<tr>
+<th scope="row">Zoom <span class="new-feature" data-i18n="✦ Nouveauté">✦ Nouveauté</span></th>
+<td><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th scope="row">Minimap <span class="new-feature" data-i18n="✦ Nouveauté">✦ Nouveauté</span></th>
+<td><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th scope="row">Export de maps <span class="new-feature" data-i18n="✦ Nouveauté">✦ Nouveauté</span></th>
+<td><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th scope="row">Import de maps <span class="new-feature" data-i18n="✦ Nouveauté">✦ Nouveauté</span></th>
+<td><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th scope="row">Lignes droites <span class="new-feature" data-i18n="✦ Nouveauté">✦ Nouveauté</span></th>
+<td><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th scope="row">Mode sombre <span class="new-feature" data-i18n="✦ Nouveauté">✦ Nouveauté</span></th>
+<td><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr class="group-row"><th colspan="4" data-i18n="Fonctionnalités Premium (incluses dans Platinum)" scope="rowgroup">Fonctionnalités Premium (incluses dans Platinum)</th></tr>
+<tr>
+<th data-i18n="Blocs illimités" scope="row">Blocs illimités</th>
+<td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th data-i18n="Projets illimités" scope="row">Projets illimités</th>
+<td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th data-i18n="Maps illimitées" scope="row">Maps illimitées</th>
+<td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th data-i18n="Taille des maps illimitée" scope="row">Taille des maps illimitée</th>
+<td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th data-i18n="Personnalisation complète des blocs" scope="row">Personnalisation complète des blocs</th>
+<td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th data-i18n="Personnalisation des touches" scope="row">Personnalisation des touches</th>
+<td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr>
+<th data-i18n="Options illimitées" scope="row">Options illimitées</th>
+<td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td>
+<td class="premium-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+<td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td>
+</tr>
+<tr class="group-row"><th colspan="4" data-i18n="Fonctionnalités exclusives à Platinum" scope="rowgroup">Fonctionnalités exclusives à Platinum</th></tr>
+<tr><th data-i18n="IA locale intégrée (sans cloud)" scope="row">IA locale intégrée (sans cloud)</th><td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td></tr>
+<tr><th data-i18n="Accès aux mises à jour Platinum" scope="row">Accès aux mises à jour Platinum</th><td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td></tr>
+<tr><th data-i18n="Licence et accès Platinum" scope="row">Licence et accès Platinum</th><td><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td><td class="premium-column"><span class="comparison-result no"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>Non</span></td><td class="platinum-column"><span class="comparison-result yes"><svg aria-hidden="true" fill="none" viewbox="0 0 20 20"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>Oui</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="comparison-actions">
+<a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
             Télécharger gratuitement <span aria-hidden="true">↓</span>
-          </a>
-          <button class="btn btn-secondary" id="compareBuyButton" type="button" aria-describedby="comparisonPaymentStatus">
+</a>
+<button aria-describedby="comparisonPaymentStatus" class="btn btn-secondary" id="compareBuyButton" type="button">
             Obtenir Premium <span aria-hidden="true">↗</span>
-          </button>
-        </div>
-        <p id="comparisonPaymentStatus" role="status" aria-live="polite"></p>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="galleryTitle">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-kicker">L’application en images</div>
-          <h2 id="galleryTitle">Un aperçu de Mind-It.</h2>
-          <p>Découvre des captures de l’application, de la carte mentale aux vues de travail.</p>
-        </div>
-
-        <div class="gallery-grid">
-          <figure class="gallery-card">
-            <div class="gallery-image-frame">
-              <img class="gallery-image"
-                   src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-14%20181018.png"
-                   alt="Deuxième capture d’écran de Mind-It du 14 octobre 2026"
-                   width="222" height="118" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="gallery-caption"><strong>Mind-It · Capture 2</strong>Vue de l’application du 21 octobre 2026.</figcaption>
-          </figure>
-
-          <figure class="gallery-card">
-            <div class="gallery-image-frame">
-              <img class="gallery-image"
-                   src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-21%20132322.png"
-                   alt="Capture d’écran de Mind-It du 21 octobre 2026"
-                   width="412" height="270" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="gallery-caption"><strong>Mind-It · Capture 3</strong>Vue de l’application du 21 octobre 2026.</figcaption>
-          </figure>
-
-          <figure class="gallery-card">
-            <div class="gallery-image-frame">
-              <img class="gallery-image"
-                   src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-21%20132332.png"
-                   alt="Capture d’écran de Mind-It du 21 octobre 2026"
-                   width="288" height="362" loading="lazy" decoding="async">
-            </div>
-            <figcaption class="gallery-caption"><strong>Mind-It · Capture 4</strong>Vue de l’application du 21 octobre 2026.</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-paper" id="premium">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-kicker">À ton rythme</div>
-          <h2>Commence simplement.</h2>
-          <p>Télécharge la version gratuite ou passe par le paiement Premium pour recevoir ta licence et accéder au téléchargement et aux mises à jour prévus pour les acheteurs.</p>
-        </div>
-
-        <div class="pricing-grid">
-          <article class="price-card">
-            <div class="plan-label">Pour découvrir</div>
-            <h3>Mind-It Gratuit</h3>
-            <p class="plan-description">Télécharge l'application Windows et découvre les fonctions gratuites de Mind-It.</p>
-            <div class="price-note">0 CHF <span aria-hidden="true"> · </span> téléchargement gratuit</div>
-            <a class="btn btn-secondary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
+</button>
+</div>
+<p aria-live="polite" id="comparisonPaymentStatus" role="status"></p>
+</div>
+</section>
+<section aria-labelledby="galleryTitle" class="section">
+<div class="container">
+<div class="section-heading">
+<div class="section-kicker">L’application en images</div>
+<h2 data-i18n="Un aperçu de Mind-It." id="galleryTitle">Un aperçu de Mind-It.</h2>
+<p data-i18n="Découvre des captures de l’application, de la carte mentale aux vues de travail.">Découvre des captures de l’application, de la carte mentale aux vues de travail.</p>
+</div>
+<div class="gallery-grid">
+<figure class="gallery-card">
+<div class="gallery-image-frame">
+<img alt="Deuxième capture d’écran de Mind-It du 14 octobre 2026" class="gallery-image" decoding="async" height="118" loading="lazy" src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-14%20181018.png" width="222"/>
+</div>
+<figcaption class="gallery-caption"><strong>Mind-It · Capture 2</strong>Vue de l’application du 21 octobre 2026.</figcaption>
+</figure>
+<figure class="gallery-card">
+<div class="gallery-image-frame">
+<img alt="Capture d’écran de Mind-It du 21 octobre 2026" class="gallery-image" decoding="async" height="270" loading="lazy" src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-21%20132322.png" width="412"/>
+</div>
+<figcaption class="gallery-caption"><strong>Mind-It · Capture 3</strong>Vue de l’application du 21 octobre 2026.</figcaption>
+</figure>
+<figure class="gallery-card">
+<div class="gallery-image-frame">
+<img alt="Capture d’écran de Mind-It du 21 octobre 2026" class="gallery-image" decoding="async" height="362" loading="lazy" src="./screenshots/Capture%20d%27%C3%A9cran%202026-10-21%20132332.png" width="288"/>
+</div>
+<figcaption class="gallery-caption"><strong>Mind-It · Capture 4</strong>Vue de l’application du 21 octobre 2026.</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section class="section section-paper" id="premium">
+<div class="container">
+<div class="section-heading">
+<div class="section-kicker">À ton rythme</div>
+<h2 data-i18n="Commence simplement.">Commence simplement.</h2>
+<p data-i18n="Télécharge la version gratuite ou passe par le paiement Premium pour recevoir ta licence et accéder au téléchargement et aux mises à jour prévus pour les acheteurs.">Télécharge la version gratuite ou passe par le paiement Premium pour recevoir ta licence et accéder au téléchargement et aux mises à jour prévus pour les acheteurs.</p>
+</div>
+<div class="pricing-grid">
+<article class="price-card">
+<div class="plan-label">Pour découvrir</div>
+<h3 data-i18n="Mind-It Gratuit">Mind-It Gratuit</h3>
+<p class="plan-description" data-i18n="Télécharge l'application Windows et découvre les fonctions gratuites de Mind-It.">Télécharge l'application Windows et découvre les fonctions gratuites de Mind-It.</p>
+<div class="price-note">0 CHF <span aria-hidden="true"> · </span> téléchargement gratuit</div>
+<a class="btn btn-secondary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
               Télécharger gratuitement <span aria-hidden="true">↓</span>
-            </a>
-            <ul class="plan-list">
-              <li><span class="plan-check" aria-hidden="true">✓</span>Assistant de fabrication</li>
-              <li><span class="plan-check" aria-hidden="true">✓</span>Accès aux fonctions gratuites de Mind-It</li>
-            </ul>
-          </article>
-
-          <article class="price-card premium">
-            <div class="plan-label">Pour aller plus loin</div>
-            <h3>Mind-It Premium</h3>
-            <p class="plan-description">Un achat Premium donne accès à une licence, au téléchargement Premium et aux mises à jour avec une licence valide.</p>
-            <div class="price-note">1.99CHF, Mises a jours gratuite avec une clé de liscence valide.</div>
-            <button class="btn" id="buyButton" type="button" aria-describedby="paymentStatus">
+</a>
+<ul class="plan-list">
+<li><span aria-hidden="true" class="plan-check">✓</span>Assistant de fabrication</li>
+<li><span aria-hidden="true" class="plan-check">✓</span>Accès aux fonctions gratuites de Mind-It</li>
+</ul>
+</article>
+<article class="price-card premium">
+<div class="plan-label">Pour aller plus loin</div>
+<h3 data-i18n="Mind-It Premium">Mind-It Premium</h3>
+<p class="plan-description" data-i18n="Un achat Premium donne accès à une licence, au téléchargement Premium et aux mises à jour avec une licence valide.">Un achat Premium donne accès à une licence, au téléchargement Premium et aux mises à jour avec une licence valide.</p>
+<div class="price-note">1.99CHF, Mises a jours gratuite avec une clé de liscence valide.</div>
+<button aria-describedby="paymentStatus" class="btn" id="buyButton" type="button">
               Continuer vers le paiement <span aria-hidden="true">↗</span>
-            </button>
-            <p id="paymentStatus" role="status" aria-live="polite"></p>
-            <ul class="plan-list">
-              <li><span class="plan-check" aria-hidden="true">✓</span>Toutes les fonctions gratuites</li>
-              <li><span class="plan-check" aria-hidden="true">✓</span>Blocs, projets et maps illimités</li>
-              <li><span class="plan-check" aria-hidden="true">✓</span>Taille de maps illimitée et options de personnalisation</li>
-              <li><span class="plan-check" aria-hidden="true">✓</span>Licence, téléchargement Premium et mises à jour avec une licence valide</li>
-            </ul>
-          </article>
-
-          <article class="price-card platinum">
-            <div class="plan-label">Tout-en-un</div>
-            <h3>Mind-It Platinum</h3>
-            <p class="plan-description">Toutes les fonctionnalités Mind-It, y compris les outils avancés et l'IA locale, avec une licence Platinum active.</p>
-            <div class="price-note">5.99 CHF / mois · abonnement résiliable</div>
-            <button class="btn btn-primary" id="platinumCheckoutCardButton" type="button" aria-describedby="platinumCheckoutCardStatus">Choisir Platinum</button>
-            <p id="platinumCheckoutCardStatus" role="status" aria-live="polite"></p>
-            <ul class="plan-list">
-              <li><span class="plan-check" aria-hidden="true">✓</span>Toutes les fonctions Premium</li>
-              <li><span class="plan-check" aria-hidden="true">✓</span>Fonctionnalités Platinum</li>
-              <li><span class="plan-check" aria-hidden="true">✓</span>IA locale et mises à jour Platinum</li>
-              <li><span class="plan-check" aria-hidden="true">✓</span>Activation par clé Platinum</li>
-            </ul>
-          </article>
-        </div>
-        <p class="price-footnote">Le prix, la durée et les conditions de l'offre sont ceux présentés sur la page de paiement avant confirmation. Aucun achat n'est déclenché sans validation sur cette page.</p>
-      </div>
-    </section>
-
-    <section class="section" id="activation">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-kicker">Compte et licence</div>
-          <h2>Activer une clé Mind-It.</h2>
-          <p>Vérifie ta clé Premium ou Platinum auprès du serveur Mind-It. La validation sur le site ne remplace pas l'activation dans l'application.</p>
-        </div>
-        <div class="updates-card" style="display:block;max-width:680px;margin:auto">
-          <form id="licenseActivationForm" style="display:grid;gap:14px">
-            <label for="licenseTier">Type de licence</label>
-            <select id="licenseTier" required style="padding:14px;border:1px solid #cbd5cb;border-radius:10px;background:white;color:#20372e">
-              <option value="premium">Mind-It Premium</option>
-              <option value="platinum">Mind-It Platinum</option>
-            </select>
-            <label for="licenseKeyInput">Clé de licence</label>
-            <input id="licenseKeyInput" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="MINDIT-XXXX-XXXX-…" required style="padding:14px;border:1px solid #cbd5cb;border-radius:10px;background:white;color:#20372e">
-            <button class="btn btn-primary" id="licenseValidateButton" type="submit">Vérifier ma clé</button>
-            <p id="licenseActivationStatus" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <section class="section updates-section" id="premium-updates">
-      <div class="container">
-        <div class="updates-card">
-          <div class="updates-copy">
-            <div class="section-kicker">Free Updates &amp; Premium Updates</div>
-            <h2>Découvre les dernières mises à jour.</h2>
-            <p>Les versions gratuites sont publiées sur GitHub et téléchargeables sans clé de licence. Les mises à jour Premium restent accessibles avec une licence valide.</p>
-          </div>
-          <div class="updates-actions">
-            <a class="btn btn-primary" href="https://mind-it.onrender.com/free-updates.html">
+</button>
+<p aria-live="polite" id="paymentStatus" role="status"></p>
+<ul class="plan-list">
+<li><span aria-hidden="true" class="plan-check">✓</span>Toutes les fonctions gratuites</li>
+<li><span aria-hidden="true" class="plan-check">✓</span>Blocs, projets et maps illimités</li>
+<li><span aria-hidden="true" class="plan-check">✓</span>Taille de maps illimitée et options de personnalisation</li>
+<li><span aria-hidden="true" class="plan-check">✓</span>Licence, téléchargement Premium et mises à jour avec une licence valide</li>
+</ul>
+</article>
+<article class="price-card platinum">
+<div class="plan-label">Tout-en-un</div>
+<h3 data-i18n="Mind-It Platinum">Mind-It Platinum</h3>
+<p class="plan-description" data-i18n="Toutes les fonctionnalités Mind-It, y compris les outils avancés et l'IA locale, avec une licence Platinum active.">Toutes les fonctionnalités Mind-It, y compris les outils avancés et l'IA locale, avec une licence Platinum active.</p>
+<div class="price-note">5.99 CHF / mois · abonnement résiliable</div>
+<button aria-describedby="platinumCheckoutCardStatus" class="btn btn-primary" data-i18n="Choisir Platinum" id="platinumCheckoutCardButton" type="button">Choisir Platinum</button>
+<p aria-live="polite" id="platinumCheckoutCardStatus" role="status"></p>
+<ul class="plan-list">
+<li><span aria-hidden="true" class="plan-check">✓</span>Toutes les fonctions Premium</li>
+<li><span aria-hidden="true" class="plan-check">✓</span>Fonctionnalités Platinum</li>
+<li><span aria-hidden="true" class="plan-check">✓</span>IA locale et mises à jour Platinum</li>
+<li><span aria-hidden="true" class="plan-check">✓</span>Activation par clé Platinum</li>
+</ul>
+</article>
+</div>
+<p class="price-footnote" data-i18n="Le prix, la durée et les conditions de l'offre sont ceux présentés sur la page de paiement avant confirmation. Aucun achat n'est déclenché sans validation sur cette page.">Le prix, la durée et les conditions de l'offre sont ceux présentés sur la page de paiement avant confirmation. Aucun achat n'est déclenché sans validation sur cette page.</p>
+</div>
+</section>
+<section class="section" id="activation">
+<div class="container">
+<div class="section-heading">
+<div class="section-kicker">Compte et licence</div>
+<h2 data-i18n="Activer une clé Mind-It.">Activer une clé Mind-It.</h2>
+<p data-i18n="Vérifie ta clé Premium ou Platinum auprès du serveur Mind-It. La validation sur le site ne remplace pas l'activation dans l'application.">Vérifie ta clé Premium ou Platinum auprès du serveur Mind-It. La validation sur le site ne remplace pas l'activation dans l'application.</p>
+</div>
+<div class="updates-card" style="display:block;max-width:680px;margin:auto">
+<form id="licenseActivationForm" style="display:grid;gap:14px">
+<label data-i18n="Type de licence" for="licenseTier">Type de licence</label>
+<select id="licenseTier" required="" style="padding:14px;border:1px solid #cbd5cb;border-radius:10px;background:white;color:#20372e">
+<option data-i18n="Mind-It Premium" value="premium">Mind-It Premium</option>
+<option data-i18n="Mind-It Platinum" value="platinum">Mind-It Platinum</option>
+</select>
+<label data-i18n="Clé de licence" for="licenseKeyInput">Clé de licence</label>
+<input autocapitalize="characters" autocomplete="off" id="licenseKeyInput" placeholder="MINDIT-XXXX-XXXX-…" required="" spellcheck="false" style="padding:14px;border:1px solid #cbd5cb;border-radius:10px;background:white;color:#20372e"/>
+<button class="btn btn-primary" data-i18n="Vérifier ma clé" id="licenseValidateButton" type="submit">Vérifier ma clé</button>
+<p aria-live="polite" id="licenseActivationStatus" role="status"></p>
+</form>
+</div>
+</div>
+</section>
+<section class="section updates-section" id="premium-updates">
+<div class="container">
+<div class="updates-card">
+<div class="updates-copy">
+<div class="section-kicker">Free Updates &amp; Premium Updates</div>
+<h2 data-i18n="Découvre les dernières mises à jour.">Découvre les dernières mises à jour.</h2>
+<p data-i18n="Les versions gratuites sont publiées sur GitHub et téléchargeables sans clé de licence. Les mises à jour Premium restent accessibles avec une licence valide.">Les versions gratuites sont publiées sur GitHub et téléchargeables sans clé de licence. Les mises à jour Premium restent accessibles avec une licence valide.</p>
+</div>
+<div class="updates-actions">
+<a class="btn btn-primary" href="https://mind-it.onrender.com/free-updates.html">
               Updates gratuites <span aria-hidden="true">↗</span>
-            </a>
-            <a class="btn btn-secondary" href="https://mind-it.onrender.com/update.html">
+</a>
+<a class="btn btn-secondary" href="https://mind-it.onrender.com/update.html">
               Premium Updates <span aria-hidden="true">↗</span>
-            </a>
-            <a class="btn btn-secondary" href="platinum-updates.html?v=20261109-2">Platinum Updates</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="faq">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-kicker">Les réponses utiles</div>
-          <h2>Questions fréquentes.</h2>
-          <p>Les informations essentielles pour télécharger Mind-It et comprendre l'accès Premium.</p>
-        </div>
-
-        <div class="faq-list">
-          <details>
-            <summary>Comment télécharger Mind-It gratuitement ?</summary>
-            <p>Utilise le bouton de téléchargement : il ouvre l'installateur Windows publié dans les <a href="https://github.com/jacquelavi2000-hub/Mind-It/releases">GitHub Releases</a>.</p>
-          </details>
-          <details>
-            <summary>Mind-It est-il disponible sur Windows ?</summary>
-            <p>Le téléchargement proposé ici est l'installateur Windows. Les autres plateformes ne sont pas annoncées sur cette page.</p>
-          </details>
-          <details>
-            <summary>Que comprend Mind-It Premium ?</summary>
-            <p>Après confirmation du paiement, le parcours Premium donne accès à une licence, au téléchargement Premium et aux mises à jour réservées aux licences valides. La page de paiement précise le montant et les conditions avant validation.</p>
-          </details>
-          <details>
-            <summary>Comment fonctionne le paiement ?</summary>
-            <p>Le bouton contacte le service Mind-It pour créer une session de paiement, puis t'envoie vers la page de paiement retournée par le service. Tu peux vérifier le prix et les conditions avant de confirmer ; aucun achat n'est effectué sur ce site.</p>
-          </details>
-          <details>
-            <summary>Comment obtenir les mises à jour Premium ?</summary>
-            <p>La <a href="update.html">page des mises à jour</a> permet de vérifier la dernière version et de demander son téléchargement avec une clé de licence valide.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section class="final-cta">
-      <div class="container cta-inner">
-        <div>
-          <h2>Une idée mérite un point de départ.</h2>
-          <p>Découvre Mind-It pour Windows et commence à organiser tes projets.</p>
-        </div>
-        <a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
+</a>
+<a class="btn btn-secondary" data-i18n="Platinum Updates" href="platinum-updates.html?v=20261109-2">Platinum Updates</a>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="faq">
+<div class="container">
+<div class="section-heading">
+<div class="section-kicker">Les réponses utiles</div>
+<h2 data-i18n="Questions fréquentes.">Questions fréquentes.</h2>
+<p data-i18n="Les informations essentielles pour télécharger Mind-It et comprendre l'accès Premium.">Les informations essentielles pour télécharger Mind-It et comprendre l'accès Premium.</p>
+</div>
+<div class="faq-list">
+<details>
+<summary data-i18n="Comment télécharger Mind-It gratuitement ?">Comment télécharger Mind-It gratuitement ?</summary>
+<p>Utilise le bouton de téléchargement : il ouvre l'installateur Windows publié dans les <a data-i18n="GitHub Releases" href="https://github.com/jacquelavi2000-hub/Mind-It/releases">GitHub Releases</a>.</p>
+</details>
+<details>
+<summary data-i18n="Mind-It est-il disponible sur Windows ?">Mind-It est-il disponible sur Windows ?</summary>
+<p data-i18n="Le téléchargement proposé ici est l'installateur Windows. Les autres plateformes ne sont pas annoncées sur cette page.">Le téléchargement proposé ici est l'installateur Windows. Les autres plateformes ne sont pas annoncées sur cette page.</p>
+</details>
+<details>
+<summary data-i18n="Que comprend Mind-It Premium ?">Que comprend Mind-It Premium ?</summary>
+<p data-i18n="Après confirmation du paiement, le parcours Premium donne accès à une licence, au téléchargement Premium et aux mises à jour réservées aux licences valides. La page de paiement précise le montant et les conditions avant validation.">Après confirmation du paiement, le parcours Premium donne accès à une licence, au téléchargement Premium et aux mises à jour réservées aux licences valides. La page de paiement précise le montant et les conditions avant validation.</p>
+</details>
+<details>
+<summary data-i18n="Comment fonctionne le paiement ?">Comment fonctionne le paiement ?</summary>
+<p data-i18n="Le bouton contacte le service Mind-It pour créer une session de paiement, puis t'envoie vers la page de paiement retournée par le service. Tu peux vérifier le prix et les conditions avant de confirmer ; aucun achat n'est effectué sur ce site.">Le bouton contacte le service Mind-It pour créer une session de paiement, puis t'envoie vers la page de paiement retournée par le service. Tu peux vérifier le prix et les conditions avant de confirmer ; aucun achat n'est effectué sur ce site.</p>
+</details>
+<details>
+<summary data-i18n="Comment obtenir les mises à jour Premium ?">Comment obtenir les mises à jour Premium ?</summary>
+<p>La <a data-i18n="page des mises à jour" href="update.html">page des mises à jour</a> permet de vérifier la dernière version et de demander son téléchargement avec une clé de licence valide.</p>
+</details>
+</div>
+</div>
+</section>
+<section class="final-cta">
+<div class="container cta-inner">
+<div>
+<h2 data-i18n="Une idée mérite un point de départ.">Une idée mérite un point de départ.</h2>
+<p data-i18n="Découvre Mind-It pour Windows et commence à organiser tes projets.">Découvre Mind-It pour Windows et commence à organiser tes projets.</p>
+</div>
+<a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
           Télécharger Mind-It <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="footer-top">
-        <a class="brand" href="#accueil" aria-label="Mind-It, retour en haut de page">
-          <span class="brand-mark" aria-hidden="true">M</span>
+</a>
+</div>
+</section>
+</main>
+<footer>
+<div class="container">
+<div class="footer-top">
+<a aria-label="Mind-It, retour en haut de page" class="brand" href="#accueil">
+<span aria-hidden="true" class="brand-mark">M</span>
           Mind-It
         </a>
-        <nav class="footer-links" aria-label="Liens de pied de page">
-          <a href="#fonctionnalites">Fonctionnalités</a>
-          <a href="#comparatif">Comparatif</a>
-          <a href="#premium">Premium</a>
-          <a href="#faq">FAQ</a>
-          <a href="update.html">Mises à jour</a>
-          <a href="modeles-ia.html">Modèles IA</a>
-          <a href="account.html">Espace client</a>
-          <a href="guide-chatgpt.html">Connexion ChatGPT</a>
-          <a href="https://github.com/jacquelavi2000-hub/Mind-It">GitHub</a>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <span>© <span id="year"></span> Mind-It</span>
-        <span>Conçu pour donner de la place à tes idées.</span>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    const buyButtons = [...document.querySelectorAll("#buyButton, #compareBuyButton")];
-    const paymentStatuses = [...document.querySelectorAll("#paymentStatus, #comparisonPaymentStatus")];
-    const menuToggle = document.getElementById("menuToggle");
-    const navLinks = document.getElementById("navLinks");
-
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    const navCategoryButtons = [...document.querySelectorAll(".nav-category")];
-
-    function closeDropdowns(exceptButton = null) {
-      navCategoryButtons.forEach((button) => {
-        if (button === exceptButton) return;
-        button.setAttribute("aria-expanded", "false");
-        const panel = document.getElementById(button.getAttribute("aria-controls"));
-        if (panel) panel.hidden = true;
+<nav aria-label="Liens de pied de page" class="footer-links">
+<a data-i18n="Fonctionnalités" href="#fonctionnalites">Fonctionnalités</a>
+<a data-i18n="Comparatif" href="#comparatif">Comparatif</a>
+<a data-i18n="Premium" href="#premium">Premium</a>
+<a data-i18n="FAQ" href="#faq">FAQ</a>
+<a data-i18n="Mises à jour" href="update.html">Mises à jour</a>
+<a data-i18n="Modèles IA" href="modeles-ia.html">Modèles IA</a>
+<a data-i18n="Espace client" href="account.html">Espace client</a>
+<a data-i18n="Connexion ChatGPT" href="guide-chatgpt.html">Connexion ChatGPT</a>
+<a data-i18n="GitHub" href="https://github.com/jacquelavi2000-hub/Mind-It">GitHub</a>
+</nav>
+</div>
+<div class="footer-bottom">
+<span>© <span id="year"></span> Mind-It</span>
+<span data-i18n="Conçu pour donner de la place à tes idées.">Conçu pour donner de la place à tes idées.</span>
+</div>
+</div>
+</footer>
+<script>
+    // Mind-It multilingual interface
+    const mindItTranslations = {"Télécharger l'application ↗":{"en":"Download the app ↗","de":"App herunterladen ↗","es":"Descargar la aplicación ↗"},"↗":{"en":"↗","de":"↗","es":"↗"},"M":{"en":"M","de":"M","es":"M"},"Découvrir":{"en":"Discover","de":"Entdecken","es":"Descubrir"},"Fonctionnalités":{"en":"Features","de":"Funktionen","es":"Funciones"},"Comparatif":{"en":"Comparison","de":"Vergleich","es":"Comparativa"},"FAQ":{"en":"FAQ","de":"FAQ","es":"FAQ"},"Offres":{"en":"Offers","de":"Angebote","es":"Ofertas"},"Premium":{"en":"Premium","de":"Premium","es":"Premium"},"Activer une clé":{"en":"Activate a key","de":"Einen Schlüssel aktivieren","es":"Activar una clave"},"Mises à jour":{"en":"Updates","de":"Updates","es":"Actualizaciones"},"Télécharger gratuitement ↗":{"en":"Download for free ↗","de":"Kostenlos herunterladen ↗","es":"Descargar gratis ↗"},"Outils":{"en":"Tools","de":"Tools","es":"Herramientas"},"Modèles IA":{"en":"AI models","de":"KI-Modelle","es":"Modelos de IA"},"Connexion ChatGPT":{"en":"ChatGPT connection","de":"ChatGPT-Verbindung","es":"Conexión con ChatGPT"},"Compte":{"en":"Account","de":"Konto","es":"Cuenta"},"Espace client":{"en":"Customer area","de":"Kundenbereich","es":"Área de cliente"},"Fais de la place à tes idées.":{"en":"Make room for your ideas.","de":"Schaff Raum für deine Ideen.","es":"Haz espacio para tus ideas."},"idées.":{"en":"ideas.","de":"Ideen.","es":"ideas."},"Rassemble tes projets, relie tes pensées et avance avec une vision plus claire. Mind-It est un espace de travail pour Windows, conçu pour donner forme à tes idées.":{"en":"Bring your projects together, connect your thoughts, and move forward with a clearer vision. Mind-It is a Windows workspace designed to give shape to your ideas.","de":"Bündle deine Projekte, verknüpfe deine Gedanken und komm mit einem klareren Blick voran. Mind-It ist ein Arbeitsbereich für Windows, der deinen Ideen Gestalt verleiht.","es":"Reúne tus proyectos, conecta tus ideas y avanza con una visión más clara. Mind-It es un espacio de trabajo para Windows diseñado para dar forma a tus ideas."},"Télécharger gratuitement ↓":{"en":"Download for free ↓","de":"Kostenlos herunterladen ↓","es":"Descargar gratis ↓"},"↓":{"en":"↓","de":"↓","es":"↓"},"Découvrir Premium →":{"en":"Discover Premium →","de":"Premium entdecken →","es":"Descubrir Premium →"},"→":{"en":"→","de":"→","es":"→"},"·":{"en":"·","de":"·","es":"·"},"Mind-It · Capture principale":{"en":"Mind-It · Main screenshot","de":"Mind-It · Hauptansicht","es":"Mind-It · Captura principal"},"Des idées éparses aux projets clairs.":{"en":"From scattered ideas to clear projects.","de":"Von verstreuten Ideen zu klaren Projekten.","es":"De ideas dispersas a proyectos claros."},"Mind-It réunit les outils mis en avant dans l'application : organiser tes projets et visualiser tes idées en mind maps.":{"en":"Mind-It brings together the app’s featured tools: organize your projects and visualize your ideas in mind maps.","de":"Mind-It vereint die wichtigsten Tools der App: Organisiere deine Projekte und visualisiere deine Ideen in Mindmaps.","es":"Mind-It reúne las herramientas destacadas de la aplicación: organiza tus proyectos y visualiza tus ideas en mapas mentales."},"Projets rassemblés":{"en":"Projects, all in one place","de":"Projekte an einem Ort","es":"Proyectos reunidos"},"Regroupe tes idées et tes projets dans un espace pensé pour garder une vue d'ensemble.":{"en":"Bring your ideas and projects together in a space designed to give you the big picture.","de":"Bündle deine Ideen und Projekte an einem Ort, der dir den Überblick bewahrt.","es":"Reúne tus ideas y proyectos en un espacio pensado para ofrecerte una visión global."},"Mind maps visuelles":{"en":"Visual mind maps","de":"Visuelle Mindmaps","es":"Mapas mentales visuales"},"Relie tes pensées et rends visibles les liens entre les éléments de ta réflexion.":{"en":"Connect your thoughts and make the relationships between them visible.","de":"Verknüpfe deine Gedanken und mach die Zusammenhänge sichtbar.","es":"Conecta tus ideas y haz visibles las relaciones entre ellas."},"Pour Windows":{"en":"For Windows","de":"Für Windows","es":"Para Windows"},"Télécharge l'application de bureau et retrouve ton espace Mind-It sur Windows.":{"en":"Download the desktop app and access your Mind-It workspace on Windows.","de":"Lade die Desktop-App herunter und nutze deinen Mind-It-Arbeitsbereich unter Windows.","es":"Descarga la aplicación de escritorio y accede a tu espacio de Mind-It en Windows."},"Choisis la version qui te correspond.":{"en":"Choose the version that’s right for you.","de":"Wähle die passende Version für dich.","es":"Elige la versión que mejor se adapte a ti."},"La version gratuite inclut désormais plusieurs nouveautés : zoom, minimap, import et export de maps, lignes droites et mode sombre. Premium débloque les fonctionnalités illimitées et les options de personnalisation.":{"en":"The free version now includes several new features: zoom, minimap, map import and export, straight lines, and dark mode. Premium unlocks unlimited features and customization options.","de":"Die kostenlose Version bietet jetzt mehrere neue Funktionen: Zoom, Minimap, Map-Import und -Export, gerade Linien und Dunkelmodus. Premium schaltet unbegrenzte Funktionen und Anpassungsoptionen frei.","es":"La versión gratuita ahora incluye varias novedades: zoom, minimapa, importación y exportación de mapas, líneas rectas y modo oscuro. Premium desbloquea funciones ilimitadas y opciones de personalización."},"Fonctionnalité":{"en":"Feature","de":"Funktion","es":"Función"},"Gratuit":{"en":"Free","de":"Gratis","es":"Gratis"},"Platinum":{"en":"Platinum","de":"Platinum","es":"Platinum"},"Assistant de fabrication":{"en":"Creation assistant","de":"Erstellungsassistent","es":"Asistente de creación"},"Oui":{"en":"Yes","de":"Ja","es":"Sí"},"Nouveautés disponibles gratuitement":{"en":"New features available for free","de":"Neue Funktionen kostenlos verfügbar","es":"Novedades disponibles gratis"},"Zoom ✦ Nouveauté":{"en":"Zoom ✦ New","de":"Zoom ✦ Neu","es":"Zoom ✦ Novedad"},"✦ Nouveauté":{"en":"✦ New","de":"✦ Neu","es":"✦ Novedad"},"Minimap ✦ Nouveauté":{"en":"Minimap ✦ New","de":"Minimap ✦ Neu","es":"Minimapa ✦ Novedad"},"Export de maps ✦ Nouveauté":{"en":"Map export ✦ New","de":"Map-Export ✦ Neu","es":"Exportación de mapas ✦ Novedad"},"Import de maps ✦ Nouveauté":{"en":"Map import ✦ New","de":"Map-Import ✦ Neu","es":"Importación de mapas ✦ Novedad"},"Lignes droites ✦ Nouveauté":{"en":"Straight lines ✦ New","de":"Gerade Linien ✦ Neu","es":"Líneas rectas ✦ Novedad"},"Mode sombre ✦ Nouveauté":{"en":"Dark mode ✦ New","de":"Dunkelmodus ✦ Neu","es":"Modo oscuro ✦ Novedad"},"Fonctionnalités Premium (incluses dans Platinum)":{"en":"Premium features (included in Platinum)","de":"Premium-Funktionen (in Platinum enthalten)","es":"Funciones Premium (incluidas en Platinum)"},"Blocs illimités":{"en":"Unlimited blocks","de":"Unbegrenzte Blöcke","es":"Bloques ilimitados"},"Non":{"en":"No","de":"Nein","es":"No"},"Projets illimités":{"en":"Unlimited projects","de":"Unbegrenzte Projekte","es":"Proyectos ilimitados"},"Maps illimitées":{"en":"Unlimited maps","de":"Unbegrenzte Maps","es":"Mapas ilimitados"},"Taille des maps illimitée":{"en":"Unlimited map size","de":"Unbegrenzte Map-Größe","es":"Tamaño de mapa ilimitado"},"Personnalisation complète des blocs":{"en":"Full block customization","de":"Vollständige Anpassung der Blöcke","es":"Personalización completa de los bloques"},"Personnalisation des touches":{"en":"Key customization","de":"Tastenanpassung","es":"Personalización de teclas"},"Options illimitées":{"en":"Unlimited options","de":"Unbegrenzte Optionen","es":"Opciones ilimitadas"},"Fonctionnalités exclusives à Platinum":{"en":"Platinum-exclusive features","de":"Exklusive Platinum-Funktionen","es":"Funciones exclusivas de Platinum"},"IA locale intégrée (sans cloud)":{"en":"Built-in local AI (no cloud)","de":"Integrierte lokale KI (ohne Cloud)","es":"IA local integrada (sin nube)"},"Accès aux mises à jour Platinum":{"en":"Access to Platinum updates","de":"Zugriff auf Platinum-Updates","es":"Acceso a las actualizaciones de Platinum"},"Licence et accès Platinum":{"en":"Platinum license and access","de":"Platinum-Lizenz und -Zugang","es":"Licencia y acceso a Platinum"},"Obtenir Premium ↗":{"en":"Get Premium ↗","de":"Premium holen ↗","es":"Obtener Premium ↗"},"Un aperçu de Mind-It.":{"en":"A look at Mind-It.","de":"Ein Einblick in Mind-It.","es":"Un vistazo a Mind-It."},"Découvre des captures de l’application, de la carte mentale aux vues de travail.":{"en":"Explore app screenshots, from the mind map to workspace views.","de":"Entdecke App-Screenshots – von der Mindmap bis zu den Arbeitsansichten.","es":"Descubre capturas de la aplicación, desde el mapa mental hasta las vistas de trabajo."},"Commence simplement.":{"en":"Get started simply.","de":"Starte ganz einfach.","es":"Empieza de forma sencilla."},"Télécharge la version gratuite ou passe par le paiement Premium pour recevoir ta licence et accéder au téléchargement et aux mises à jour prévus pour les acheteurs.":{"en":"Download the free version or complete a Premium purchase to receive your license and access the download and updates available to buyers.","de":"Lade die kostenlose Version herunter oder schließe einen Premium-Kauf ab, um deine Lizenz zu erhalten und auf den Download sowie die Updates für Käufer zuzugreifen.","es":"Descarga la versión gratuita o completa la compra Premium para recibir tu licencia y acceder a la descarga y las actualizaciones para compradores."},"Mind-It Gratuit":{"en":"Mind-It Free","de":"Mind-It Gratis","es":"Mind-It Gratis"},"Télécharge l'application Windows et découvre les fonctions gratuites de Mind-It.":{"en":"Download the Windows app and explore Mind-It’s free features.","de":"Lade die Windows-App herunter und entdecke die kostenlosen Funktionen von Mind-It.","es":"Descarga la aplicación para Windows y descubre las funciones gratuitas de Mind-It."},"✓ Assistant de fabrication":{"en":"✓ Creation assistant","de":"✓ Erstellungsassistent","es":"✓ Asistente de creación"},"✓":{"en":"✓","de":"✓","es":"✓"},"✓ Accès aux fonctions gratuites de Mind-It":{"en":"✓ Access to Mind-It’s free features","de":"✓ Zugriff auf die kostenlosen Funktionen von Mind-It","es":"✓ Acceso a las funciones gratuitas de Mind-It"},"Mind-It Premium":{"en":"Mind-It Premium","de":"Mind-It Premium","es":"Mind-It Premium"},"Un achat Premium donne accès à une licence, au téléchargement Premium et aux mises à jour avec une licence valide.":{"en":"A Premium purchase provides a license, the Premium download, and updates with a valid license.","de":"Ein Premium-Kauf umfasst eine Lizenz, den Premium-Download und Updates mit einer gültigen Lizenz.","es":"Una compra Premium da acceso a una licencia, a la descarga Premium y a las actualizaciones con una licencia válida."},"Continuer vers le paiement ↗":{"en":"Continue to checkout ↗","de":"Weiter zur Zahlung ↗","es":"Continuar al pago ↗"},"✓ Toutes les fonctions gratuites":{"en":"✓ All free features","de":"✓ Alle kostenlosen Funktionen","es":"✓ Todas las funciones gratuitas"},"✓ Blocs, projets et maps illimités":{"en":"✓ Unlimited blocks, projects, and maps","de":"✓ Unbegrenzte Blöcke, Projekte und Maps","es":"✓ Bloques, proyectos y mapas ilimitados"},"✓ Taille de maps illimitée et options de personnalisation":{"en":"✓ Unlimited map size and customization options","de":"✓ Unbegrenzte Map-Größe und Anpassungsoptionen","es":"✓ Tamaño de mapa ilimitado y opciones de personalización"},"✓ Licence, téléchargement Premium et mises à jour avec une licence valide":{"en":"✓ License, Premium download, and updates with a valid license","de":"✓ Lizenz, Premium-Download und Updates mit einer gültigen Lizenz","es":"✓ Licencia, descarga Premium y actualizaciones con una licencia válida"},"Mind-It Platinum":{"en":"Mind-It Platinum","de":"Mind-It Platinum","es":"Mind-It Platinum"},"Toutes les fonctionnalités Mind-It, y compris les outils avancés et l'IA locale, avec une licence Platinum active.":{"en":"All Mind-It features, including advanced tools and local AI, with an active Platinum license.","de":"Alle Mind-It-Funktionen, einschließlich erweiterter Tools und lokaler KI, mit einer aktiven Platinum-Lizenz.","es":"Todas las funciones de Mind-It, incluidas las herramientas avanzadas y la IA local, con una licencia Platinum activa."},"Choisir Platinum":{"en":"Choose Platinum","de":"Platinum wählen","es":"Elegir Platinum"},"✓ Toutes les fonctions Premium":{"en":"✓ All Premium features","de":"✓ Alle Premium-Funktionen","es":"✓ Todas las funciones Premium"},"✓ Fonctionnalités Platinum":{"en":"✓ Platinum features","de":"✓ Platinum-Funktionen","es":"✓ Funciones de Platinum"},"✓ IA locale et mises à jour Platinum":{"en":"✓ Local AI and Platinum updates","de":"✓ Lokale KI und Platinum-Updates","es":"✓ IA local y actualizaciones de Platinum"},"✓ Activation par clé Platinum":{"en":"✓ Activation with a Platinum key","de":"✓ Aktivierung mit einem Platinum-Schlüssel","es":"✓ Activación con una clave Platinum"},"Le prix, la durée et les conditions de l'offre sont ceux présentés sur la page de paiement avant confirmation. Aucun achat n'est déclenché sans validation sur cette page.":{"en":"The price, duration, and terms are those shown on the checkout page before you confirm. No purchase is made without confirmation on that page.","de":"Preis, Laufzeit und Angebotsbedingungen entsprechen den Angaben auf der Zahlungsseite vor der Bestätigung. Ohne Bestätigung auf dieser Seite wird kein Kauf ausgelöst.","es":"El precio, la duración y las condiciones de la oferta son los que aparecen en la página de pago antes de confirmar. No se realiza ninguna compra sin confirmarla en esa página."},"Activer une clé Mind-It.":{"en":"Activate a Mind-It key.","de":"Einen Mind-It-Schlüssel aktivieren.","es":"Activa una clave de Mind-It."},"Vérifie ta clé Premium ou Platinum auprès du serveur Mind-It. La validation sur le site ne remplace pas l'activation dans l'application.":{"en":"Check your Premium or Platinum key with the Mind-It server. Verifying it on the website does not replace activation in the app.","de":"Prüfe deinen Premium- oder Platinum-Schlüssel beim Mind-It-Server. Die Prüfung auf der Website ersetzt nicht die Aktivierung in der App.","es":"Verifica tu clave Premium o Platinum con el servidor de Mind-It. La verificación en el sitio web no sustituye la activación en la aplicación."},"Type de licence":{"en":"License type","de":"Lizenztyp","es":"Tipo de licencia"},"Clé de licence":{"en":"License key","de":"Lizenzschlüssel","es":"Clave de licencia"},"Vérifier ma clé":{"en":"Verify my key","de":"Meinen Schlüssel prüfen","es":"Verificar mi clave"},"Découvre les dernières mises à jour.":{"en":"Discover the latest updates.","de":"Entdecke die neuesten Updates.","es":"Descubre las últimas actualizaciones."},"Les versions gratuites sont publiées sur GitHub et téléchargeables sans clé de licence. Les mises à jour Premium restent accessibles avec une licence valide.":{"en":"Free versions are published on GitHub and can be downloaded without a license key. Premium updates remain available with a valid license.","de":"Kostenlose Versionen werden auf GitHub veröffentlicht und können ohne Lizenzschlüssel heruntergeladen werden. Premium-Updates sind mit einer gültigen Lizenz weiterhin verfügbar.","es":"Las versiones gratuitas se publican en GitHub y se pueden descargar sin clave de licencia. Las actualizaciones Premium siguen disponibles con una licencia válida."},"Updates gratuites ↗":{"en":"Free updates ↗","de":"Kostenlose Updates ↗","es":"Actualizaciones gratuitas ↗"},"Premium Updates ↗":{"en":"Premium updates ↗","de":"Premium-Updates ↗","es":"Actualizaciones Premium ↗"},"Platinum Updates":{"en":"Platinum updates","de":"Platinum-Updates","es":"Actualizaciones Platinum"},"Questions fréquentes.":{"en":"Frequently asked questions.","de":"Häufig gestellte Fragen.","es":"Preguntas frecuentes."},"Les informations essentielles pour télécharger Mind-It et comprendre l'accès Premium.":{"en":"Key information about downloading Mind-It and accessing Premium.","de":"Alle wichtigen Informationen zum Download von Mind-It und zum Premium-Zugang.","es":"Información esencial para descargar Mind-It y entender el acceso a Premium."},"Comment télécharger Mind-It gratuitement ?":{"en":"How can I download Mind-It for free?","de":"Wie kann ich Mind-It kostenlos herunterladen?","es":"¿Cómo puedo descargar Mind-It gratis?"},"Utilise le bouton de téléchargement : il ouvre l'installateur Windows publié dans les GitHub Releases .":{"en":"Use the download button to open the Windows installer published in GitHub Releases.","de":"Über den Download-Button öffnest du den Windows-Installer aus den GitHub Releases.","es":"Usa el botón de descarga para abrir el instalador de Windows publicado en GitHub Releases."},"GitHub Releases":{"en":"GitHub Releases","de":"GitHub Releases","es":"GitHub Releases"},"Mind-It est-il disponible sur Windows ?":{"en":"Is Mind-It available on Windows?","de":"Ist Mind-It für Windows verfügbar?","es":"¿Mind-It está disponible para Windows?"},"Le téléchargement proposé ici est l'installateur Windows. Les autres plateformes ne sont pas annoncées sur cette page.":{"en":"The download offered here is the Windows installer. Other platforms are not listed on this page.","de":"Hier wird der Windows-Installer angeboten. Andere Plattformen werden auf dieser Seite nicht angekündigt.","es":"La descarga disponible aquí es el instalador de Windows. En esta página no se anuncian otras plataformas."},"Que comprend Mind-It Premium ?":{"en":"What does Mind-It Premium include?","de":"Was bietet Mind-It Premium?","es":"¿Qué incluye Mind-It Premium?"},"Après confirmation du paiement, le parcours Premium donne accès à une licence, au téléchargement Premium et aux mises à jour réservées aux licences valides. La page de paiement précise le montant et les conditions avant validation.":{"en":"After payment is confirmed, the Premium process provides a license, the Premium download, and updates for valid licenses. The checkout page shows the price and terms before you confirm.","de":"Nach Bestätigung der Zahlung erhältst du eine Lizenz, den Premium-Download und Updates für gültige Lizenzen. Auf der Zahlungsseite werden Preis und Bedingungen vor der Bestätigung angezeigt.","es":"Tras confirmar el pago, el proceso Premium da acceso a una licencia, a la descarga Premium y a las actualizaciones para licencias válidas. La página de pago indica el precio y las condiciones antes de confirmar."},"Comment fonctionne le paiement ?":{"en":"How does payment work?","de":"Wie funktioniert die Zahlung?","es":"¿Cómo funciona el pago?"},"Le bouton contacte le service Mind-It pour créer une session de paiement, puis t'envoie vers la page de paiement retournée par le service. Tu peux vérifier le prix et les conditions avant de confirmer ; aucun achat n'est effectué sur ce site.":{"en":"The button contacts the Mind-It service to create a checkout session, then sends you to the payment page provided by the service. You can check the price and terms before confirming; no purchase is made on this site.","de":"Der Button kontaktiert den Mind-It-Dienst, um eine Zahlungssitzung zu erstellen, und leitet dich dann zur vom Dienst bereitgestellten Zahlungsseite weiter. Du kannst Preis und Bedingungen vor der Bestätigung prüfen; auf dieser Website wird kein Kauf getätigt.","es":"El botón contacta con el servicio de Mind-It para crear una sesión de pago y después te dirige a la página de pago proporcionada por el servicio. Puedes comprobar el precio y las condiciones antes de confirmar; no se realiza ninguna compra en este sitio."},"Comment obtenir les mises à jour Premium ?":{"en":"How do I get Premium updates?","de":"Wie erhalte ich Premium-Updates?","es":"¿Cómo puedo obtener las actualizaciones Premium?"},"La page des mises à jour permet de vérifier la dernière version et de demander son téléchargement avec une clé de licence valide.":{"en":"The updates page lets you check the latest version and request a download with a valid license key.","de":"Auf der Update-Seite kannst du die neueste Version prüfen und mit einem gültigen Lizenzschlüssel den Download anfordern.","es":"En la página de actualizaciones puedes consultar la última versión y solicitar su descarga con una clave de licencia válida."},"page des mises à jour":{"en":"updates page","de":"Update-Seite","es":"página de actualizaciones"},"Une idée mérite un point de départ.":{"en":"Every idea deserves a starting point.","de":"Jede Idee verdient einen Anfang.","es":"Toda idea merece un punto de partida."},"Découvre Mind-It pour Windows et commence à organiser tes projets.":{"en":"Discover Mind-It for Windows and start organizing your projects.","de":"Entdecke Mind-It für Windows und beginne, deine Projekte zu organisieren.","es":"Descubre Mind-It para Windows y empieza a organizar tus proyectos."},"Télécharger Mind-It ↗":{"en":"Download Mind-It ↗","de":"Mind-It herunterladen ↗","es":"Descargar Mind-It ↗"},"GitHub":{"en":"GitHub","de":"GitHub","es":"GitHub"},"Conçu pour donner de la place à tes idées.":{"en":"Designed to make room for your ideas.","de":"Entwickelt, um deinen Ideen Raum zu geben.","es":"Diseñado para dar espacio a tus ideas."},"Fais de la place à tes":{"en":"Make room for your","de":"Schaff Raum für deine","es":"Haz espacio para tus"},"Télécharger l'application":{"en":"Download the app","de":"App herunterladen","es":"Descargar la aplicación"},"Télécharger gratuitement":{"en":"Download for free","de":"Kostenlos herunterladen","es":"Descargar gratis"},"Découvrir Premium":{"en":"Discover Premium","de":"Premium entdecken","es":"Descubrir Premium"},"Télécharger Mind-It":{"en":"Download Mind-It","de":"Mind-It herunterladen","es":"Descargar Mind-It"}};
+    const languageSelect = document.getElementById("languageSelect");
+    function setMindItLanguage(language) {
+      const lang = ["fr", "en", "de", "es"].includes(language) ? language : "fr";
+      document.documentElement.lang = lang;
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.getAttribute("data-i18n");
+        const translated = mindItTranslations[key]?.[lang];
+        if (element.children.length === 0) element.textContent = lang === "fr" ? key : (translated || key);
       });
-    }
-
-    function closeMenu() {
-      closeDropdowns();
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.setAttribute("aria-label", "Ouvrir le menu");
-      navLinks.hidden = true;
-    }
-
-    navCategoryButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const panel = document.getElementById(button.getAttribute("aria-controls"));
-        const shouldOpen = button.getAttribute("aria-expanded") !== "true";
-        closeDropdowns(button);
-        button.setAttribute("aria-expanded", String(shouldOpen));
-        if (panel) panel.hidden = !shouldOpen;
-      });
-    });
-
-    menuToggle.addEventListener("click", () => {
-      const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
-      if (isExpanded) closeMenu();
-      else {
-        navLinks.hidden = false;
-        menuToggle.setAttribute("aria-expanded", "true");
-        menuToggle.setAttribute("aria-label", "Fermer le menu");
-      }
-    });
-
-    navLinks.addEventListener("click", (event) => {
-      if (event.target.closest("a")) closeMenu();
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!event.target.closest(".nav-group")) closeDropdowns();
-      if (window.matchMedia("(max-width: 680px)").matches && !event.target.closest(".nav")) closeMenu();
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeDropdowns();
-        if (window.matchMedia("(max-width: 680px)").matches) closeMenu();
-      }
-    });
-
-    if (window.matchMedia("(max-width: 680px)").matches) navLinks.hidden = true;
-
-    window.matchMedia("(max-width: 680px)").addEventListener("change", (event) => {
-      closeDropdowns();
-      if (event.matches) closeMenu();
-      else {
-        navLinks.hidden = false;
-        menuToggle.setAttribute("aria-expanded", "false");
-        menuToggle.setAttribute("aria-label", "Ouvrir le menu");
-      }
-    });
-
-    async function startPremiumCheckout() {
-      const accessToken = sessionStorage.getItem("mindit_access_token");
-      if (!accessToken) { window.location.assign("account.html?next=premium"); return; }
-      buyButtons.forEach((button) => {
-        button.disabled = true;
-        button.setAttribute("aria-busy", "true");
-        button.dataset.originalContent = button.innerHTML;
-        button.textContent = "Préparation du paiement…";
-      });
-      paymentStatuses.forEach((status) => {
-        status.dataset.state = "loading";
-        status.textContent = "Connexion au service de paiement…";
-      });
-      try {
-        const response = await fetch("https://mind-it-server.onrender.com/api/create-checkout-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
-          body: JSON.stringify({})
+      document.querySelectorAll("a, button, h1").forEach((element) => {
+        Array.from(element.childNodes).forEach((node, index) => {
+          if (node.nodeType !== Node.TEXT_NODE) return;
+          const marker = "i18nOriginal" + index;
+          if (!element.dataset[marker]) element.dataset[marker] = node.textContent;
+          const original = element.dataset[marker];
+          const key = original.trim();
+          if (!key || !mindItTranslations[key]) return;
+          const translated = lang === "fr" ? original : original.replace(key, mindItTranslations[key][lang] || key);
+          node.textContent = translated;
         });
-        if (response.status === 401) { window.location.assign("account.html?next=premium"); return; }
-        const data = await response.json();
-        if (!response.ok || typeof data.url !== "string") throw new Error(data.error || "Le service de paiement n'a pas retourné de lien valide.");
-        const checkoutUrl = new URL(data.url);
-        if (checkoutUrl.protocol !== "https:") throw new Error("Le lien de paiement sécurisé n'est pas valide.");
-        paymentStatuses.forEach((status) => { status.dataset.state = "success"; status.textContent = "Redirection vers la page de paiement sécurisée…"; });
-        window.location.assign(checkoutUrl.href);
-      } catch (error) {
-        paymentStatuses.forEach((status) => { status.dataset.state = "error"; status.textContent = error.message || "Le paiement est temporairement indisponible. Vérifie ta connexion et réessaie."; });
-        buyButtons.forEach((button) => { button.disabled = false; button.removeAttribute("aria-busy"); button.innerHTML = button.dataset.originalContent; });
-      }
+      });
+      if (languageSelect) languageSelect.value = lang;
+      try { localStorage.setItem("mindit-language", lang); } catch (_) {}
     }
-
-    buyButtons.forEach((button) => {
-      button.addEventListener("click", startPremiumCheckout);
-    });
-    const activationForm = document.getElementById("licenseActivationForm");
-    activationForm?.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const button = document.getElementById("licenseValidateButton");
-      const status = document.getElementById("licenseActivationStatus");
-      const tier = document.getElementById("licenseTier").value;
-      const key = document.getElementById("licenseKeyInput").value.trim().toUpperCase();
-      button.disabled = true;
-      status.textContent = "Vérification sécurisée de la licence…";
-      try {
-        const endpoint = tier === "platinum" ? "/api/platinum/validate-license" : "/api/license/validate";
-        const response = await fetch("https://mind-it-server.onrender.com" + endpoint, {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ license_key: key })
-        });
-        const data = await response.json();
-        if (!response.ok || data.valid !== true || data.tier !== tier) throw new Error(data.error || "Cette clé n'est pas valide pour cette version.");
-        status.textContent = "Licence " + (tier === "platinum" ? "Platinum" : "Premium") + " valide. Tu peux maintenant l'activer dans l'application Mind-It.";
-      } catch (error) {
-        status.textContent = error.message || "Impossible de vérifier la clé. Réessaie plus tard.";
-      } finally { button.disabled = false; }
-    });
-
-    const platinumButton = document.getElementById("platinumCheckoutCardButton");
-    const platinumStatus = document.getElementById("platinumCheckoutCardStatus");
-    platinumButton?.addEventListener("click", async () => {
-      const accessToken = sessionStorage.getItem("mindit_access_token");
-      if (!accessToken) { window.location.assign("account.html?next=platinum"); return; }
-      platinumButton.disabled = true;
-      platinumButton.textContent = "Préparation du paiement…";
-      if (platinumStatus) platinumStatus.textContent = "Connexion sécurisée à Stripe…";
-      try {
-        const response = await fetch("https://mind-it-server.onrender.com/api/platinum/create-checkout-session", {
-          method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({})
-        });
-        if (response.status === 401) { window.location.assign("account.html?next=platinum"); return; }
-        const data = await response.json();
-        if (!response.ok || typeof data.url !== "string") throw new Error(data.error || "Paiement Platinum indisponible.");
-        const checkoutUrl = new URL(data.url);
-        if (checkoutUrl.protocol !== "https:" || !checkoutUrl.hostname.endsWith("stripe.com")) throw new Error("Lien Stripe invalide.");
-        window.location.assign(checkoutUrl.href);
-      } catch (error) {
-        if (platinumStatus) platinumStatus.textContent = error.message || "Impossible de démarrer le paiement.";
-        platinumButton.disabled = false;
-        platinumButton.textContent = "Réessayer — 5.99 CHF/mois";
-      }
-    });
-  </script>
+    if (languageSelect) languageSelect.addEventListener("change", () => setMindItLanguage(languageSelect.value));
+    let savedMindItLanguage = "fr";
+    try { savedMindItLanguage = localStorage.getItem("mindit-language") || "fr"; } catch (_) {}
+    setMindItLanguage(savedMindItLanguage);
+</script>
 </body>
 </html>
