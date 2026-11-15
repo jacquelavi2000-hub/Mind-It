@@ -1711,7 +1711,13 @@
         });
         if (response.status === 401) { window.location.assign("account.html?next=premium"); return; }
         const data = await response.json();
-        if (!response.ok || typeof data.url !== "string") throw new Error(data.error || "Le service de paiement n'a pas retourné de lien valide.");
+        if (!response.ok) throw new Error(data.error || "Le service de paiement n'a pas retourné de lien valide.");
+        if (data.admin_test_success && data.license_key && data.url) {
+          sessionStorage.setItem("mindit_admin_test_premium_license", data.license_key);
+          window.location.assign(data.url);
+          return;
+        }
+        if (typeof data.url !== "string") throw new Error(data.message || "Le service de paiement n'a pas retourné de lien valide.");
         const checkoutUrl = new URL(data.url);
         if (checkoutUrl.protocol !== "https:") throw new Error("Le lien de paiement sécurisé n'est pas valide.");
         paymentStatuses.forEach((status) => { status.dataset.state = "success"; status.textContent = "Redirection vers la page de paiement sécurisée…"; });
@@ -1761,7 +1767,13 @@
         });
         if (response.status === 401) { window.location.assign("account.html?next=platinum"); return; }
         const data = await response.json();
-        if (!response.ok || typeof data.url !== "string") throw new Error(data.error || "Paiement Platinum indisponible.");
+        if (!response.ok) throw new Error(data.error || "Paiement Platinum indisponible.");
+        if (data.admin_test_success && data.license_key && data.url) {
+          sessionStorage.setItem("mindit_admin_test_platinum_license", data.license_key);
+          window.location.assign(data.url);
+          return;
+        }
+        if (typeof data.url !== "string") throw new Error(data.message || "Paiement Platinum indisponible.");
         const checkoutUrl = new URL(data.url);
         if (checkoutUrl.protocol !== "https:" || !checkoutUrl.hostname.endsWith("stripe.com")) throw new Error("Lien Stripe invalide.");
         window.location.assign(checkoutUrl.href);
