@@ -27,4 +27,5 @@ Affiche mes cartes mentales Mind-It.</div><p>Les outils disponibles comprennent 
 <section class="panel"><h2>Besoin d'aide ?</h2><p>Si tu bloques, note l'étape concernée et le message d'erreur exact. Ne partage ni clé API, ni jeton OAuth, ni code secret d'appairage.</p><a class="btn alt" href="index.html">Retour à Mind-It</a></section>
 </main><footer>Mind-It · Guide de connexion ChatGPT · <a href="index.html">Accueil</a></footer>
 <script>document.querySelectorAll('[data-copy]').forEach(button=>{button.addEventListener('click',async()=>{const target=document.getElementById(button.dataset.copy);const hint=button.parentElement.querySelector('.hint');try{await navigator.clipboard.writeText(target.textContent.trim());hint.textContent='Copié !';}catch{hint.textContent='Sélectionne et copie le texte manuellement.';}setTimeout(()=>{hint.textContent='';},3000);});});</script>
+<script src="./mindit-i18n.js"></script>
 </body></html>
