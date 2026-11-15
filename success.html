@@ -1025,7 +1025,19 @@
     });
 
     restoreProgress();
-    verifyPayment();
+    const adminTestLicense = new URLSearchParams(window.location.search).get("admin_test") === "1"
+      ? sessionStorage.getItem("mindit_admin_test_premium_license") : null;
+    if (adminTestLicense) {
+      sessionStorage.removeItem("mindit_admin_test_premium_license");
+      verifiedSessionId = "admin-test";
+      licenseKey.textContent = adminTestLicense;
+      licenseBox.hidden = false;
+      startButton.disabled = false;
+      stepDownloadButton.disabled = false;
+      setVerificationState("success", "Transaction de test admin validée : aucun paiement réel n’a été effectué. Ta licence Premium est activée !");
+    } else {
+      verifyPayment();
+    }
   </script>
 <script src="./mindit-i18n.js"></script>
 </body>
