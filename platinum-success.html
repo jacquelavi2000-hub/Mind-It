@@ -241,7 +241,18 @@
       }
     });
 
-    verifyPayment();
+    const adminTestLicense = params.get("admin_test") === "1"
+      ? sessionStorage.getItem("mindit_admin_test_platinum_license") : null;
+    if (adminTestLicense) {
+      sessionStorage.removeItem("mindit_admin_test_platinum_license");
+      licenseKey = adminTestLicense;
+      licenseKeyEl.textContent = adminTestLicense;
+      licenseArea.classList.remove("hidden");
+      pendingArea.classList.add("hidden");
+      statusEl.textContent = "Transaction de test admin validée : aucun paiement réel n’a été effectué. Ta licence Platinum est activée !";
+    } else {
+      verifyPayment();
+    }
   </script>
 <script src="./mindit-i18n.js"></script>
 </body>
