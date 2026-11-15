@@ -923,10 +923,22 @@
       downloadStatus.textContent = "Le serveur vérifie à nouveau le paiement et la validité de la licence…";
 
       try {
-        const response = await fetch(
-          `${API}/api/download?session_id=${encodeURIComponent(verifiedSessionId)}`,
-          { method: "GET", headers: { Accept: "application/json", Authorization: `Bearer ${sessionStorage.getItem("mindit_access_token") || ""}` }, cache: "no-store" }
-        );
+        let response;
+        if (verifiedSessionId === "admin-test") {
+          const latestResponse = await fetch(`${API}/api/updates/latest`, { headers: { Accept: "application/json" }, cache: "no-store" });
+          const latest = await latestResponse.json();
+          if (!latestResponse.ok || !latest.version) throw new Error(latest.error || "Aucune version téléchargeable n’est disponible.");
+          response = await fetch(`${API}/api/update-download`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ license_key: licenseKey.textContent, version: latest.version })
+          });
+        } else {
+          response = await fetch(
+            `${API}/api/download?session_id=${encodeURIComponent(verifiedSessionId)}`,
+            { method: "GET", headers: { Accept: "application/json", Authorization: `Bearer ${sessionStorage.getItem("mindit_access_token") || ""}` }, cache: "no-store" }
+          );
+        }
         if (response.status === 401) { window.location.replace("account.html?payment=completed"); return; }
         const data = await response.json();
 
