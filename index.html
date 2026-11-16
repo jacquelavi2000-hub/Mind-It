@@ -159,6 +159,32 @@
       cursor: pointer;
     }
 
+
+    .account-nav{position:relative;flex:0 0 auto;margin-left:4px}
+    .account-trigger{display:flex;align-items:center;gap:9px;padding:6px 12px 6px 6px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--forest);font:inherit;font-size:13px;font-weight:750;cursor:pointer;transition:box-shadow .18s,border-color .18s}
+    .account-trigger:hover,.account-trigger[aria-expanded="true"]{border-color:#aab9a7;box-shadow:0 5px 16px rgba(41,71,53,.08)}
+    .account-avatar{display:grid;width:34px;height:34px;place-items:center;border-radius:50%;background:var(--forest);color:white;font-size:11px;font-weight:850;letter-spacing:.02em}
+    .account-chevron{width:13px;height:13px;transition:transform .18s}
+    .account-trigger[aria-expanded="true"] .account-chevron{transform:rotate(180deg)}
+    .account-dropdown{position:absolute;z-index:60;top:calc(100% + 12px);right:0;width:292px;padding:9px;border:1px solid var(--line);border-radius:18px;background:var(--paper);box-shadow:0 20px 55px rgba(24,61,50,.17)}
+    .account-dropdown[hidden]{display:none!important}
+    .account-user{display:flex;align-items:center;gap:11px;padding:10px 10px 13px;border-bottom:1px solid var(--line);margin-bottom:7px}
+    .account-user .account-avatar{width:42px;height:42px;font-size:12px;flex:0 0 auto}
+    .account-user-meta{min-width:0;display:grid;gap:3px}
+    .account-user-name{color:var(--ink);font-size:13px;font-weight:800}
+    .account-user-email{color:var(--muted);font-size:11px;overflow-wrap:anywhere}
+    .account-menu-label{padding:9px 10px 5px;color:#89948a;font-size:10px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+    .account-dropdown a,.account-dropdown button{display:flex;width:100%;align-items:center;gap:11px;padding:10px 11px;border:0;border-radius:10px;background:transparent;color:#46574a;text-align:left;text-decoration:none;font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+    .account-dropdown a:hover,.account-dropdown button:hover{background:#eef1e9;color:var(--forest)}
+    .account-menu-icon{display:grid;width:22px;height:22px;place-items:center;color:#748574;font-size:15px}
+    .account-dropdown .account-signout{margin-top:7px;padding-top:12px;border-top:1px solid var(--line);border-radius:0;color:#a34c3c}
+    .account-dropdown .account-signout:hover{background:#fff1ed;color:#963b2b}
+    .account-auth-actions{display:grid;gap:5px;padding:5px}
+    .account-auth-actions a{justify-content:center;padding:12px;border-radius:11px}
+    .account-auth-actions .account-primary{background:var(--forest);color:white}
+    .account-auth-actions .account-primary:hover{background:var(--forest-soft);color:white}
+    @media(max-width:900px){.account-nav{margin-left:auto}.nav{gap:12px}.account-dropdown{right:0}}
+
     .hero {
       position: relative;
       overflow: hidden;
@@ -1106,6 +1132,24 @@
         <a href="#faq">FAQ</a>
         <a class="nav-download" href="#telecharger">Télécharger gratuitement <span aria-hidden="true">↗</span></a>
       </div>
+      <div class="account-nav" id="accountNav">
+        <button class="account-trigger" id="accountMenuTrigger" type="button" aria-expanded="false" aria-controls="accountMenu">
+          <span class="account-avatar" id="accountAvatar">?</span><span>Account</span>
+          <svg class="account-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="account-dropdown" id="accountMenu" hidden>
+          <div id="accountSignedOut" class="account-auth-actions"><div class="account-menu-label">Your Mind-It account</div><a class="account-primary" href="account.html">Sign in</a><a href="account.html?mode=register">Create account</a></div>
+          <div id="accountSignedIn" hidden>
+            <div class="account-user"><span class="account-avatar" id="accountAvatarLarge">?</span><div class="account-user-meta"><span class="account-user-name">My account</span><span class="account-user-email" id="accountEmail">Signed in</span></div></div>
+            <div class="account-menu-label">Workspace</div>
+            <a href="account.html#profile"><span class="account-menu-icon">◉</span>My profile</a>
+            <a href="account.html#settings"><span class="account-menu-icon">⚙</span>Settings</a>
+            <a href="account.html#profile"><span class="account-menu-icon">▤</span>Billing & plans</a>
+            <a href="#faq"><span class="account-menu-icon">?</span>Help center</a>
+            <button class="account-signout" id="accountSignout" type="button"><span class="account-menu-icon">↪</span>Sign out</button>
+          </div>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -1661,6 +1705,26 @@
         platinumButton.textContent = "Réessayer — 5.99 CHF/mois";
       }
     });
+  </script>
+
+  <script>
+  (()=>{
+    const API='https://mind-it-server.onrender.com';
+    const trigger=document.getElementById('accountMenuTrigger'), menu=document.getElementById('accountMenu');
+    const signedOut=document.getElementById('accountSignedOut'), signedIn=document.getElementById('accountSignedIn');
+    const avatar=document.getElementById('accountAvatar'), large=document.getElementById('accountAvatarLarge'), emailLabel=document.getElementById('accountEmail');
+    const tokenKey='mindit_access_token', refreshKey='mindit_refresh_token';
+    if(!trigger||!menu)return;
+    const close=()=>{menu.hidden=true;trigger.setAttribute('aria-expanded','false')};
+    trigger.addEventListener('click',()=>{const open=menu.hidden;menu.hidden=!open;trigger.setAttribute('aria-expanded',String(open))});
+    document.addEventListener('click',e=>{if(!document.getElementById('accountNav').contains(e.target))close()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+    function showOut(){signedOut.hidden=false;signedIn.hidden=true;avatar.textContent='?'}
+    function showIn(email){const initials=(email||'').trim().slice(0,2).toUpperCase()||'ME';avatar.textContent=initials;large.textContent=initials;emailLabel.textContent=email;signedOut.hidden=true;signedIn.hidden=false}
+    async function refresh(){const token=sessionStorage.getItem(tokenKey);if(!token){showOut();return}try{let response=await fetch(API+'/api/account/overview',{headers:{Authorization:'Bearer '+token},cache:'no-store'});if(response.status===401){const refreshToken=sessionStorage.getItem(refreshKey);if(refreshToken){const r=await fetch(API+'/api/account/refresh',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refresh_token:refreshToken})});if(r.ok){const data=await r.json();sessionStorage.setItem(tokenKey,data.access_token);if(data.refresh_token)sessionStorage.setItem(refreshKey,data.refresh_token);response=await fetch(API+'/api/account/overview',{headers:{Authorization:'Bearer '+data.access_token},cache:'no-store'})}else{sessionStorage.removeItem(tokenKey);sessionStorage.removeItem(refreshKey);showOut();return}}}if(!response.ok){if(response.status===401)showOut();return}const data=await response.json();if(data.user?.email)showIn(data.user.email);else showOut()}catch(e){if(!sessionStorage.getItem(tokenKey))showOut()}}
+    document.getElementById('accountSignout').addEventListener('click',async()=>{const token=sessionStorage.getItem(tokenKey);try{if(token)await fetch(API+'/api/account/logout',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:'{}'})}catch(e){}sessionStorage.removeItem(tokenKey);sessionStorage.removeItem(refreshKey);showOut();close();location.href='account.html'});
+    refresh();window.addEventListener('pageshow',refresh);window.addEventListener('storage',refresh);
+  })();
   </script>
 </body>
 </html>
