@@ -1703,7 +1703,7 @@
     });
 
     async function startPremiumCheckout() {
-      const accessToken = sessionStorage.getItem("mindit_access_token");
+      const accessToken = localStorage.getItem("mindit_access_token");
       if (!accessToken) { window.location.assign("account.html?next=premium"); return; }
       buyButtons.forEach((button) => {
         button.disabled = true;
@@ -1768,7 +1768,7 @@
     const platinumButton = document.getElementById("platinumCheckoutCardButton");
     const platinumStatus = document.getElementById("platinumCheckoutCardStatus");
     platinumButton?.addEventListener("click", async () => {
-      const accessToken = sessionStorage.getItem("mindit_access_token");
+      const accessToken = localStorage.getItem("mindit_access_token");
       if (!accessToken) { window.location.assign("account.html?next=platinum"); return; }
       platinumButton.disabled = true;
       platinumButton.textContent = "Préparation du paiement…";
@@ -1820,31 +1820,49 @@
     logoutButton.hidden = false;
   }
 
+  // Migrate les anciennes sessions et affiche immédiatement le profil connu.
+  for (const key of ["mindit_access_token", "mindit_refresh_token"]) {
+    const legacy = sessionStorage.getItem(key);
+    if (!localStorage.getItem(key) && legacy) localStorage.setItem(key, legacy);
+    sessionStorage.removeItem(key);
+  }
+  const cachedEmail = localStorage.getItem("mindit_account_email");
+  const cachedToken = localStorage.getItem("mindit_access_token");
+  if (cachedToken && cachedEmail) showSignedIn(cachedEmail);
+  else if (!cachedToken) showSignedOut();
+
   async function refreshAccountMenu() {
-    const token = sessionStorage.getItem("mindit_access_token");
+    const token = localStorage.getItem("mindit_access_token");
     if (!token) { showSignedOut(); return; }
     try {
       const response = await fetch(`${API}/api/account/overview`, {
         headers: { Authorization: `Bearer ${token}` }, cache: "no-store"
       });
       if (response.status === 401) {
-        sessionStorage.removeItem("mindit_access_token");
-        sessionStorage.removeItem("mindit_refresh_token");
+        localStorage.removeItem("mindit_access_token");
+        localStorage.removeItem("mindit_refresh_token");
+        localStorage.removeItem("mindit_account_email");
         showSignedOut();
         return;
       }
       if (!response.ok) return;
       const data = await response.json();
-      if (data.user && data.user.email) showSignedIn(data.user.email);
-      else showSignedOut();
+      if (data.user && data.user.email) {
+        localStorage.setItem("mindit_account_email", data.user.email);
+        showSignedIn(data.user.email);
+      } else {
+        localStorage.removeItem("mindit_account_email");
+        showSignedOut();
+      }
     } catch (error) {
       // Keep the current display if the account API is temporarily unreachable.
     }
   }
 
   logoutButton.addEventListener("click", () => {
-    sessionStorage.removeItem("mindit_access_token");
-    sessionStorage.removeItem("mindit_refresh_token");
+    localStorage.removeItem("mindit_access_token");
+    localStorage.removeItem("mindit_refresh_token");
+    localStorage.removeItem("mindit_account_email");
     showSignedOut();
     const menu = document.getElementById("navAccount");
     if (menu) menu.hidden = true;
