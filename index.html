@@ -1099,7 +1099,38 @@
     .updates-actions { display: flex; min-width: 210px; flex-direction: column; gap: 10px; }
     .updates-actions .btn { width: 100%; }
 
-  </style>
+  
+    /* Comparatif complet Free / Premium / Platinum */
+    .comparison-wrap-three { overflow-x:auto; border-radius:18px; }
+    .comparison-table-three { min-width:980px; width:100%; table-layout:fixed; }
+    .comparison-table-three th:first-child { width:34%; text-align:left; }
+    .comparison-table-three th:nth-child(2), .comparison-table-three td:nth-child(2),
+    .comparison-table-three th:nth-child(3), .comparison-table-three td:nth-child(3),
+    .comparison-table-three th:nth-child(4), .comparison-table-three td:nth-child(4) { width:22%; text-align:center; }
+    .comparison-table-three thead th { position:sticky; top:0; z-index:1; }
+    .comparison-table-three .platinum-column { background:#e9eee6; }
+    .comparison-table-three thead .platinum-column { color:#183d32; }
+    .comparison-table-three .comparison-result { max-width:100%; white-space:normal; line-height:1.5; }
+    .comparison-table-three .comparison-result.neutral { color:#68766d; font-weight:550; }
+    .comparison-table-three .comparison-result span { overflow-wrap:anywhere; }
+    .comparison-legend,.comparison-caveat { max-width:900px; margin:16px auto 0; color:var(--muted); font-size:12px; line-height:1.75; }
+    .comparison-details { margin-top:58px; }
+    .comparison-details-heading { margin-bottom:22px; }
+    .comparison-details-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; align-items:start; }
+    .comparison-detail { border:1px solid var(--line); border-radius:17px; background:var(--paper); overflow:hidden; }
+    .comparison-detail summary { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:18px; cursor:pointer; list-style:none; color:var(--ink); font-weight:800; }
+    .comparison-detail summary::-webkit-details-marker { display:none; }
+    .comparison-detail summary::after { content:"＋"; color:var(--forest); font-size:18px; }
+    .comparison-detail[open] summary::after { content:"−"; }
+    .comparison-detail-tag { flex:0 0 auto; padding:4px 8px; border-radius:999px; background:var(--sage); color:var(--forest); font-size:10px; font-weight:750; }
+    .comparison-detail ul { margin:0; padding:0 22px 20px 36px; color:var(--muted); font-size:12px; line-height:1.75; }
+    .comparison-detail li+li { margin-top:8px; }
+    .comparison-common { margin-top:18px; padding:22px; border:1px solid var(--line); border-radius:17px; background:#f2f1e9; }
+    .comparison-common h3 { margin:0 0 8px; color:var(--ink); font-size:15px; }
+    .comparison-common p { margin:0; color:var(--muted); font-size:12px; line-height:1.75; }
+    @media (max-width:900px) { .comparison-details-grid { grid-template-columns:1fr; } }
+    @media (max-width:640px) { .comparison-table-three { min-width:900px; } .comparison-detail summary { padding:16px; } }
+</style>
 </head>
 <body>
   <div class="announcement">
@@ -1244,110 +1275,108 @@
     </section>
 
     <section class="section" id="comparatif">
-      <div class="container">
-        <div class="section-heading">
-          <div class="section-kicker">Gratuit ou Premium</div>
-          <h2>Choisis la version qui te correspond.</h2>
-          <p>La version gratuite inclut désormais plusieurs nouveautés : zoom, minimap, import et export de maps, lignes droites et mode sombre. Premium débloque les fonctionnalités illimitées et les options de personnalisation.</p>
-        </div>
-
-        <div class="comparison-wrap">
-          <table class="comparison-table">
-            <thead>
-              <tr>
-                <th scope="col">Fonctionnalité</th>
-                <th scope="col">Gratuit</th>
-                <th scope="col" class="premium-column">Premium</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Assistant de fabrication</th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr class="group-row"><th scope="rowgroup" colspan="3">Nouveautés disponibles gratuitement</th></tr>
-              <tr>
-                <th scope="row">Zoom <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Minimap <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Export de maps <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Import de maps <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Lignes droites <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Mode sombre <span class="new-feature">✦ Nouveauté</span></th>
-                <td><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr class="group-row"><th scope="rowgroup" colspan="3">Fonctionnalités réservées à Premium</th></tr>
-              <tr>
-                <th scope="row">Blocs illimités</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Projets illimités</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Maps illimitées</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Taille des maps illimitée</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Personnalisation complète des blocs</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Personnalisation des touches</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-              <tr>
-                <th scope="row">Options illimitées</th>
-                <td><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Non</span></td>
-                <td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Oui</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="comparison-actions">
-          <a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">
-            Télécharger gratuitement <span aria-hidden="true">↓</span>
-          </a>
-          <button class="btn btn-secondary" id="compareBuyButton" type="button" aria-describedby="comparisonPaymentStatus">
-            Obtenir Premium <span aria-hidden="true">↗</span>
-          </button>
-        </div>
-        <p id="comparisonPaymentStatus" role="status" aria-live="polite"></p>
+  <div class="container">
+    <div class="section-heading">
+      <div class="section-kicker">Free · Premium · Platinum</div>
+      <h2>Compare les trois éditions de Mind-It.</h2>
+      <p>Un comparatif détaillé des fonctionnalités repérées dans les trois versions de l’application. Les mentions « Non repéré » indiquent que la fonctionnalité n’a pas été trouvée dans la version examinée : elles ne prouvent pas nécessairement son absence.</p>
+    </div>
+    <div class="comparison-wrap comparison-wrap-three">
+      <table class="comparison-table comparison-table-three">
+        <thead><tr>
+          <th scope="col">Fonctionnalité</th>
+          <th scope="col">Mind-It Free</th>
+          <th scope="col" class="premium-column">Mind-It Premium</th>
+          <th scope="col" class="platinum-column">Mind-It Platinum</th>
+        </tr></thead>
+        <tbody><tr class="group-row"><th scope="rowgroup" colspan="4">Création et organisation</th></tr>
+<tr><th scope="row">Cartes mentales visuelles</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Création, renommage et suppression de blocs</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Déplacement des blocs sur la carte</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Sélection multiple</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Zoom, déplacement de la vue et mini-carte</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Réorganisation automatique de la carte</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Blocs checklist</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Blocs Options et branches associées à une option</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, 3 options maximum par bloc</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Gestion de projets et de cartes</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Sauvegarde dans un fichier et import JSON</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr class="group-row"><th scope="rowgroup" colspan="4">Blocs et personnalisation</th></tr>
+<tr><th scope="row">Blocs de liste</th><td class=""><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Cases à cocher dans les listes</th><td class=""><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Couleurs personnalisées des blocs</th><td class=""><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Non</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Dimensions personnalisées des blocs</th><td class=""><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Connexions libres entre blocs</th><td class=""><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="premium-column"><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, connexions multiples</span></span></td></tr>
+<tr><th scope="row">Personnalisation des connexions</th><td class=""><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="premium-column"><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, couleur et épaisseur</span></span></td></tr>
+<tr><th scope="row">Export de carte en PNG</th><td class=""><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Mode sombre et style des lignes</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Raccourcis clavier configurables</th><td class=""><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr class="group-row"><th scope="rowgroup" colspan="4">Assistant et intelligence artificielle</th></tr>
+<tr><th scope="row">Assistant de création de branches</th><td class=""><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, règles locales simples</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, modèle IA local</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, chat avec modèle IA local</span></span></td></tr>
+<tr><th scope="row">Propositions de modification par IA</th><td class=""><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Non, règles simples</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, confirmation avant application</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui, confirmation avant application</span></span></td></tr>
+<tr><th scope="row">Téléchargement et gestion de modèles IA</th><td class=""><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Non</span></span></td><td class="premium-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Réglage matériel de l’IA (profil, budget RAM)</th><td class=""><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Non</span></span></td><td class="premium-column"><span class="comparison-result neutral"><span>Présent dans les réglages IA</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr class="group-row"><th scope="rowgroup" colspan="4">Licences et API</th></tr>
+<tr><th scope="row">Connexion à une API Mind-It</th><td class=""><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Non</span></span></td><td class="premium-column"><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="platinum-column"><span class="comparison-result yes"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Oui</span></span></td></tr>
+<tr><th scope="row">Contrôle des commandes IA par permissions de lecture/écriture</th><td class=""><span class="comparison-result no"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Non</span></span></td><td class="premium-column"><span class="comparison-result neutral"><span>Non repéré</span></span></td><td class="platinum-column"><span class="comparison-result neutral"><span>Prévu par le backend connecté</span></span></td></tr>
+<tr class="group-row"><th scope="rowgroup" colspan="4">Limites</th></tr>
+<tr><th scope="row">Limites de projets/cartes/blocs</th><td class=""><span class="comparison-result neutral"><span>3 projets · 3 cartes par projet · 100 blocs par carte</span></span></td><td class="premium-column"><span class="comparison-result neutral"><span>Aucune limite fixe trouvée dans le code</span></span></td><td class="platinum-column"><span class="comparison-result neutral"><span>Aucune limite fixe trouvée dans le code</span></span></td></tr></tbody>
+      </table>
+    </div>
+    <p class="comparison-legend"><strong>À lire :</strong> « Non repéré » signifie que la fonctionnalité n’a pas été trouvée dans l’application examinée. « Aucune limite fixe trouvée dans le code » ne garantit pas une capacité illimitée dans toutes les conditions.</p>
+    <div class="comparison-actions">
+      <a class="btn btn-primary" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/2.2/Mind-It.exe">Télécharger Mind-It <span aria-hidden="true">↓</span></a>
+      <a class="btn btn-secondary" href="#premium">Découvrir les offres <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="comparison-details">
+      <div class="section-heading comparison-details-heading">
+        <div class="section-kicker">Pour aller plus loin</div>
+        <h2>Ce qui distingue chaque édition.</h2>
+        <p>Ouvre une fiche pour consulter les détails sans alourdir le tableau.</p>
       </div>
-    </section>
+      <div class="comparison-details-grid">
+        <details class="comparison-detail">
+          <summary><span class="comparison-detail-name">Mind-It Free</span><span class="comparison-detail-tag">Gratuit</span></summary>
+          <ul>
+            <li>Outils de création et d’organisation de cartes, avec blocs standard, checklist et Options.</li>
+            <li>Assistant qui génère des branches à partir d’un texte selon des règles simples ; ce n’est pas un chat connecté à un modèle d’IA.</li>
+            <li>Sauvegarde automatique dans un fichier JSON choisi par l’utilisateur, avec import d’un fichier existant.</li>
+            <li>Limites indiquées dans le README : <strong>3 projets</strong>, <strong>3 cartes par projet</strong>, <strong>100 blocs par carte</strong> et <strong>3 options par bloc Options</strong>.</li>
+            <li>Les fichiers importés sont ramenés aux limites de la version Free.</li>
+          </ul>
+        </details>
+        <details class="comparison-detail">
+          <summary><span class="comparison-detail-name">Mind-It Premium</span><span class="comparison-detail-tag">Avancé</span></summary>
+          <ul>
+            <li>Fonctionnalités de Free, avec blocs de liste, cases à cocher, marqueur rond ou carré et styles personnalisés des blocs.</li>
+            <li>Assistant utilisant un modèle d’IA local ; ses propositions de modification doivent être confirmées avant application.</li>
+            <li>Gestion et téléchargement de modèles IA, avec sélection d’un modèle et démarrage ou arrêt du moteur local.</li>
+            <li>Raccourcis configurables pour créer, supprimer, styliser ou renommer des blocs et sélectionner toute la carte.</li>
+            <li>Export des cartes en PNG.</li>
+            <li>Licence Premium vérifiée en ligne ; l’application reste verrouillée tant qu’une licence valide n’est pas confirmée.</li>
+          </ul>
+        </details>
+        <details class="comparison-detail">
+          <summary><span class="comparison-detail-name">Mind-It Platinum</span><span class="comparison-detail-tag">Tout-en-un</span></summary>
+          <ul>
+            <li>Fonctionnalités de Premium, plus des connexions libres multiples entre blocs, avec réglage de leur couleur et de leur épaisseur.</li>
+            <li>Chat avec le modèle IA local, gestion des conversations et propositions de modifications à confirmer.</li>
+            <li>Gestion des modèles GGUF locaux avec moteur <code>llama.cpp</code> ; profils matériels et budget RAM réglable.</li>
+            <li>Page API pour configurer une URL HTTPS, enregistrer une clé chiffrée et connecter l’application à un backend via Desktop Bridge.</li>
+            <li>Commandes API repérées : lecture paginée des cartes, création/modification/suppression et duplication de cartes et blocs, déplacement de cartes ou de branches, connexions, options, listes, mises à jour groupées et mise en page automatique.</li>
+            <li>La lecture paginée de <code>get_map</code> permet de récupérer une grande carte en plusieurs appels.</li>
+            <li>L’autorisation <code>mindit:read</code> / <code>mindit:write</code> doit être appliquée par le backend. Le pont Desktop exécute les commandes autorisées qu’il reçoit.</li>
+            <li>La licence Platinum vérifiée en ligne est requise pour utiliser le moteur IA local et le chat. La documentation indique que les modèles restent sur l’appareil et que le moteur écoute sur <code>127.0.0.1</code>.</li>
+          </ul>
+        </details>
+      </div>
+      <div class="comparison-common">
+        <h3>Fonctionnalités communes</h3>
+        <p>Les trois éditions comprennent la création et la suppression de cartes et de projets, l’édition des titres de blocs, le déplacement des blocs, les blocs checklist et Options, la sélection multiple, la mini-carte, l’organisation de la disposition, le mode sombre, le réglage des lignes et la sauvegarde/importation JSON.</p>
+      </div>
+      <p class="comparison-caveat"><strong>À noter :</strong> la collaboration partagée en temps réel n’est pas implémentée dans les éditions examinées. Le cahier des charges API Platinum comprend aussi des opérations qui ne sont pas toutes exposées dans l’interface graphique.</p>
+    </div>
+  </div>
+</section>
 
     <section class="section" aria-labelledby="galleryTitle">
       <div class="container">
