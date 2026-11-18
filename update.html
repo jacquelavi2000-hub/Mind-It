@@ -924,17 +924,24 @@
         const platformChoices = document.createElement("div");
         platformChoices.className = "platform-choice-list";
         for (const platform of [
-          { label: "Windows", available: true },
-          { label: "macOS Intel", available: false },
-          { label: "macOS Apple Silicon", available: false }
+          { key: "windows", label: "Windows" },
+          { key: "mac-intel", label: "macOS Intel" },
+          { key: "mac-arm64", label: "macOS Apple Silicon" }
         ]) {
           const choice = document.createElement("button");
           choice.type = "button";
-          choice.className = `platform-choice${platform.available ? " is-current" : " is-pending"}`;
-          choice.textContent = platform.available ? `${platform.label} · Disponible` : `${platform.label} · Bientôt`;
-          choice.disabled = !platform.available;
-          choice.setAttribute("aria-pressed", platform.available ? "true" : "false");
-          if (!platform.available) choice.title = "Le build macOS correspondant sera activé dès sa publication.";
+          choice.dataset.platform = platform.key;
+          choice.className = `platform-choice${platform.key === "windows" ? " is-current" : ""}`;
+          choice.textContent = platform.label;
+          choice.setAttribute("aria-pressed", platform.key === "windows" ? "true" : "false");
+          choice.addEventListener("click", () => {
+            platformChoices.querySelectorAll(".platform-choice").forEach(item => {
+              item.classList.remove("is-current");
+              item.setAttribute("aria-pressed", "false");
+            });
+            choice.classList.add("is-current");
+            choice.setAttribute("aria-pressed", "true");
+          });
           platformChoices.append(choice);
         }
         platformOptions.append(platformHeading, platformChoices);
@@ -1114,6 +1121,7 @@
         const button = document.getElementById("downloadButton");
         const status = document.getElementById("downloadStatus");
         const licenseKey = input.value.trim();
+        const selectedPlatform = document.querySelector("#downloadForm .platform-choice.is-current")?.dataset.platform || "windows";
 
         if (!selectedVersion || requestedVersionMismatch) {
           status.dataset.state = "error";
@@ -1138,7 +1146,7 @@
           const response = await fetch(`${API}/api/update-download`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify({ license_key: licenseKey, version: selectedVersion })
+            body: JSON.stringify({ license_key: licenseKey, version: selectedPlatform.startsWith("mac-") ? "2.6.0" : selectedVersion, platform: selectedPlatform })
           });
           const data = await response.json();
 

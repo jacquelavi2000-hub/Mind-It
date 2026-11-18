@@ -601,6 +601,8 @@
 
         <section class="license-box" id="licenseBox" hidden aria-label="Licence Premium">
           <p>Ta licence Premium est prête. Conserve cette clé en lieu sûr :</p>
+          <label for="downloadPlatform">Version à télécharger</label>
+          <select id="downloadPlatform" class="license-input"><option value="windows">Windows</option><option value="mac-intel">macOS Intel</option><option value="mac-arm64">macOS Apple Silicon</option></select>
           <div class="license-value" id="licenseKey"></div>
           <div class="license-actions">
             <button class="btn btn-secondary" id="copyButton" type="button">Copier la licence</button>
@@ -737,6 +739,7 @@
     const stepDownloadButton = document.getElementById("stepDownloadButton");
     const startButton = document.getElementById("startButton");
     const downloadStatus = document.getElementById("downloadStatus");
+    const downloadPlatform = document.getElementById("downloadPlatform");
     const announcementConsent = document.getElementById("announcementConsent");
     const consentActions = document.getElementById("consentActions");
     const consentStatus = document.getElementById("consentStatus");
@@ -910,6 +913,7 @@
     }
 
     async function downloadPremium() {
+      const selectedPlatform = downloadPlatform?.value || "windows";
       if (!verifiedSessionId || verifiedSessionId !== sessionId) {
         downloadStatus.textContent = "La licence doit être vérifiée avant le téléchargement.";
         return;
@@ -931,11 +935,11 @@
           response = await fetch(`${API}/api/update-download`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify({ license_key: licenseKey.textContent, version: latest.version })
+            body: JSON.stringify({ license_key: licenseKey.textContent, version: selectedPlatform.startsWith("mac-") ? "2.6.0" : latest.version, platform: selectedPlatform })
           });
         } else {
           response = await fetch(
-            `${API}/api/download?session_id=${encodeURIComponent(verifiedSessionId)}`,
+            `${API}/api/download?session_id=${encodeURIComponent(verifiedSessionId)}&platform=${encodeURIComponent(selectedPlatform)}`,
             { method: "GET", headers: { Accept: "application/json", Authorization: `Bearer ${sessionStorage.getItem("mindit_access_token") || ""}` }, cache: "no-store" }
           );
         }
