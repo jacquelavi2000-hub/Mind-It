@@ -348,6 +348,14 @@
       padding: 0 clamp(22px, 4vw, 34px) 25px;
     }
 
+
+    .platform-options { grid-column: 1 / -1; display: grid; gap: 8px; }
+    .platform-heading { margin: 0; color: #516258; font-size: 11px; font-weight: 750; }
+    .platform-choice-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .platform-choice { min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--forest); font: inherit; font-size: 11px; font-weight: 700; }
+    .platform-choice.is-current { border-color: #294735; background: #eef3eb; }
+    .platform-choice:disabled { cursor: not-allowed; opacity: .55; }
+
     .license-label {
       display: block;
       margin-bottom: 7px;
@@ -914,6 +922,30 @@
         const downloadForm = document.createElement("form");
         downloadForm.className = "download-panel";
         downloadForm.id = "downloadForm";
+        const platformOptions = document.createElement("div");
+        platformOptions.className = "platform-options";
+        platformOptions.setAttribute("aria-label", "Choisir la plateforme de téléchargement");
+        const platformHeading = document.createElement("p");
+        platformHeading.className = "platform-heading";
+        platformHeading.textContent = "Plateforme";
+        const platformChoices = document.createElement("div");
+        platformChoices.className = "platform-choice-list";
+        for (const platform of [
+          { label: "Windows", available: true },
+          { label: "macOS Intel", available: false },
+          { label: "macOS Apple Silicon", available: false }
+        ]) {
+          const choice = document.createElement("button");
+          choice.type = "button";
+          choice.className = `platform-choice${platform.available ? " is-current" : " is-pending"}`;
+          choice.textContent = platform.available ? `${platform.label} · Disponible` : `${platform.label} · Bientôt`;
+          choice.disabled = !platform.available;
+          choice.setAttribute("aria-pressed", platform.available ? "true" : "false");
+          if (!platform.available) choice.title = "Le build macOS correspondant sera activé dès sa publication.";
+          platformChoices.append(choice);
+        }
+        platformOptions.append(platformHeading, platformChoices);
+
         const licenseField = document.createElement("div");
         const licenseLabel = document.createElement("label");
         licenseLabel.className = "license-label";
@@ -942,7 +974,7 @@
         downloadStatus.setAttribute("role", "status");
         downloadStatus.setAttribute("aria-live", "polite");
         downloadStatus.setAttribute("aria-atomic", "true");
-        downloadForm.append(licenseField, downloadButton, downloadStatus);
+        downloadForm.append(platformOptions, licenseField, downloadButton, downloadStatus);
         card.append(inner, downloadForm);
         updateList.append(card);
         attachDownloadForm();

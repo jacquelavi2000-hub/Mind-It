@@ -641,6 +641,7 @@
     }
 
     .asset-download-label { min-width: 0; overflow-wrap: anywhere; }
+    .platform-pending:disabled { cursor: not-allowed; opacity: .55; }
     .asset-download small { display: block; margin-top: 2px; font-size: 9px; font-weight: 550; opacity: .78; }
     .release-link { flex: 0 1 auto; }
 
@@ -954,19 +955,48 @@
 
         const assetPanel = document.createElement("div");
         assetPanel.className = "download-panel asset-list";
-        if (update.assets.length) {
-          for (const asset of update.assets) {
-            const link = createGitHubLink(asset.download_url, `Télécharger · ${asset.name}`);
-            if (link) {
-              const label = document.createElement("span");
-              label.className = "asset-download-label";
-              label.textContent = `Télécharger · ${asset.name}`;
-              const size = document.createElement("small");
-              size.textContent = formatBytes(asset.size);
-              label.append(size);
-              link.replaceChildren(label, createIcon("M10 3v10m-4-4 4 4 4-4M4 16h12"));
-              assetPanel.append(link);
-            }
+        const releasePlatforms = [
+          { key: "silicon", label: "macOS Apple Silicon", match: asset => /\.dmg$/i.test(asset.name) && /(arm64|aarch64|apple[-_ ]?silicon|\bm[1-9]\b)/i.test(asset.name) },
+          { key: "intel", label: "macOS Intel", match: asset => /\.dmg$/i.test(asset.name) && /(intel|x64|x86_64|amd64)/i.test(asset.name) },
+          { key: "windows", label: "Windows", match: asset => /\.(exe|msi)$/i.test(asset.name) || (/(windows|win32|win64)/i.test(asset.name) && /\.zip$/i.test(asset.name)) }
+        ];
+        const matchedAssets = new Set();
+        for (const platform of releasePlatforms) {
+          const asset = update.assets.find(platform.match);
+          const link = asset ? createGitHubLink(asset.download_url, platform.label) : null;
+          if (link) {
+            matchedAssets.add(asset);
+            link.setAttribute("aria-label", `Télécharger Mind-It pour ${platform.label}`);
+            const label = document.createElement("span");
+            label.className = "asset-download-label";
+            label.textContent = platform.label;
+            const size = document.createElement("small");
+            size.textContent = formatBytes(asset.size);
+            label.append(size);
+            link.replaceChildren(label, createIcon("M10 3v10m-4-4 4 4 4-4M4 16h12"));
+            assetPanel.append(link);
+          } else {
+            const pending = document.createElement("button");
+            pending.type = "button";
+            pending.className = "btn btn-secondary asset-download platform-pending";
+            pending.disabled = true;
+            pending.textContent = `${platform.label} · Bientôt disponible`;
+            pending.title = "Le fichier de cette architecture sera disponible dès la publication du build correspondant.";
+            assetPanel.append(pending);
+          }
+        }
+        for (const asset of update.assets) {
+          if (matchedAssets.has(asset) || releasePlatforms.some(platform => platform.match(asset))) continue;
+          const link = createGitHubLink(asset.download_url, `Autre fichier · ${asset.name}`, "btn btn-secondary asset-download");
+          if (link) {
+            const label = document.createElement("span");
+            label.className = "asset-download-label";
+            label.textContent = `Autre fichier · ${asset.name}`;
+            const size = document.createElement("small");
+            size.textContent = formatBytes(asset.size);
+            label.append(size);
+            link.replaceChildren(label, createIcon("M10 3v10m-4-4 4 4 4-4M4 16h12"));
+            assetPanel.append(link);
           }
         }
         if (!assetPanel.childElementCount) {
