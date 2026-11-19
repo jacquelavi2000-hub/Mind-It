@@ -13,6 +13,8 @@ const required = [
   "addPasskeyButton",
   "registerPasskey",
   "signInWithPasskey",
+  "passkeyId",
+  "friendlyName",
   "recoveryEmailForm",
   "recoveryCodeForm",
   "accountRecoveryRequestForm",

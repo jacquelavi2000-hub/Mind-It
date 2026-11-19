@@ -179,13 +179,13 @@ async function loadPasskeys() {
       const id = String(item.id || item.credential_id || item.credentialId || "");
       if (!id) continue;
       const row = document.createElement("div"); row.className = "plan"; row.style.marginTop = "9px";
-      const name = document.createElement("strong"); name.textContent = item.name || "Passkey sans nom";
+      const name = document.createElement("strong"); name.textContent = item.friendly_name || item.name || "Passkey sans nom";
       const meta = document.createElement("p"); meta.className = "help"; meta.textContent = item.created_at ? `Ajouté le ${formatDate(item.created_at)}` : "Passkey associé à ton compte";
       const actions = document.createElement("div"); actions.className = "btnrow";
       const rename = document.createElement("button"); rename.type = "button"; rename.className = "btn secondary small"; rename.textContent = "Renommer";
-      rename.addEventListener("click", async () => { const next = prompt("Nom du passkey", item.name || "Mon appareil"); if (!next || !next.trim()) return; try { const c = await getPasskeyClient(true); const result = await c.auth.passkey.update({ id, name: next.trim().slice(0, 80) }); if (result.error) throw result.error; showMessage("passkeyMessage", "Passkey renommé."); await loadPasskeys(); } catch (e) { showMessage("passkeyMessage", e.message, "error"); } });
+      rename.addEventListener("click", async () => { const next = prompt("Nom du passkey", item.friendly_name || item.name || "Mon appareil"); if (!next || !next.trim()) return; try { const c = await getPasskeyClient(true); const result = await c.auth.passkey.update({ passkeyId: id, friendlyName: next.trim().slice(0, 120) }); if (result.error) throw result.error; showMessage("passkeyMessage", "Passkey renommé."); await loadPasskeys(); } catch (e) { showMessage("passkeyMessage", e.message, "error"); } });
       const remove = document.createElement("button"); remove.type = "button"; remove.className = "btn danger small"; remove.textContent = "Supprimer";
-      remove.addEventListener("click", async () => { if (!confirm("Supprimer ce passkey de ton compte Mind-It ?")) return; try { const c = await getPasskeyClient(true); const result = await c.auth.passkey.delete({ id }); if (result.error) throw result.error; showMessage("passkeyMessage", "Passkey supprimé."); await loadPasskeys(); } catch (e) { showMessage("passkeyMessage", e.message, "error"); } });
+      remove.addEventListener("click", async () => { if (!confirm("Supprimer ce passkey de ton compte Mind-It ?")) return; try { const c = await getPasskeyClient(true); const result = await c.auth.passkey.delete({ passkeyId: id }); if (result.error) throw result.error; showMessage("passkeyMessage", "Passkey supprimé."); await loadPasskeys(); } catch (e) { showMessage("passkeyMessage", e.message, "error"); } });
       actions.append(rename, remove); row.append(name, meta, actions); list.append(row);
     }
   } catch (error) { list.textContent = "Impossible de charger les passkeys."; showMessage("passkeyMessage", error.message || "Service Passkey indisponible.", "warn"); }
