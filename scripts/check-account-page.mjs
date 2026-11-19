@@ -14,7 +14,7 @@ const required = [
   "registerPasskey",
   "signInWithPasskey",
   "recoveryEmailForm",
-  "recoveryEmailCodeForm",
+  "recoveryCodeForm",
   "accountRecoveryRequestForm",
   "accountRecoveryVerifyForm",
   "accountRecoveryPasswordForm",
