@@ -48,7 +48,7 @@
 </div>
 <div class="account-panel" id="accountPanel-downloads" role="tabpanel" aria-labelledby="accountTab-downloads" tabindex="0" hidden>
   <div class="card">
-    <div class="section-title"><h2>Télécharger Mind-It pour macOS</h2><span class="help">Version 2.6.0</span></div>
+    <div class="section-title"><h2>Télécharger Mind-It pour macOS</h2><span class="help">Free 2.6.5 · Payant 2.6.0</span></div>
     <p class="muted">Choisis l’édition associée à ta licence, puis l’architecture de ton Mac. Les liens de téléchargement sont temporaires et vérifiés par le serveur Mind-It.</p>
     <div id="macDownloads"><div class="empty">Chargement des licences…</div></div>
     <div id="macDownloadMessage" class="message hidden" role="status" aria-live="polite"></div>
@@ -143,6 +143,7 @@ function licenseCard(license,tier){const revoked=license.status==="revoked";let 
 function renderMacDownloads(data){
   const host=$("macDownloads");
   const sections=[];
+  sections.push(`<div class="plan" style="margin-top:12px"><h3>Mind-It Free — macOS 2.6.5</h3><p class="help">Les archives ZIP contiennent les installateurs DMG. Choisis l’architecture de ton Mac.</p><div class="btnrow" style="margin-top:10px"><a class="btn secondary small" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/macos-free-2.6.5/mind-it-free-mac-x64.zip">Mac Intel ↓</a><a class="btn secondary small" href="https://github.com/jacquelavi2000-hub/Mind-It/releases/download/macos-free-2.6.5/mind-it-free-mac-arm64.zip">Mac Apple Silicon ↓</a></div></div>`);
   const addTier=(tier,licenses,label)=>{
     const usable=(licenses||[]).filter(item=>item.license_key&&!item.revoked_at&&item.status!=="revoked");
     if(!usable.length){sections.push(`<div class="plan" style="margin-top:12px"><h3>${label}</h3><div class="empty">Aucune licence valide associée à ce compte.</div></div>`);return;}
