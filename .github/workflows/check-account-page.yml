@@ -1,0 +1,18 @@
+name: Check Mind-It account page
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  account-page:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate account page security controls and JavaScript
+        run: node scripts/check-account-page.mjs

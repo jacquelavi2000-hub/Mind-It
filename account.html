@@ -10,7 +10,27 @@
 <section class="hero"><div class="eyebrow">ESPACE CLIENT MIND-IT</div><h1>Tout ton compte, au même endroit.</h1><p>Retrouve tes licences Premium et Platinum, tes paiements, tes factures et tes clés API. Tes informations sont accessibles uniquement après connexion à ton compte vérifié.</p></section>
 <section id="authView" class="card auth-card"><h2>Bienvenue sur ton espace client</h2><p class="muted">Connecte-toi ou crée ton compte avec ton adresse e-mail. La confirmation de l'adresse est nécessaire pour protéger tes achats.</p><div class="tabs"><button type="button" id="loginTab" class="active">Se connecter</button><button type="button" id="registerTab">Créer un compte</button></div>
 <form id="authForm"><div class="field"><label for="email">Adresse e-mail</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="toi@exemple.com"></div><div class="field"><label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" required minlength="10" maxlength="128" placeholder="Au moins 10 caractères"></div><button class="btn" id="authSubmit" type="submit" style="width:100%">Se connecter</button></form>
+<div class="btnrow" style="margin-top:10px"><button class="btn secondary" id="passkeyLoginButton" type="button" style="width:100%">Se connecter avec un passkey</button></div>
+<div class="btnrow" style="margin-top:8px"><button class="btn secondary small" id="accountRecoveryButton" type="button">Récupérer mon compte avec mon e-mail de secours</button></div>
 <div class="btnrow" style="justify-content:space-between;margin-top:12px"><button class="btn secondary small" id="forgotButton" type="button">Mot de passe oublié ?</button><span class="help">Connexion sécurisée</span></div><div id="authMessage" class="message hidden" role="status" aria-live="polite"></div></section>
+<section id="accountRecoveryView" class="card auth-card hidden">
+  <h2>Récupérer mon compte</h2>
+  <p class="muted">Utilise l’adresse de secours déjà vérifiée sur ton compte Mind-It.</p>
+  <form id="accountRecoveryRequestForm">
+    <div class="field"><label for="recoveryLookupEmail">Adresse e-mail de secours</label><input id="recoveryLookupEmail" type="email" autocomplete="email" maxlength="254" required></div>
+    <button class="btn" type="submit">Envoyer un code</button>
+  </form>
+  <form id="accountRecoveryVerifyForm" class="hidden">
+    <div class="field"><label for="accountRecoveryCode">Code reçu par e-mail</label><input id="accountRecoveryCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required></div>
+    <button class="btn" type="submit">Vérifier le code</button>
+  </form>
+  <form id="accountRecoveryPasswordForm" class="hidden">
+    <div class="field"><label for="accountRecoveryNewPassword">Nouveau mot de passe</label><input id="accountRecoveryNewPassword" type="password" autocomplete="new-password" minlength="10" maxlength="128" required></div>
+    <button class="btn" type="submit">Réinitialiser le mot de passe</button>
+  </form>
+  <div id="accountRecoveryMessage" class="message hidden" role="status" aria-live="polite"></div>
+  <button class="btn secondary small" id="backToLoginButton" type="button" style="margin-top:12px">Retour à la connexion</button>
+</section>
 <section id="resetView" class="card auth-card hidden"><h2>Choisir un nouveau mot de passe</h2><p class="muted">Ton lien de réinitialisation est vérifié. Choisis un nouveau mot de passe d'au moins 10 caractères.</p><form id="resetForm"><div class="field"><label for="newPassword">Nouveau mot de passe</label><input id="newPassword" type="password" required minlength="10" maxlength="128" autocomplete="new-password"></div><button class="btn" type="submit">Enregistrer le nouveau mot de passe</button></form><div id="resetMessage" class="message hidden" role="status"></div></section>
 <section id="dashboardView" class="hidden">
 <div class="card topline"><div><div class="eyebrow">COMPTE CONNECTÉ</div><div id="userEmail" class="email"></div><div id="accountSince" class="help"></div></div><div class="btnrow"><button class="btn secondary small" id="refreshButton" type="button">Actualiser</button><button class="btn secondary small" id="billingButton" type="button">Gérer la facturation</button><button class="btn danger small" id="logoutButton" type="button">Déconnexion</button></div></div>
@@ -29,7 +49,37 @@
 <div class="card"><div class="section-title"><h2>Mes transactions et factures</h2><span class="help">Historique Stripe</span></div><div id="transactions"><div class="empty">Chargement…</div></div></div>
 </div>
 <div class="account-panel" id="accountPanel-security" role="tabpanel" aria-labelledby="accountTab-security" tabindex="0" hidden>
-<div class="card"><div class="section-title"><h2>Sécurité du compte</h2><span class="status">Compte Mind-It</span></div><p class="muted">Quelques conseils pour protéger ton compte Mind-It.</p><div class="plan"><h3>Adresse e-mail vérifiée</h3><p class="muted">Ton compte utilise une adresse e-mail confirmée. Garde cette adresse accessible pour recevoir les messages liés à ton compte et à tes achats.</p></div><div class="plan"><h3>Mot de passe</h3><p class="muted">Utilise un mot de passe long et unique, différent de ceux de tes autres comptes. Ne le partage jamais.</p></div><div class="message warn" role="status">Les passkeys et l’adresse e-mail de secours ne sont pas encore activés dans cette version de l’espace client. Ils seront ajoutés ici après validation complète du service de sécurité.</div></div>
+  <div class="card">
+    <div class="section-title"><h2>Sécurité du compte</h2><span class="status">Mind-It Security</span></div>
+    <div class="grid">
+      <div class="plan">
+        <h3>Adresse e-mail de secours</h3>
+        <p class="muted">Elle permet de récupérer ton compte si tu n’as plus accès à ton adresse principale.</p>
+        <div id="recoveryEmailStatus" class="empty">Chargement…</div>
+        <form id="recoveryEmailForm">
+          <div class="field"><label for="recoveryEmailInput">Nouvelle adresse de secours</label><input id="recoveryEmailInput" type="email" autocomplete="email" maxlength="254" placeholder="secours@exemple.com" required></div>
+          <button class="btn secondary" type="submit">Envoyer un code de vérification</button>
+        </form>
+        <form id="recoveryCodeForm" class="hidden">
+          <div class="field"><label for="recoveryCodeInput">Code reçu par e-mail</label><input id="recoveryCodeInput" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required></div>
+          <button class="btn" type="submit">Vérifier l’adresse</button>
+        </form>
+        <form id="removeRecoveryEmailForm" class="hidden">
+          <div class="field"><label for="removeRecoveryPassword">Mot de passe actuel pour confirmer la suppression</label><input id="removeRecoveryPassword" type="password" autocomplete="current-password" minlength="10" maxlength="128" required></div>
+          <button class="btn danger" type="submit">Confirmer la suppression</button>
+        </form>
+        <div id="recoveryMessage" class="message hidden" role="status" aria-live="polite"></div>
+        <div class="btnrow" style="margin-top:10px"><button class="btn danger small hidden" id="removeRecoveryEmail" type="button">Supprimer l’adresse de secours</button></div>
+      </div>
+      <div class="plan">
+        <h3>Passkeys / Windows Hello</h3>
+        <p class="muted">Utilise une clé d’accès avec Windows Hello, Touch ID ou ton gestionnaire de mots de passe, selon ton appareil.</p>
+        <div class="btnrow" style="margin:12px 0"><button class="btn" id="addPasskeyButton" type="button">Ajouter un passkey</button></div>
+        <div id="passkeyList"><div class="empty">Chargement…</div></div>
+        <div id="passkeyMessage" class="message hidden" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="account-panel" id="accountPanel-api" role="tabpanel" aria-labelledby="accountTab-api" tabindex="0" hidden>
 <div class="card"><div class="section-title"><h2>Mes clés API</h2><span class="help">Gère les accès à Mind-It</span></div><p class="muted">Crée une clé pour connecter Mind-It Desktop ou un service autorisé. La clé complète est affichée une seule fois lors de sa création.</p><label for="keyWriteScope" style="display:flex;align-items:flex-start;gap:9px;margin:12px 0;font-size:13px;line-height:1.55;color:var(--green);font-weight:700"><input id="keyWriteScope" type="checkbox" style="margin-top:3px"><span>Autoriser aussi l’écriture <span class="help" style="display:block;font-weight:400">Lecture est toujours activée. L’écriture autorise la création, la modification et la suppression via cette clé. Tu pourras changer ce choix plus tard.</span></span></label><form id="keyForm" class="btnrow"><input id="keyLabel" type="text" maxlength="80" required placeholder="Ex. Mon PC principal" style="flex:1;min-width:190px;padding:12px;border:1px solid #cbd4c9;border-radius:9px"><button class="btn" type="submit">Créer une clé API</button></form><div id="newKeyBox" class="newkey hidden"><strong>Nouvelle clé API — copie-la maintenant</strong><code id="newKeyValue"></code><button class="btn secondary small" id="copyNewKey" type="button">Copier la clé</button><div class="help">Pour ta sécurité, cette clé ne sera plus affichée après avoir quitté cette page.</div></div><div id="apiKeys" style="margin-top:12px"><div class="empty">Chargement…</div></div><div id="keyMessage" class="message hidden" role="status"></div></div>
@@ -40,6 +90,21 @@
 </section>
 <div class="foot">Mind-It · Espace client sécurisé · <a href="index.html">Accueil</a> · <a href="mailto:support.mindit@gmail.com">Support</a></div>
 </main>
+<script>
+window.minditPasskeyClientPromise = (async () => {
+  try {
+    const response = await fetch("https://mind-it-server.onrender.com/api/account/passkey-config", { cache: "no-store" });
+    const config = await response.json();
+    if (!response.ok) throw new Error(config.error || "Configuration Passkey indisponible.");
+    if (window.location.origin !== "https://mind-it.onrender.com") throw new Error("Les passkeys sont disponibles uniquement sur https://mind-it.onrender.com.");
+    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2.105.0");
+    const client = createClient(config.url, config.publishableKey, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, experimental: { passkey: true } }
+    });
+    return { client, config, error: null };
+  } catch (error) { return { client: null, config: null, error }; }
+})();
+</script>
 <script>
 const API="https://mind-it-server.onrender.com";
 const $=id=>document.getElementById(id);
@@ -69,7 +134,7 @@ function licenseCard(license,tier){const revoked=license.status==="revoked";let 
 function renderOverview(data){overview=data;if(data.user&&data.user.email)localStorage.setItem("mindit_account_email",data.user.email);$('userEmail').textContent=data.user.email;$('premiumLicenses').innerHTML=data.premium_licenses.length?data.premium_licenses.map(x=>licenseCard(x,"premium")).join(""):'<div class="empty">Aucune licence Premium associée à ce compte.</div>';$('platinumLicenses').innerHTML=data.platinum_licenses.length?data.platinum_licenses.map(x=>licenseCard(x,"platinum")).join(""):'<div class="empty">Aucun abonnement Platinum associé à ce compte.</div>';const tx=data.transactions||[];$('transactions').innerHTML=tx.length?`<div class="table-wrap"><table><thead><tr><th>Date</th><th>Produit</th><th>Montant</th><th>État</th><th>Document</th></tr></thead><tbody>${tx.map(t=>`<tr><td>${esc(formatDate(t.created))}</td><td>${t.kind==="premium"?"Premium":"Platinum"}</td><td>${esc(formatMoney(t.amount,t.currency))}</td><td>${esc(statusLabel(t.status))}</td><td>${t.invoice_url?`<a href="${esc(t.invoice_url)}" target="_blank" rel="noopener">Facture ↗</a>`:"—"}</td></tr>`).join("")}</tbody></table></div>`:'<div class="empty">Aucune transaction retrouvée pour le moment.</div>';}
 async function loadReferral(){const response=await api("/api/account/referral");const data=await readJson(response);$("referralUrl").value=data.link;$("referralStats").textContent=data.total+" invitation(s) · "+data.pending+" en attente d'un achat Platinum · "+data.rewarded+" récompense(s) obtenue(s) ("+(data.rewarded*30)+" jours offerts).";}
 async function loadKeys(){const response=await api("/api/account/api-keys");const data=await readJson(response);$('apiKeys').innerHTML=data.keys.length?data.keys.map(k=>{const scopes=Array.isArray(k.scopes)?k.scopes:["mindit:read"];const canWrite=scopes.includes("mindit:write");return `<div class="keyrow"><div><div class="keylabel">${esc(k.label)}</div><div class="keyprefix">${esc(k.key_prefix)}•••• · créée le ${esc(formatDate(k.created_at))} · ${k.revoked_at?"révoquée":"active"}</div><div class="help">Permissions : Lecture${canWrite?" + Écriture":" seule"}</div></div>${k.revoked_at?'<span class="status revoked">Révoquée</span>':`<div class="btnrow"><button class="btn secondary small" data-toggle-key-write="${esc(k.id)}" data-write-enabled="${canWrite}">${canWrite?"Retirer écriture":"Activer écriture"}</button><button class="btn danger small" data-revoke-key="${esc(k.id)}">Révoquer</button></div>`}</div>`;}).join(""):`<div class="empty">Tu n'as pas encore créé de clé API.</div>`;}
-async function loadDashboard(){const [r1,r2]=await Promise.all([api("/api/account/overview"),api("/api/account/me")]);const data=await readJson(r1);const me=await readJson(r2);$('accountSince').textContent="Compte créé le "+formatDate(me.account?.created_at);renderOverview(data);await loadKeys();try{await loadReferral();}catch(error){$("referralStats").textContent="Le lien de parrainage est temporairement indisponible.";}$('authView').classList.add("hidden");$('resetView').classList.add("hidden");$('dashboardView').classList.remove("hidden");}
+async function loadDashboard(){const [r1,r2]=await Promise.all([api("/api/account/overview"),api("/api/account/me")]);const data=await readJson(r1);const me=await readJson(r2);$('accountSince').textContent="Compte créé le "+formatDate(me.account?.created_at);renderOverview(data);await loadKeys();await loadSecurity();try{await loadReferral();}catch(error){$("referralStats").textContent="Le lien de parrainage est temporairement indisponible.";}$('authView').classList.add("hidden");$('resetView').classList.add("hidden");$('dashboardView').classList.remove("hidden");}
 async function finishLogin(data){setTokens(data);const token=localStorage.getItem(tokenKey);const response=await fetch(API+"/api/account/session",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`},body:JSON.stringify({access_token:token})});await readJson(response);await loadDashboard();if(pendingNext==="premium"||pendingNext==="platinum"){const tier=pendingNext;pendingNext=null;await startCheckout(tier);}}
 async function startCheckout(tier){if(tier!=="premium"&&tier!=="platinum")return;location.assign(`checkout.html?plan=${encodeURIComponent(tier)}`);}
 $('loginTab').addEventListener('click',()=>{authMode="login";$('loginTab').classList.add("active");$('registerTab').classList.remove("active");$('authSubmit').textContent="Se connecter";$('password').autocomplete="current-password";hide('authMessage');});
@@ -86,6 +151,71 @@ $('keyForm').addEventListener('submit',async e=>{e.preventDefault();const label=
 $('copyNewKey').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('newKeyValue').textContent);showMessage('keyMessage',"Clé copiée.");}catch{showMessage('keyMessage',"Copie manuelle nécessaire.","warn");}});
 $("copyReferral").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("referralUrl").value);showMessage("referralMessage","Lien de parrainage copié !");}catch{showMessage("referralMessage","Copie impossible. Sélectionne le lien.","error");}});
 document.addEventListener('click',async e=>{const copy=e.target.closest('[data-copy-license]');if(copy){try{await navigator.clipboard.writeText(copy.dataset.copyLicense);copy.textContent="Copié !";}catch{copy.textContent="Copie impossible";}return;}const toggle=e.target.closest('[data-toggle-key-write]');if(toggle){const enabled=toggle.dataset.writeEnabled!=="true";if(!confirm(enabled?"Autoriser cette clé à modifier tes données Mind-It ?":"Retirer l’autorisation de modification de cette clé ?"))return;try{const scopes=enabled?["mindit:read","mindit:write"]:["mindit:read"];await readJson(await api(`/api/account/api-keys/${encodeURIComponent(toggle.dataset.toggleKeyWrite)}/scopes`,{method:"POST",body:JSON.stringify({scopes})}));await loadKeys();showMessage("keyMessage",enabled?"Permission d’écriture activée.":"Permission d’écriture retirée.");}catch(error){showMessage("keyMessage",error.message,"error");}return;}const revoke=e.target.closest('[data-revoke-key]');if(revoke){if(!confirm("Révoquer cette clé API ? Les applications qui l'utilisent perdront l'accès."))return;try{await readJson(await api(`/api/account/api-keys/${encodeURIComponent(revoke.dataset.revokeKey)}/revoke`,{method:"POST",body:"{}"}));await loadKeys();showMessage('keyMessage',"Clé API révoquée.");}catch(error){showMessage('keyMessage',error.message,"error");}return;}const sub=e.target.closest('[data-sub-action]');if(sub){const action=sub.dataset.subAction;const verb=action==="cancel"?"programmer la résiliation":"réactiver";if(!confirm(`Confirmer : ${verb} cet abonnement Platinum ?`))return;try{await readJson(await api("/api/account/platinum/subscription",{method:"POST",body:JSON.stringify({license_id:sub.dataset.licenseId,action})}));const response=await api("/api/account/overview");renderOverview(await readJson(response));showMessage('keyMessage',action==="cancel"?"Résiliation programmée en fin de période.":"Abonnement réactivé.");}catch(error){showMessage('keyMessage',error.message,"error");}}});
+let accountRecoveryEmail = "", accountRecoveryToken = "";
+async function getPasskeyClient(requireSession = false) {
+  const result = await window.minditPasskeyClientPromise;
+  if (!result?.client) throw result?.error || new Error("Le service Passkey est indisponible.");
+  const client = result.client;
+  if (requireSession) {
+    const access_token = localStorage.getItem(tokenKey), refresh_token = localStorage.getItem(refreshKey);
+    if (!access_token || !refresh_token) throw new Error("Reconnecte-toi avant de gérer tes passkeys.");
+    const { data, error } = await client.auth.setSession({ access_token, refresh_token });
+    if (error) throw error;
+    if (data?.session) setTokens(data.session);
+  }
+  return client;
+}
+async function loadPasskeys() {
+  const list = $("passkeyList");
+  if (!localStorage.getItem(tokenKey)) { list.textContent = "Connecte-toi pour gérer tes passkeys."; return; }
+  try {
+    const client = await getPasskeyClient(true);
+    const { data, error } = await client.auth.passkey.list();
+    if (error) throw error;
+    const items = Array.isArray(data?.passkeys) ? data.passkeys : (Array.isArray(data) ? data : (Array.isArray(data?.data?.passkeys) ? data.data.passkeys : []));
+    list.replaceChildren();
+    if (!items.length) { const empty = document.createElement("div"); empty.className = "empty"; empty.textContent = "Aucun passkey enregistré pour le moment."; list.append(empty); return; }
+    for (const item of items) {
+      const id = String(item.id || item.credential_id || item.credentialId || "");
+      if (!id) continue;
+      const row = document.createElement("div"); row.className = "plan"; row.style.marginTop = "9px";
+      const name = document.createElement("strong"); name.textContent = item.name || "Passkey sans nom";
+      const meta = document.createElement("p"); meta.className = "help"; meta.textContent = item.created_at ? `Ajouté le ${formatDate(item.created_at)}` : "Passkey associé à ton compte";
+      const actions = document.createElement("div"); actions.className = "btnrow";
+      const rename = document.createElement("button"); rename.type = "button"; rename.className = "btn secondary small"; rename.textContent = "Renommer";
+      rename.addEventListener("click", async () => { const next = prompt("Nom du passkey", item.name || "Mon appareil"); if (!next || !next.trim()) return; try { const c = await getPasskeyClient(true); const result = await c.auth.passkey.update({ id, name: next.trim().slice(0, 80) }); if (result.error) throw result.error; showMessage("passkeyMessage", "Passkey renommé."); await loadPasskeys(); } catch (e) { showMessage("passkeyMessage", e.message, "error"); } });
+      const remove = document.createElement("button"); remove.type = "button"; remove.className = "btn danger small"; remove.textContent = "Supprimer";
+      remove.addEventListener("click", async () => { if (!confirm("Supprimer ce passkey de ton compte Mind-It ?")) return; try { const c = await getPasskeyClient(true); const result = await c.auth.passkey.delete({ id }); if (result.error) throw result.error; showMessage("passkeyMessage", "Passkey supprimé."); await loadPasskeys(); } catch (e) { showMessage("passkeyMessage", e.message, "error"); } });
+      actions.append(rename, remove); row.append(name, meta, actions); list.append(row);
+    }
+  } catch (error) { list.textContent = "Impossible de charger les passkeys."; showMessage("passkeyMessage", error.message || "Service Passkey indisponible.", "warn"); }
+}
+async function loadSecurity() {
+  try {
+    const data = await readJson(await api("/api/account/security"));
+    const status = $("recoveryEmailStatus");
+    if (data.verified_at && data.recovery_email) {
+      status.textContent = `Adresse vérifiée : ${data.recovery_email}`;
+      $("recoveryEmailForm").classList.add("hidden"); $("recoveryCodeForm").classList.add("hidden"); $("removeRecoveryEmail").classList.remove("hidden");
+    } else {
+      status.textContent = "Aucune adresse de secours vérifiée.";
+      $("recoveryEmailForm").classList.remove("hidden"); $("removeRecoveryEmail").classList.add("hidden");
+    }
+  } catch (error) { $("recoveryEmailStatus").textContent = error.message || "Impossible de charger les paramètres de sécurité."; }
+  await loadPasskeys();
+}
+$("recoveryEmailForm").addEventListener("submit", async (event) => { event.preventDefault(); try { const email = $("recoveryEmailInput").value.trim(); const data = await readJson(await api("/api/account/security/recovery-email/request", { method: "POST", body: JSON.stringify({ email }) })); $("recoveryEmailForm").classList.add("hidden"); $("recoveryCodeForm").classList.remove("hidden"); showMessage("recoveryMessage", data.message || "Un code de vérification a été envoyé si l’adresse peut être utilisée."); } catch (error) { showMessage("recoveryMessage", error.message, "error"); } });
+$("recoveryCodeForm").addEventListener("submit", async (event) => { event.preventDefault(); try { await readJson(await api("/api/account/security/recovery-email/verify", { method: "POST", body: JSON.stringify({ code: $("recoveryCodeInput").value.trim() }) })); $("recoveryCodeForm").classList.add("hidden"); showMessage("recoveryMessage", "Adresse de secours vérifiée."); await loadSecurity(); } catch (error) { showMessage("recoveryMessage", error.message, "error"); } });
+$("removeRecoveryEmail").addEventListener("click", () => { $("removeRecoveryEmailForm").classList.toggle("hidden"); });
+$("removeRecoveryEmailForm").addEventListener("submit", async (event) => { event.preventDefault(); try { await readJson(await api("/api/account/security/recovery-email/remove", { method: "POST", body: JSON.stringify({ password: $("removeRecoveryPassword").value }) })); $("removeRecoveryPassword").value = ""; $("removeRecoveryEmailForm").classList.add("hidden"); showMessage("recoveryMessage", "Adresse de secours supprimée."); await loadSecurity(); } catch (error) { showMessage("recoveryMessage", error.message, "error"); } });
+$("addPasskeyButton").addEventListener("click", async () => { const button = $("addPasskeyButton"); button.disabled = true; try { const client = await getPasskeyClient(true); const { data, error } = await client.auth.registerPasskey(); if (error) throw error; showMessage("passkeyMessage", "Passkey ajouté à ton compte."); await loadPasskeys(); } catch (error) { showMessage("passkeyMessage", error.message || "Impossible d’ajouter ce passkey.", "error"); } finally { button.disabled = false; } });
+$("passkeyLoginButton").addEventListener("click", async () => { const button = $("passkeyLoginButton"); button.disabled = true; try { const client = await getPasskeyClient(false); const { data, error } = await client.auth.signInWithPasskey(); if (error) throw error; const session = data?.session || data; if (!session?.access_token || !session?.refresh_token) throw new Error("La connexion Passkey n’a pas renvoyé de session valide."); await finishLogin({ access_token: session.access_token, refresh_token: session.refresh_token }); } catch (error) { showMessage("authMessage", error.message || "Connexion Passkey impossible.", "error"); } finally { button.disabled = false; } });
+$("accountRecoveryButton").addEventListener("click", () => { $("authView").classList.add("hidden"); $("resetView").classList.add("hidden"); $("accountRecoveryView").classList.remove("hidden"); });
+$("backToLoginButton").addEventListener("click", () => { accountRecoveryEmail = ""; accountRecoveryToken = ""; $("accountRecoveryView").classList.add("hidden"); $("authView").classList.remove("hidden"); });
+$("accountRecoveryRequestForm").addEventListener("submit", async (event) => { event.preventDefault(); accountRecoveryEmail = $("recoveryLookupEmail").value.trim(); try { const data = await readJson(await fetch(API + "/api/account/recovery/request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: accountRecoveryEmail }) })); $("accountRecoveryRequestForm").classList.add("hidden"); $("accountRecoveryVerifyForm").classList.remove("hidden"); showMessage("accountRecoveryMessage", data.message || "Si cette adresse est enregistrée, un code de récupération a été envoyé."); } catch (error) { showMessage("accountRecoveryMessage", error.message, "error"); } });
+$("accountRecoveryVerifyForm").addEventListener("submit", async (event) => { event.preventDefault(); try { const data = await readJson(await fetch(API + "/api/account/recovery/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: accountRecoveryEmail, code: $("accountRecoveryCode").value.trim() }) })); accountRecoveryToken = data.recovery_token || ""; if (!accountRecoveryToken) throw new Error("Le serveur n’a pas fourni de jeton de récupération."); $("accountRecoveryVerifyForm").classList.add("hidden"); $("accountRecoveryPasswordForm").classList.remove("hidden"); showMessage("accountRecoveryMessage", "Code vérifié. Choisis maintenant un nouveau mot de passe."); } catch (error) { showMessage("accountRecoveryMessage", error.message, "error"); } });
+$("accountRecoveryPasswordForm").addEventListener("submit", async (event) => { event.preventDefault(); try { await readJson(await fetch(API + "/api/account/recovery/reset-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ recovery_token: accountRecoveryToken, password: $("accountRecoveryNewPassword").value }) })); accountRecoveryToken = ""; accountRecoveryEmail = ""; $("accountRecoveryPasswordForm").classList.add("hidden"); $("accountRecoveryView").classList.add("hidden"); $("authView").classList.remove("hidden"); showMessage("authMessage", "Mot de passe modifié. Connecte-toi avec ton adresse principale et ton nouveau mot de passe."); } catch (error) { showMessage("accountRecoveryMessage", error.message, "error"); } });
+
 async function boot(){const hashParams=new URLSearchParams(location.hash.replace(/^#/ ,""));const access=hashParams.get("access_token");const refresh=hashParams.get("refresh_token");const type=hashParams.get("type");if(access){setTokens({access_token:access,refresh_token:refresh});history.replaceState(null,"",location.pathname+location.search);try{const response=await fetch(API+"/api/account/session",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${access}`},body:JSON.stringify({access_token:access})});await readJson(response);if(type==="recovery"||new URLSearchParams(location.search).has("reset")){$('authView').classList.add("hidden");$('resetView').classList.remove("hidden");return;}await loadDashboard();if(pendingNext==="premium"||pendingNext==="platinum"){const tier=pendingNext;pendingNext=null;await startCheckout(tier);}}catch(error){clearTokens();showMessage('authMessage',error.message,"error");}return;}if(localStorage.getItem(tokenKey)){try{await loadDashboard();if(pendingNext==="premium"||pendingNext==="platinum"){const tier=pendingNext;pendingNext=null;await startCheckout(tier);}}catch{clearTokens();$('authView').classList.remove("hidden");}}}
 boot().catch(error=>showMessage('authMessage',error.message,"error"));
 </script><script src="./mindit-i18n.js"></script>
